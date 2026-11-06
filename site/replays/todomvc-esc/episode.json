@@ -1,0 +1,257 @@
+{
+  "name": "todomvc-esc",
+  "title": "TodoMVC React：按 Esc 没退出编辑",
+  "subtitle": "官方测试只检查内容没变，没有检查是否离开编辑状态",
+  "steps": [
+    {
+      "kind": "browser",
+      "action": "navigate",
+      "input": {
+        "url": "http://127.0.0.1:64374"
+      },
+      "error": false,
+      "result": "",
+      "shot": "001.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "002.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 600,
+          "y": 162
+        }
+      },
+      "error": false,
+      "result": "Clicked (600, 162).",
+      "shot": "003.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "type",
+      "input": {
+        "text": "buy milk"
+      },
+      "error": false,
+      "result": "Typed.",
+      "shot": "004.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "key",
+      "input": {
+        "text": "Return"
+      },
+      "error": false,
+      "result": "Pressed Return.",
+      "shot": "005.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "double_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 500,
+          "y": 245
+        }
+      },
+      "error": false,
+      "result": "Clicked (500, 245).",
+      "shot": "006.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "key",
+      "input": {
+        "text": "ctrl+a"
+      },
+      "error": false,
+      "result": "Pressed ctrl+a.",
+      "shot": "007.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "type",
+      "input": {
+        "text": "changed"
+      },
+      "error": false,
+      "result": "Typed.",
+      "shot": "008.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "key",
+      "input": {
+        "text": "Escape"
+      },
+      "error": false,
+      "result": "Pressed Escape.",
+      "shot": "009.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "010.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "key",
+      "input": {
+        "text": "Return"
+      },
+      "error": false,
+      "result": "Pressed Return.",
+      "shot": "011.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "double_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 500,
+          "y": 226
+        }
+      },
+      "error": false,
+      "result": "Clicked (500, 226).",
+      "shot": "012.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "key",
+      "input": {
+        "text": "ctrl+a"
+      },
+      "error": false,
+      "result": "Pressed ctrl+a.",
+      "shot": "013.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "type",
+      "input": {
+        "text": "changed"
+      },
+      "error": false,
+      "result": "Typed.",
+      "shot": "014.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "015.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "key",
+      "input": {
+        "text": "Escape"
+      },
+      "error": false,
+      "result": "Pressed Escape.",
+      "shot": "016.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "017.jpg",
+      "url": "http://127.0.0.1:64374/",
+      "note": ""
+    },
+    {
+      "kind": "tool",
+      "action": "verdict",
+      "input": {
+        "reproduced": true,
+        "notes": "我在编辑框里输入文字后按 Esc，编辑框仍然开着，条目停留在编辑状态，没有回到普通条目的显示。ctrl+a 没有选中全部文字，所以编辑框里的文字变成了“changedchangedbuy milk”这样的拼接内容。因此我没能单独确认“修改被放弃”这一半，但报告的主要现象（Esc 不退出编辑）已出现。"
+      },
+      "result": "已记录。",
+      "note": ""
+    }
+  ],
+  "report": {
+    "title": "编辑时按 Esc 没有退出编辑状态",
+    "rule": "Editing",
+    "steps": [
+      "打开首页，在输入框输入 buy milk 后回车",
+      "双击 buy milk 进入编辑",
+      "把内容改成 changed，按 Esc"
+    ],
+    "expected": "规格：按 Esc 应离开编辑状态并放弃修改，显示回 buy milk 的普通条目",
+    "actual": "修改被放弃，但编辑框仍然开着，条目停留在编辑状态",
+    "severity": "minor",
+    "reproduced": true,
+    "repro_notes": "我在编辑框里输入文字后按 Esc，编辑框仍然开着，条目停留在编辑状态，没有回到普通条目的显示。ctrl+a 没有选中全部文字，所以编辑框里的文字变成了“changedchangedbuy milk”这样的拼接内容。因此我没能单独确认“修改被放弃”这一半，但报告的主要现象（Esc 不退出编辑）已出现。",
+    "matched": null
+  },
+  "cost": 0.0465945,
+  "run": {
+    "stop_reason": "finished",
+    "turns": 4,
+    "cost_usd": 0.0465945,
+    "seconds": 16.4,
+    "actions": 17,
+    "input_tokens": 13207,
+    "output_tokens": 855,
+    "cache_read_tokens": 25160,
+    "served_models": [
+      "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+  }
+}

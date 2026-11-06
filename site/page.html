@@ -1,0 +1,536 @@
+<title>UIPilot</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="让 Agent 在没有 API 的老系统里干活：浏览器 Agent 底座、探索式测试 Agent、单据录入 Agent，附完整对照评测和操作回放。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700;900&family=Schibsted+Grotesk:wght@500;700;800&display=swap">
+<style>
+/* 版式：一张冷色的检验报告纸。正文墨蓝，唯一的强调色是审阅用的荧光黄，只用来标“发现”。 */
+:root {
+  --paper: #f3f5f8;
+  --surface: #fbfcfd;
+  --ink: #111826;
+  --ink-2: #566175;
+  --line: #d9dee6;
+  --mark: #f6d548;
+  --mark-ink: #2f2600;
+  --pass: #1d7f55;
+  --fail: #b8402c;
+  --shadow: 0 1px 0 rgba(17, 24, 38, .04), 0 12px 32px -18px rgba(17, 24, 38, .28);
+  --display: "Schibsted Grotesk", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+  --body: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif;
+  --mono: "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
+  --radius: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e131a; --surface: #141b24; --ink: #e5eaf1; --ink-2: #98a4b6; --line: #253041;
+    --mark: #e9c93c; --mark-ink: #221b00; --pass: #3fb984; --fail: #ef6b57;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 14px 36px -18px rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e131a; --surface: #141b24; --ink: #e5eaf1; --ink-2: #98a4b6; --line: #253041;
+  --mark: #e9c93c; --mark-ink: #221b00; --pass: #3fb984; --fail: #ef6b57;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 14px 36px -18px rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -.01em; }
+h2 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.2; font-weight: 800; }
+h3 { font-size: 18px; font-weight: 700; line-height: 1.35; }
+p { margin: 0; }
+.lede { color: var(--ink-2); max-width: 62ch; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+mark { background: var(--mark); color: var(--mark-ink); padding: 0 .2em; border-radius: 3px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 4px; }
+
+/* 顶栏 */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in oklab, var(--paper) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 28px; height: 60px; }
+.brand { font-family: var(--display); font-weight: 800; font-size: 19px; text-decoration: none; letter-spacing: -.02em; }
+.brand span { font-family: var(--mono); font-weight: 600; font-size: 12px; color: var(--ink-2); margin-left: 8px; letter-spacing: 0; }
+.nav { display: flex; gap: 22px; margin-left: auto; font-size: 14px; }
+.nav a { text-decoration: none; color: var(--ink-2); }
+.nav a:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 999px; font-size: 14.5px; font-weight: 500; text-decoration: none; border: 1px solid var(--ink); white-space: nowrap; transition: transform .15s ease, background-color .15s ease; }
+.btn:active { transform: translateY(1px) scale(.98); }
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn-ghost:hover { background: var(--surface); }
+.top .btn { height: 34px; padding: 0 14px; font-size: 13.5px; }
+@media (max-width: 720px) { .nav { display: none; } .top .btn { margin-left: auto; } }
+
+/* 首屏 */
+.hero { padding-block: 64px 40px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(34px, 4.6vw, 56px); line-height: 1.12; font-weight: 900; }
+.hero .lede { margin-top: 20px; font-size: 17px; }
+.hero .cta { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+.stack { position: relative; aspect-ratio: 5 / 4; max-width: 100%; }
+.stack img { position: absolute; border-radius: 8px; box-shadow: var(--shadow); border: 1px solid var(--line); background: var(--surface); }
+.stack .doc { width: 64%; left: 0; top: 4%; transform: rotate(-3deg); }
+.stack .screen { width: 78%; right: 0; bottom: 2%; }
+@media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } .hero { padding-block: 40px 24px; } }
+
+/* 数字带 */
+.figures { border-block: 1px solid var(--line); background: var(--surface); }
+.figures .wrap { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.fig { padding: 22px 18px 20px; border-left: 1px solid var(--line); min-width: 0; }
+.fig:first-child { border-left: 0; padding-left: 0; }
+.fig .num { font-size: clamp(26px, 3vw, 34px); font-weight: 600; line-height: 1.1; display: block; }
+.fig p { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+@media (max-width: 860px) { .figures .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fig { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; } .fig:nth-child(-n+2) { border-top: 0; } .fig:last-child:nth-child(odd) { grid-column: 1 / -1; } }
+
+section.block { padding-block: 84px 0; }
+.head { display: grid; gap: 10px; margin-bottom: 30px; }
+
+/* 回放 */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.tab { font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); cursor: pointer; transition: background-color .15s ease, color .15s ease; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.player { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; box-shadow: var(--shadow); }
+.stage { position: relative; background: var(--paper); border-right: 1px solid var(--line); min-width: 0; }
+.stage .bar { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--ink-2); min-width: 0; }
+.stage .bar .url { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.screen-box { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.screen-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: top center; transition: opacity .25s ease; }
+.toolcard { position: absolute; inset: 0; display: grid; place-items: center; padding: 28px; }
+.toolcard pre { margin: 0; max-width: 560px; width: 100%; white-space: pre-wrap; font-family: var(--mono); font-size: 13px; line-height: 1.65; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; box-shadow: var(--shadow); max-height: 100%; overflow: auto; }
+.toolcard .tname { display: block; font-weight: 600; margin-bottom: 8px; }
+.controls { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); }
+.icon-btn { font: inherit; font-size: 13px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.icon-btn:active { transform: scale(.97); }
+.progress { flex: 1; height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--ink); width: 0; transition: width .25s ease; }
+.side { display: flex; flex-direction: column; min-width: 0; max-height: 640px; }
+.side .meta { padding: 16px 18px; border-bottom: 1px solid var(--line); }
+.side .meta h3 { font-size: 16px; }
+.side .meta p { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+.side .doclink { margin-top: 10px; font-size: 13px; }
+.steps { list-style: none; margin: 0; padding: 6px 0; overflow-y: auto; flex: 1; position: relative; }
+.steps li { padding: 9px 18px; cursor: pointer; font-size: 13.5px; line-height: 1.5; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 6px; }
+.steps li .i { font-family: var(--mono); color: var(--ink-2); font-size: 12px; padding-top: 2px; }
+.steps li .a { font-family: var(--mono); font-size: 12.5px; font-weight: 600; }
+.steps li .t { color: var(--ink-2); word-break: break-word; }
+.steps li.tool .a { color: var(--ink); }
+.steps li.err .a { color: var(--fail); }
+.steps li[aria-current="step"] { background: color-mix(in oklab, var(--mark) 38%, transparent); }
+.steps li[aria-current="step"] .t { color: var(--ink); }
+.verdict { padding: 12px 18px; border-top: 1px solid var(--line); font-size: 13px; }
+.chip { display: inline-block; font-size: 12px; font-weight: 500; padding: 1px 9px; border-radius: 999px; border: 1px solid currentColor; }
+.chip.pass { color: var(--pass); }
+.chip.fail { color: var(--fail); }
+.chip.mark { color: var(--mark-ink); background: var(--mark); border-color: var(--mark); }
+@media (max-width: 960px) { .player { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--line); } .side { max-height: 420px; } }
+.docview { position: fixed; inset: 0; z-index: 40; background: color-mix(in oklab, var(--ink) 55%, transparent); display: grid; place-items: center; padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.docview img { max-height: 88vh; width: auto; border-radius: 8px; box-shadow: var(--shadow); }
+
+/* 结果 */
+.results { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+.results > * { min-width: 0; }
+.matrix-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table.matrix { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 13px; }
+.matrix th, .matrix td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--line); }
+.matrix thead th { font-weight: 500; color: var(--ink-2); vertical-align: bottom; line-height: 1.35; }
+.matrix thead th b { display: block; color: var(--ink); font-family: var(--display); font-size: 13.5px; }
+.matrix tbody th { text-align: left; font-weight: 400; white-space: nowrap; }
+.matrix tbody th .num { color: var(--ink-2); margin-right: 8px; font-size: 12px; }
+.matrix tr:last-child td, .matrix tr:last-child th { border-bottom: 0; }
+.cell { display: inline-block; min-width: 46px; padding: 2px 6px; border-radius: 6px; font-family: var(--mono); font-size: 12px; }
+.matrix tfoot td, .matrix tfoot th { border-top: 1px solid var(--line); border-bottom: 0; font-weight: 600; }
+.oracle { font-size: 11px; color: var(--ink-2); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
+.note { font-size: 13px; color: var(--ink-2); margin-top: 12px; max-width: 80ch; }
+.entry-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 32px; align-items: start; }
+.chart { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 16px 12px 8px; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart text { fill: var(--ink-2); font-family: var(--mono); font-size: 11px; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); padding: 6px 8px 4px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.story { display: grid; gap: 18px; }
+.story .row { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.story .row:last-child { border-bottom: 0; }
+.story .k { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+@media (max-width: 860px) { .entry-grid { grid-template-columns: 1fr; } }
+
+/* 实战 */
+.field { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 40px; align-items: start; }
+.finding { padding: 18px 0; border-top: 1px solid var(--line); display: grid; gap: 6px; }
+.finding:first-child { border-top: 0; padding-top: 0; }
+.finding .where { font-family: var(--mono); font-size: 12px; color: var(--ink-2); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.finding p { color: var(--ink-2); font-size: 14px; }
+@media (min-width: 861px) { .field .head { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); } }
+@media (max-width: 860px) { .field { grid-template-columns: 1fr; } }
+
+/* 设计 */
+.decisions { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.dec { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 22px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.dec p { color: var(--ink-2); font-size: 14px; }
+.dec.w3 { grid-column: span 3; } .dec.w2 { grid-column: span 2; } .dec.w4 { grid-column: span 4; }
+.dec.ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.dec.ink p { color: color-mix(in oklab, var(--paper) 78%, transparent); }
+.dec code { font-family: var(--mono); font-size: 12.5px; background: color-mix(in oklab, var(--mark) 45%, transparent); color: inherit; padding: 0 4px; border-radius: 3px; }
+.dec.ink code { background: color-mix(in oklab, var(--mark) 85%, transparent); color: var(--mark-ink); }
+@media (max-width: 860px) { .decisions { grid-template-columns: 1fr; } .dec.w3, .dec.w2, .dec.w4 { grid-column: auto; } }
+
+footer { margin-top: 96px; border-top: 1px solid var(--line); padding-block: 28px 40px; font-size: 13.5px; color: var(--ink-2); }
+footer .wrap { display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-between; }
+footer nav { display: flex; gap: 18px; flex-wrap: wrap; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .7s cubic-bezier(.16, 1, .3, 1) both; }
+  .rise.d2 { animation-delay: .08s; } .rise.d3 { animation-delay: .16s; }
+  @keyframes rise { from { opacity: .001; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">UIPilot<span>browser agents</span></a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#replay">回放</a><a href="#results">评测</a><a href="#field">真实项目</a><a href="#design">设计</a>
+    </nav>
+    <a class="btn btn-ghost" href="https://github.com/kennywu411-dev/uipilot">GitHub</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1 class="rise">让 Agent 在没有 API 的老系统里干活</h1>
+        <p class="lede rise d2">一个浏览器 Agent 底座，两个应用：读业务规则找缺陷的测试 Agent，看扫描件往老 ERP 里录单的录单 Agent。每个结论都有对照实验。</p>
+        <div class="cta rise d3">
+          <a class="btn btn-primary" href="#replay">看操作回放</a>
+          <a class="btn btn-ghost" href="https://github.com/kennywu411-dev/uipilot">查看源码</a>
+        </div>
+      </div>
+      <div class="stack rise d2" aria-hidden="true">
+        <img class="doc" id="hero-doc" alt="">
+        <img class="screen" id="hero-screen" alt="">
+      </div>
+    </div>
+  </section>
+
+  <div class="figures"><div class="wrap" id="figures"></div></div>
+
+  <section class="block" id="replay">
+    <div class="wrap">
+      <div class="head">
+        <h2>看它怎么干活</h2>
+        <p class="lede">下面是 Agent 的真实操作记录：每一步的截图、动作和它当时的说明。录单时，供应商、合计和单号都交给代码判断，保存后再回读比对。</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="player" tabindex="0" aria-label="操作回放，方向键可逐步翻看">
+        <div class="stage">
+          <div class="bar"><span>地址</span><span class="url" id="url">about:blank</span></div>
+          <div class="screen-box" id="screen"></div>
+          <div class="controls">
+            <button class="icon-btn" id="prev" type="button" aria-label="上一步">上一步</button>
+            <button class="icon-btn" id="play" type="button">播放</button>
+            <button class="icon-btn" id="next" type="button" aria-label="下一步">下一步</button>
+            <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+            <span class="num" id="counter" style="font-size:12px;color:var(--ink-2)"></span>
+          </div>
+        </div>
+        <div class="side">
+          <div class="meta" id="meta"></div>
+          <ol class="steps" id="steps"></ol>
+          <div class="verdict" id="verdict"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="results">
+    <div class="wrap results">
+      <div>
+        <div class="head">
+          <h2>测试 Agent：14 个植入缺陷，12 个不会报错</h2>
+          <p class="lede">靶子是一个模拟的老式进销存 ERP。14 个缺陷里 12 个不会报错，只有读懂业务规则、自己算一遍才能发现。每条报告都在重置后的环境里由另一个 Agent 复现，再逐条人工复核。</p>
+        </div>
+        <div class="matrix-wrap"><table class="matrix" id="matrix"></table></div>
+        <p class="note" id="matrix-note"></p>
+      </div>
+      <div>
+        <div class="head">
+          <h2>录单 Agent：成功率和成本</h2>
+          <p class="lede">难题集 20 张单据：每张 6 到 10 行明细、低分辨率扫描；8 张陷阱单要转人工，包括名字只差两个字的另一家公司。</p>
+        </div>
+        <div class="entry-grid">
+          <div class="chart" id="scatter"></div>
+          <div class="story" id="story"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="field">
+    <div class="wrap field">
+      <div class="head">
+        <h2>在真实开源项目上跑</h2>
+        <p class="lede" id="field-lede">TodoMVC 的几十个框架实现都要遵守同一份公开规格书。测试 Agent 拿规格书当业务规则，逐个实现去找不符的地方，结果由人工复核。</p>
+        <div class="matrix-wrap" id="field-table" style="margin-top:20px"></div>
+      </div>
+      <div id="findings"></div>
+    </div>
+  </section>
+
+  <section class="block" id="design">
+    <div class="wrap">
+      <div class="head"><h2>几个关键决定</h2></div>
+      <div class="decisions">
+        <div class="dec w4 ink">
+          <h3>安全边界放在执行器里，不靠提示词</h3>
+          <p>网络层只放行被测系统；录单时，会删数据的请求在网络层直接中止。按钮文字检查只做提示，并对 <code>type="button"</code> 这类只改页面的按钮放行，避免误伤“删除本行”。</p>
+        </div>
+        <div class="dec w2">
+          <h3>用复现压误报</h3>
+          <p>探索报的每条缺陷，都在重置后的环境里只按报告步骤重做一遍。步骤必须能从初始数据独立复现。</p>
+        </div>
+        <div class="dec w3">
+          <h3>模型负责读，代码负责判</h3>
+          <p>录单先把单据原样登记：按税号找供应商、用 <code>Decimal</code> 重算合计、查单号是否录过，都由代码下结论。读错一个数字，合计就对不上，于是读错也会变成转人工，而不是录错。</p>
+        </div>
+        <div class="dec w3">
+          <h3>三种观察方式只是一个开关</h3>
+          <p>只看截图、只看页面结构、两者都给，只改浏览器工具集的配置，对照实验只差一个变量。历史只追加不改写，靠提示缓存控制成本。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>UIPilot · Claude 浏览器工具集 + Playwright</span>
+    <nav>
+      <a href="https://github.com/kennywu411-dev/uipilot">GitHub</a>
+      <a href="https://github.com/kennywu411-dev/uipilot/blob/main/docs/numbers.md">数字登记表</a>
+      <a href="https://github.com/kennywu411-dev/uipilot/blob/main/docs/%E9%97%AE%E9%A2%98%E6%97%A5%E5%BF%97.md">问题日志</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const pct = v => (v * 100).toFixed(1).replace(/\.0$/, "") + "%";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function describe(step) {
+  const i = step.input || {};
+  if (step.kind === "tool") {
+    if (step.action === "record_document") return `登记单据：${i.supplier_name ?? ""}，税号 ${i.supplier_tax_id ?? "无"}，${(i.lines || []).length} 行，合计 ${i.printed_total ?? ""}`;
+    if (step.action === "escalate") return `转人工（${i.category}）：${i.reason ?? ""}`;
+    if (step.action === "finish") return `结束：${i.summary ?? ""}`;
+    if (step.action === "verdict") return `${i.reproduced ? "复现成功" : "未能复现"}：${i.notes ?? ""}`;
+    return JSON.stringify(i);
+  }
+  const t = i.target || {};
+  const where = t.type === "ref" ? t.ref : t.type === "coordinate" ? `(${t.x}, ${t.y})` : "";
+  switch (step.action) {
+    case "navigate": return `打开 ${String(i.url).replace(/^https?:\/\/127\.0\.0\.1:\d+/, "") || "/"}`;
+    case "left_click": return `点击 ${where}`;
+    case "double_click": return `双击 ${where}`;
+    case "triple_click": return `三击 ${where}`;
+    case "hover": return `悬停 ${where}`;
+    case "scroll": return `滚动（${i.scroll_direction}）`;
+    case "wait": return "等待页面响应";
+    case "form_input": return `${where} 填入 “${i.value}”`;
+    case "type": return `输入 “${i.text}”`;
+    case "key": return `按键 ${i.text}`;
+    case "read_page": return `读取页面结构${i.filter ? "（" + i.filter + "）" : ""}`;
+    case "find": return `查找 “${i.query}”`;
+    case "get_page_text": return "读取页面文字";
+    case "screenshot": return "截图";
+    case "zoom": return "放大局部";
+    default: return `${step.action} ${where}`;
+  }
+}
+
+function figures(d) {
+  const tax = d.entry.filter(r => r.set === "难题集 + 税号" && r.checks);
+  const wrong = tax.reduce((a, r) => a + r.wrong_entries, 0);
+  const recalls = d.scout.map(r => r.recall);
+  const span = `${Math.round(Math.min(...recalls) * 100)}~${Math.round(Math.max(...recalls) * 100)}%`;
+  const conf = d.external ? d.external.findings.filter(f => f.status === "confirmed") : [];
+  const byAgent = conf.filter(f => f.found_by !== "复核脚本").length;
+  const items = [
+    [span, "测试 Agent 各配置的检出率（复现确认，14 个植入缺陷）"],
+    [String(d.scout.reduce((a, r) => a + r.false_positives, 0)), `ERP 靶子上人工复核判为误报的报告（共 ${d.scout.reduce((a, r) => a + r.repeats * 4, 0)} 轮测试）`],
+    [tax.length ? String(wrong) : "-", "单据印上税号后，难题集上录错的单据（三档模型）"],
+    [d.external ? String(conf.length) : "-", `TodoMVC 官方实现里确认的规格偏差（${byAgent === conf.length ? "全部有 Agent 参与发现" : `Agent 发现 ${byAgent} 处`}）`],
+    ["0", "所有运行中已有数据被删除的次数"],
+  ];
+  $("#figures").innerHTML = items.map(([n, t]) => `<div class="fig"><span class="num">${esc(n)}</span><p>${esc(t)}</p></div>`).join("");
+}
+
+function player(d) {
+  const eps = d.replays;
+  if (!eps.length) { $("#replay").hidden = true; return; }
+  let ep = 0, idx = 0, timer = null;
+  const tabs = $("#tabs");
+  tabs.innerHTML = eps.map((e, k) => `<button class="tab" role="tab" id="tab-${k}" aria-selected="${k === 0}" type="button">${esc(e.title)}</button>`).join("");
+  tabs.querySelectorAll(".tab").forEach((b, k) => b.addEventListener("click", () => load(k)));
+
+  function load(k) {
+    stop(); ep = k; idx = 0;
+    tabs.querySelectorAll(".tab").forEach((b, j) => b.setAttribute("aria-selected", String(j === k)));
+    const e = eps[k];
+    const doc = e.document ? `<div class="doclink"><button class="icon-btn" type="button" id="showdoc">查看单据原件</button></div>` : "";
+    $("#meta").innerHTML = `<h3>${esc(e.title)}</h3><p>${esc(e.subtitle)}</p>${doc}`;
+    if (e.document) $("#showdoc").addEventListener("click", () => showDoc(e.base + e.document));
+    $("#steps").innerHTML = e.steps.map((s, j) => `<li class="${s.kind === "tool" ? "tool" : ""} ${s.error ? "err" : ""}" data-j="${j}"><span class="i">${String(j + 1).padStart(2, "0")}</span><span><span class="a">${esc(s.action)}</span><br><span class="t">${esc(describe(s))}</span></span></li>`).join("");
+    $("#steps").querySelectorAll("li").forEach(li => li.addEventListener("click", () => show(+li.dataset.j)));
+    const v = e.verdict, run = e.run || {};
+    let verdict = "";
+    if (v) verdict = `<span class="chip ${v.success ? "pass" : "fail"}">${v.success ? "结果正确" : "结果错误"}</span> 数据库核对：${v.action === "escalate" ? "没有新增采购单，已转人工" : "新增 1 张采购单，字段全部正确"}`;
+    else if (e.report) verdict = `<span class="chip mark">${esc(e.report.rule)}</span> ${esc(e.report.title)}`;
+    if (run.cost_usd != null) verdict += `<span class="num" style="float:right;color:var(--ink-2)">$${run.cost_usd.toFixed(3)}</span>`;
+    $("#verdict").innerHTML = verdict;
+    show(0);
+  }
+
+  function show(j) {
+    const e = eps[ep];
+    idx = Math.max(0, Math.min(e.steps.length - 1, j));
+    const s = e.steps[idx];
+    // 工具步骤没有截图：沿用上一张截图作为背景，叠一张结果卡片
+    let shot = null;
+    for (let k = idx; k >= 0; k--) if (e.steps[k].shot) { shot = e.steps[k].shot; break; }
+    const box = $("#screen");
+    // 还没打开浏览器之前（如录单的第一步“登记单据”），背景用单据原件
+    const src = shot ? e.base + shot : e.document ? e.base + e.document : "";
+    const img = src ? `<img src="${src}" alt="${shot ? `第 ${idx + 1} 步的页面截图` : "单据扫描件"}" style="${s.kind === "tool" ? "opacity:.28" : ""}">` : "";
+    const card = s.kind === "tool" ? `<div class="toolcard"><pre><span class="tname">${esc(s.action)}</span>${esc(s.result || describe(s))}</pre></div>` : "";
+    box.innerHTML = img + card;
+    let url = "";
+    for (let k = idx; k >= 0; k--) if (e.steps[k].url) { url = e.steps[k].url.replace(/^https?:\/\/127\.0\.0\.1:\d+/, ""); break; }
+    $("#url").textContent = url || "/";
+    $("#counter").textContent = `${idx + 1} / ${e.steps.length}`;
+    $("#bar").style.width = `${((idx + 1) / e.steps.length) * 100}%`;
+    // 只滚动步骤列表本身；scrollIntoView 会连带滚动整个页面
+    const list = $("#steps");
+    list.querySelectorAll("li").forEach((li, k) => {
+      if (k !== idx) return li.removeAttribute("aria-current");
+      li.setAttribute("aria-current", "step");
+      if (li.offsetTop < list.scrollTop || li.offsetTop + li.offsetHeight > list.scrollTop + list.clientHeight)
+        list.scrollTop = li.offsetTop - list.clientHeight / 3;
+    });
+  }
+
+  function stop() { clearInterval(timer); timer = null; $("#play").textContent = "播放"; }
+  $("#prev").addEventListener("click", () => { stop(); show(idx - 1); });
+  $("#next").addEventListener("click", () => { stop(); show(idx + 1); });
+  $("#play").addEventListener("click", () => {
+    if (timer) return stop();
+    $("#play").textContent = "暂停";
+    timer = setInterval(() => { if (idx >= eps[ep].steps.length - 1) return stop(); show(idx + 1); }, 1400);
+  });
+  // 方向键只在播放器获得焦点时翻步，不抢页面滚动
+  $(".player").addEventListener("keydown", ev => {
+    if (ev.key === "ArrowRight") { ev.preventDefault(); stop(); show(idx + 1); }
+    if (ev.key === "ArrowLeft") { ev.preventDefault(); stop(); show(idx - 1); }
+  });
+  document.addEventListener("keydown", ev => { if (ev.key === "Escape") { const v = $(".docview"); if (v) v.remove(); } });
+  load(0);
+  // 首屏：单据原件 + 录完 10 行、保存前的那一帧
+  const h05 = eps.find(e => e.name === "entry-h05") || eps[0];
+  const filled = [...h05.steps].reverse().find(s => s.shot && (s.url || "").includes("/po/new")) || h05.steps.find(s => s.shot);
+  if (h05.document) $("#hero-doc").src = h05.base + h05.document; else $("#hero-doc").remove();
+  if (filled) $("#hero-screen").src = h05.base + filled.shot; else $("#hero-screen").remove();
+}
+
+function showDoc(src) {
+  const v = document.createElement("div");
+  v.className = "docview"; v.tabIndex = -1;
+  v.innerHTML = `<img src="${src}" alt="单据扫描件原件">`;
+  v.addEventListener("click", () => v.remove());
+  document.body.appendChild(v); v.focus();
+}
+
+function matrix(d) {
+  const order = ["haiku-vision", "haiku-dom", "haiku-hybrid", "haiku-hybrid-nosig", "sonnet-hybrid", "sonnet-hybrid-calc", "opus-hybrid"];
+  const cols = order.map(k => d.scout.find(r => r.key === k)).filter(Boolean);
+  const head = `<thead><tr><th style="text-align:left">缺陷</th>${cols.map(c => `<th><b>${esc(c.model.replace(" 5.5", ""))}</b>${esc(c.mode)}${c.signals ? "" : "<br>关闭信号"}${c.calc ? "<br>复现核对期望值" : ""}<br><span class="num">${c.repeats} 遍</span></th>`).join("")}</tr></thead>`;
+  const body = d.bugs.map(b => `<tr><th><span class="num">${b.id}</span>${esc(b.title)}${b.oracle ? '<span class="oracle">会报错</span>' : ""}</th>${cols.map(c => {
+    const h = c.hits[b.id];
+    if (!h) return "<td>-</td>";
+    const r = h[0] / h[1];
+    const bg = r === 1 ? "color-mix(in oklab, var(--pass) 22%, transparent)" : r === 0 ? "color-mix(in oklab, var(--fail) 18%, transparent)" : "color-mix(in oklab, var(--mark) 55%, transparent)";
+    return `<td><span class="cell" style="background:${bg}">${h[0]}/${h[1]}</span></td>`;
+  }).join("")}</tr>`).join("");
+  const foot = `<tfoot><tr><th style="text-align:left">检出率（复现确认）</th>${cols.map(c => `<td class="num">${pct(c.recall)}</td>`).join("")}</tr><tr><th style="text-align:left;font-weight:400;color:var(--ink-2)">每组成本（估算）</th>${cols.map(c => `<td class="num" style="font-weight:400;color:var(--ink-2)">$${c.cost_per_round.toFixed(2)}</td>`).join("")}</tr></tfoot>`;
+  $("#matrix").innerHTML = head + body + foot;
+  const fp = d.scout.filter(c => c.false_positives).map(c => `${c.model.replace(" 5.5", "")} ${c.false_positives} 条`).join("、");
+  $("#matrix-note").textContent = `同样的缺陷交给随机点击（${d.monkey.runs} 轮 × ${d.monkey.steps} 步，不调用模型），检出 0 个。没对上植入清单的确认报告逐条人工复核过：除${fp ? `误报（${fp}，把 13% 税额算错了 1 元，复现只核对现象、没核对期望值）` : "误报"}之外，都是靶子本身的真实缺陷，已修复。成本按价目表估算，包含复现和评判。全部 ${d.audit.reports} 条报告都人工核对过评判结果，评判模型的 ${d.audit.judge_fixes} 处漏判已按人工结论更正。`;
+}
+
+function scatter(d) {
+  const pts = d.entry.filter(r => (r.set === "难题集" || r.set === "难题集 + 税号") && r.mode === "截图 + 页面结构");
+  if (!pts.length) return;
+  const W = 640, H = 340, L = 54, R = 20, T = 18, B = 44;
+  const xs = [0.002, 0.3], ys = [0.8, 1.0];
+  const x = v => L + (Math.log10(v) - Math.log10(xs[0])) / (Math.log10(xs[1]) - Math.log10(xs[0])) * (W - L - R);
+  const y = v => T + (1 - (v - ys[0]) / (ys[1] - ys[0])) * (H - T - B);
+  const colour = { "Haiku 5.5": "var(--ink-2)", "Sonnet 5.5": "var(--ink)", "Opus 5.5": "var(--fail)" };
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="难题集上各模型的整单成功率与单张成本">`;
+  [0.8, 0.85, 0.9, 0.95, 1].forEach(v => { svg += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${Math.round(v * 100)}%</text>`; });
+  [0.003, 0.01, 0.03, 0.1, 0.3].forEach(v => { svg += `<text x="${x(v)}" y="${H - B + 18}" text-anchor="middle">$${v}</text>`; });
+  svg += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">单张成本（对数刻度）</text>`;
+  const byModel = {};
+  pts.forEach(p => { (byModel[p.model] ||= []).push(p); });
+  Object.entries(byModel).forEach(([m, list]) => {
+    const before = list.find(p => p.set === "难题集");
+    const after = list.find(p => p.set === "难题集 + 税号" && p.checks);
+    if (before && after) svg += `<line x1="${x(before.cost_per_doc)}" y1="${y(before.success)}" x2="${x(after.cost_per_doc)}" y2="${y(after.success)}" stroke="${colour[m]}" stroke-dasharray="3 4" stroke-width="1.5"/>`;
+    list.forEach(p => {
+      if (p.set === "难题集 + 税号" && !p.checks) return;
+      const filled = p.set === "难题集 + 税号";
+      svg += `<circle cx="${x(p.cost_per_doc)}" cy="${y(p.success)}" r="7" fill="${filled ? colour[m] : "var(--surface)"}" stroke="${colour[m]}" stroke-width="2"><title>${m} ${p.set}${p.checks ? " + 代码校验" : ""}：${pct(p.success)}，$${p.cost_per_doc}</title></circle>`;
+    });
+  });
+  svg += "</svg>";
+  $("#scatter").innerHTML = svg + `<div class="legend"><span><i style="background:var(--ink-2)"></i>Haiku 5.5</span><span><i style="background:var(--ink)"></i>Sonnet 5.5</span><span><i style="background:var(--fail)"></i>Opus 5.5</span><span>空心：原始难题集　实心：单据印税号 + 代码校验</span></div>`;
+
+  const row = (k, html) => `<div class="row"><span class="k">${k}</span><p>${html}</p></div>`;
+  const hard = pts.filter(p => p.set === "难题集");
+  const taxPlain = pts.filter(p => p.set === "难题集 + 税号" && !p.checks);
+  const taxChecks = pts.filter(p => p.set === "难题集 + 税号" && p.checks);
+  const wrong = list => list.reduce((a, p) => a + p.wrong_entries, 0);
+  const runs = list => list.reduce((a, p) => a + p.n, 0);
+  const review = taxChecks.map(p => `${p.model.replace(" 5.5", "")} ${p.needs_review}/${p.n}`).join("，");
+  $("#story").innerHTML = [
+    row("问题", "三档模型都把 <mark>“深圳市华强电子科技有限公司”</mark> 当成了系统里的 “深圳市华强电子有限公司”。Opus 只在备注里写了一句“建议核实”。"),
+    row("原因", "单据上没有能区分这两家公司的信息，名字又只差两个字。"),
+    row("补信息", taxPlain.length ? `单据印上税号后，不开任何校验，录错从 <b class="num">${wrong(hard)}</b> 次（共 ${runs(hard)} 次录入）降到 <b class="num">${wrong(taxPlain)}</b> 次（共 ${runs(taxPlain)} 次）。模型会自己去供应商页比对税号。` : "对照评测进行中。"),
+    row("加校验", taxChecks.length ? `再让代码按税号定供应商、重算合计、保存后回读，正确率没有再变，回读校验一次也没触发。多出来的是模型自报的“待复核”：${review}。` : ""),
+  ].join("");
+}
+
+function field(d) {
+  const ex = d.external;
+  if (!ex) { $("#findings").innerHTML = `<p class="lede">复核进行中。</p>`; return; }
+  $("#field-lede").textContent = ex.lede;
+  const models = [["haiku", "Haiku"], ["sonnet", "Sonnet"], ["opus", "Opus"]].filter(([k]) => ex.summary?.[k]);
+  if (models.length) {
+    $("#field-table").innerHTML = `<table class="matrix" style="min-width:0"><thead><tr><th style="text-align:left">模型</th><th>复现通过的报告</th><th>其中成立</th><th>官方已知</th><th>不成立或不计入</th><th>花费</th></tr></thead><tbody>${models.map(([k, n]) => {
+      const s = ex.summary[k];
+      return `<tr><th>${n}</th><td class="num">${s.confirmed_reports}</td><td class="num">${s.true_deviations}</td><td class="num">${s.known}</td><td class="num">${s.rejected + (s.not_counted || 0)}</td><td class="num">$${s.cost.toFixed(2)}</td></tr>`;
+    }).join("")}</tbody></table>`;
+  } else $("#field-table").remove();
+  const label = { confirmed: ["pass", "已确认"], known: ["mark", "官方已知"], rejected: ["fail", "复核不成立"] };
+  $("#findings").innerHTML = ex.findings.map(f => `<div class="finding"><div class="where"><span>${esc(f.impl)}</span><span>${esc(f.clause)}</span><span>发现者：${esc(f.found_by)}</span><span class="chip ${label[f.status][0]}">${label[f.status][1]}</span></div><h3>${esc(f.title)}</h3><p>${esc(f.detail)}</p></div>`).join("");
+}
+
+fetch("data.json").then(r => r.json()).then(d => { figures(d); player(d); matrix(d); scatter(d); field(d); })
+  .catch(() => { document.querySelector("#figures").innerHTML = '<p style="padding:16px 0;color:var(--ink-2)">数据加载失败：请通过本地服务或 GitHub Pages 打开这个页面。</p>'; });
+</script>

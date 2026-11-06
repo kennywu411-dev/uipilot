@@ -1,0 +1,983 @@
+{
+  "name": "entry-h05",
+  "title": "录入一张 10 行的送货单",
+  "subtitle": "低分辨率扫描件 → 登记 → 代码校验通过 → 逐行录入 → 保存后回读比对",
+  "steps": [
+    {
+      "kind": "tool",
+      "action": "record_document",
+      "input": {
+        "supplier_name": "中山市小榄镇金鼎线材有限公司",
+        "supplier_tax_id": "91442000MA4XHB1L5D",
+        "ext_no": "XS909150",
+        "date": "2026-11-14",
+        "printed_total": "197380.80",
+        "lines": [
+          {
+            "label": "12号硅胶软线(米)",
+            "qty": 360,
+            "unit_price": "2.92"
+          },
+          {
+            "label": "21700电芯 5000mAh",
+            "qty": 1200,
+            "unit_price": "13.77"
+          },
+          {
+            "label": "IRF3205 MOS管",
+            "qty": 360,
+            "unit_price": "1.84"
+          },
+          {
+            "label": "光伏MC4接头",
+            "qty": 3600,
+            "unit_price": "3.43"
+          },
+          {
+            "label": "4S保护板 30A",
+            "qty": 1200,
+            "unit_price": "21.85"
+          },
+          {
+            "label": "8025风扇 DC12V",
+            "qty": 240,
+            "unit_price": "7.07"
+          },
+          {
+            "label": "8S保护板 60A",
+            "qty": 60,
+            "unit_price": "60.32"
+          },
+          {
+            "label": "C口65瓦快充模块",
+            "qty": 2400,
+            "unit_price": "17.36"
+          },
+          {
+            "label": "1000瓦逆变器主控板",
+            "qty": 480,
+            "unit_price": "186.00"
+          },
+          {
+            "label": "18650电芯 2600毫安",
+            "qty": 480,
+            "unit_price": "8.99"
+          }
+        ]
+      },
+      "result": "校验通过：税号对应系统供应商“中山市小榄镇金鼎线材有限公司”，请在下拉框里选这一家；10 行合计与单据一致；单号未录过。请开始录入。",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "navigate",
+      "input": {
+        "url": "http://127.0.0.1:64200"
+      },
+      "error": false,
+      "result": "",
+      "shot": "001.jpg",
+      "url": "http://127.0.0.1:64200/po",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "002.jpg",
+      "url": "http://127.0.0.1:64200/po",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "navigate",
+      "input": {
+        "url": "http://127.0.0.1:64200/product"
+      },
+      "error": false,
+      "result": "",
+      "shot": "003.jpg",
+      "url": "http://127.0.0.1:64200/product",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "get_page_text",
+      "input": {},
+      "error": false,
+      "result": "URL: http://127.0.0.1:64200/product\nTitle: \n{\"detail\":\"Not Found\"}",
+      "shot": "004.jpg",
+      "url": "http://127.0.0.1:64200/product",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "navigate",
+      "input": {
+        "url": "http://127.0.0.1:64200/po"
+      },
+      "error": false,
+      "result": "",
+      "shot": "005.jpg",
+      "url": "http://127.0.0.1:64200/po",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 376,
+          "y": 48
+        }
+      },
+      "error": false,
+      "result": "Clicked (376, 48).",
+      "shot": "006.jpg",
+      "url": "http://127.0.0.1:64200/products",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "get_page_text",
+      "input": {},
+      "error": false,
+      "result": "URL: http://127.0.0.1:64200/products\nTitle: 商品资料 - 宏远进销存管理系统 V3.2\n宏远进销存管理系统 V3.2\n操作员：张会计 ｜ 深圳宏远储能科技有限公司 ｜ 2026-11-06\n采购单新建采购单发票登记 供应商商品资料业务规则说明\n商品资料\n编码\t名称\t单位\t参考单价\nLB-18650-26\t18650 锂电芯 2600mAh\t个\t8.65\nLB-21700-50\t21700 锂电芯 5000mAh\t个\t14.20\nBMS-4S-30A\t4 串锂电保护板 30A\t块\t23.50\nBMS-8S-60A\t8 串锂电保护板 60A\t块\t58.00\nINV-PCB-1K\t1000W 逆变器主板\t块\t186.00\nINV-PCB-2K\t2000W 逆变器主板\t块\t312.50\nFAN-8025\t8025 散热风扇 12V\t个\t6.80\nCASE-AL-300\t铝合金外壳 300W\t套\t42.00\nCASE-AL-600\t铝合金外壳 600W\t套\t68.50\nWIRE-12AWG\t12AWG 硅胶线（米）\t米\t3.15\nWIRE-16AWG\t16AWG 硅胶线（米）\t米\t1.85\nPLUG-AC-UK\t英标交流插座\t个\t4.60\nPLUG-AC-EU\t欧标交流插座\t个\t4.30\nPLUG-USB-C\tUSB-C 快充接口板 65W\t块\t17.90\nLCD-2.4\t2.4 寸电量显示屏\t块\t21.00\nSCREW-M3\tM3 不锈钢螺丝（百个）\t包\t5.50\nBOX-CTN-S\t瓦楞纸箱 小号\t个\t2.35\nBOX-CTN-L\t瓦楞纸箱 大号\t个\t4.75\nFOAM-EPE\tEPE 珍珠棉内衬\t套\t1.95\nLABEL-CE\tCE 认证铭牌贴纸\t张\t0.38\nMANUAL-EN\t英文说明书\t本\t1.20\nSOLAR-MC4\tMC4 光伏连接器（对）\t对\t3.90\nCAP-470UF\t470uF 电解电容\t个\t0.85\nMOS-IRF3205\tIRF3205 场效应管\t个\t2.10\nTRANS-EI40\tEI40 变压器\t个\t15.60",
+      "shot": "007.jpg",
+      "url": "http://127.0.0.1:64200/products",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 114,
+          "y": 48
+        }
+      },
+      "error": false,
+      "result": "Clicked (114, 48).",
+      "shot": "008.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "009.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 68,
+          "y": 306
+        }
+      },
+      "error": false,
+      "result": "Clicked (68, 306).",
+      "shot": "010.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": "Add 9 more rows, then read the form."
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 68,
+          "y": 306
+        }
+      },
+      "error": false,
+      "result": "Clicked (68, 306).",
+      "shot": "011.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {
+        "tab_id": "tab-1"
+      },
+      "error": false,
+      "result": "",
+      "shot": "012.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "find",
+      "input": {
+        "query": "添加明细行 button"
+      },
+      "error": false,
+      "result": "button \"添加明细行\" [ref_37]\nbutton \"删除本行\" [ref_26]\nbutton \"删除本行\" [ref_36]\nbutton \"保存\" [ref_39]",
+      "shot": "013.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "014.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "015.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "016.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "017.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "018.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "019.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "020.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_37"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_37.",
+      "shot": "021.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "read_page",
+      "input": {
+        "filter": "interactive"
+      },
+      "error": false,
+      "result": "URL: http://127.0.0.1:64200/po/new\nTitle: 新建采购单 - 宏远进销存管理系统 V3.2\nlink \"采购单\" [ref_1]\nlink \"新建采购单\" [ref_2]\nlink \"发票登记\" [ref_3]\nlink \"供应商\" [ref_4]\nlink \"商品资料\" [ref_5]\nlink \"业务规则说明\" [ref_6]\ncombobox \"供应商\" selected=\"-- 请选择 --\" options=[\"-- 请选择 --\", \"深圳市华强电子有限公司\", \"东莞市恒达精密五金制品厂\", \"佛山市南海区顺鑫塑料包装有限公司\", \"惠州市德赛锂电池科技有限公司\", \"广州市白云区联创纸品有限公司\", \"深圳市宝安区福永镇鸿运物流有限公司\", \"中山市小榄镇金鼎线材有限公司\", \"ANKER TRADING (SHENZHEN) CO., LTD.\", \"珠海市格润电源技术有限公司\", \"深圳市龙岗区欣旺达电子有限公司\", \"江门市新会区宏图五金塑胶厂\", \"Shenzhen Brightway Electronics Co., Ltd.\"] [ref_8]\ntextbox \"订单日期\" value=\"\" [ref_9]\ntextbox \"对方单号\" value=\"\" [ref_10]\ncombobox \"第1行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_19]\ntextbox \"第1行数量\" value=\"\" [ref_21]\ntextbox \"第1行单价\" value=\"\" [ref_23]\nbutton \"删除本行\" [ref_26]\ncombobox \"第2行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_29]\ntextbox \"第2行数量\" value=\"\" [ref_31]\ntextbox \"第2行单价\" value=\"\" [ref_33]\nbutton \"删除本行\" [ref_36]\ncombobox \"第3行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_41]\ntextbox \"第3行数量\" value=\"\" [ref_42]\ntextbox \"第3行单价\" value=\"\" [ref_43]\nbutton \"删除本行\" [ref_44]\ncombobox \"第4行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_45]\ntextbox \"第4行数量\" value=\"\" [ref_46]\ntextbox \"第4行单价\" value=\"\" [ref_47]\nbutton \"删除本行\" [ref_48]\ncombobox \"第5行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_49]\ntextbox \"第5行数量\" value=\"\" [ref_50]\ntextbox \"第5行单价\" value=\"\" [ref_51]\nbutton \"删除本行\" [ref_52]\ncombobox \"第6行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_53]\ntextbox \"第6行数量\" value=\"\" [ref_54]\ntextbox \"第6行单价\" value=\"\" [ref_55]\nbutton \"删除本行\" [ref_56]\ncombobox \"第7行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_57]\ntextbox \"第7行数量\" value=\"\" [ref_58]\ntextbox \"第7行单价\" value=\"\" [ref_59]\nbutton \"删除本行\" [ref_60]\ncombobox \"第8行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_61]\ntextbox \"第8行数量\" value=\"\" [ref_62]\ntextbox \"第8行单价\" value=\"\" [ref_63]\nbutton \"删除本行\" [ref_64]\ncombobox \"第9行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_65]\ntextbox \"第9行数量\" value=\"\" [ref_66]\ntextbox \"第9行单价\" value=\"\" [ref_67]\nbutton \"删除本行\" [ref_68]\ncombobox \"第10行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_69]\ntextbox \"第10行数量\" value=\"\" [ref_70]\ntextbox \"第10行单价\" value=\"\" [ref_71]\nbutton \"删除本行\" [ref_72]\nbutton \"添加明细行\" [ref_37]\ntextbox \"备注\" value=\"\" [ref_38]\nbutton \"保存\" [ref_39]\nlink \"取消\" [ref_40]",
+      "shot": "022.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_8"
+        },
+        "value": "中山市小榄镇金鼎线材有限公司"
+      },
+      "error": false,
+      "result": "Set ref_8 to '中山市小榄镇金鼎线材有限公司'.",
+      "shot": "023.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_9"
+        },
+        "value": "2026-11-14"
+      },
+      "error": false,
+      "result": "Set ref_9 to '2026-11-14'.",
+      "shot": "024.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_10"
+        },
+        "value": "XS909150"
+      },
+      "error": false,
+      "result": "Set ref_10 to 'XS909150'.",
+      "shot": "025.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_19"
+        },
+        "value": "WIRE-12AWG 12AWG 硅胶线（米）"
+      },
+      "error": false,
+      "result": "Set ref_19 to 'WIRE-12AWG 12AWG 硅胶线（米）'.",
+      "shot": "026.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_21"
+        },
+        "value": "360"
+      },
+      "error": false,
+      "result": "Set ref_21 to '360'.",
+      "shot": "027.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_23"
+        },
+        "value": "2.92"
+      },
+      "error": false,
+      "result": "Set ref_23 to '2.92'.",
+      "shot": "028.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_29"
+        },
+        "value": "LB-21700-50 21700 锂电芯 5000mAh"
+      },
+      "error": false,
+      "result": "Set ref_29 to 'LB-21700-50 21700 锂电芯 5000mAh'.",
+      "shot": "029.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_31"
+        },
+        "value": "1200"
+      },
+      "error": false,
+      "result": "Set ref_31 to '1200'.",
+      "shot": "030.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_33"
+        },
+        "value": "13.77"
+      },
+      "error": false,
+      "result": "Set ref_33 to '13.77'.",
+      "shot": "031.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_41"
+        },
+        "value": "MOS-IRF3205 IRF3205 场效应管"
+      },
+      "error": false,
+      "result": "Set ref_41 to 'MOS-IRF3205 IRF3205 场效应管'.",
+      "shot": "032.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_42"
+        },
+        "value": "360"
+      },
+      "error": false,
+      "result": "Set ref_42 to '360'.",
+      "shot": "033.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_43"
+        },
+        "value": "1.84"
+      },
+      "error": false,
+      "result": "Set ref_43 to '1.84'.",
+      "shot": "034.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_45"
+        },
+        "value": "SOLAR-MC4 MC4 光伏连接器（对）"
+      },
+      "error": false,
+      "result": "Set ref_45 to 'SOLAR-MC4 MC4 光伏连接器（对）'.",
+      "shot": "035.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_46"
+        },
+        "value": "3600"
+      },
+      "error": false,
+      "result": "Set ref_46 to '3600'.",
+      "shot": "036.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_47"
+        },
+        "value": "3.43"
+      },
+      "error": false,
+      "result": "Set ref_47 to '3.43'.",
+      "shot": "037.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_49"
+        },
+        "value": "BMS-4S-30A 4 串锂电保护板 30A"
+      },
+      "error": false,
+      "result": "Set ref_49 to 'BMS-4S-30A 4 串锂电保护板 30A'.",
+      "shot": "038.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_50"
+        },
+        "value": "1200"
+      },
+      "error": false,
+      "result": "Set ref_50 to '1200'.",
+      "shot": "039.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_51"
+        },
+        "value": "21.85"
+      },
+      "error": false,
+      "result": "Set ref_51 to '21.85'.",
+      "shot": "040.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_53"
+        },
+        "value": "FAN-8025 8025 散热风扇 12V"
+      },
+      "error": false,
+      "result": "Set ref_53 to 'FAN-8025 8025 散热风扇 12V'.",
+      "shot": "041.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_54"
+        },
+        "value": "240"
+      },
+      "error": false,
+      "result": "Set ref_54 to '240'.",
+      "shot": "042.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_55"
+        },
+        "value": "7.07"
+      },
+      "error": false,
+      "result": "Set ref_55 to '7.07'.",
+      "shot": "043.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_57"
+        },
+        "value": "BMS-8S-60A 8 串锂电保护板 60A"
+      },
+      "error": false,
+      "result": "Set ref_57 to 'BMS-8S-60A 8 串锂电保护板 60A'.",
+      "shot": "044.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_58"
+        },
+        "value": "60"
+      },
+      "error": false,
+      "result": "Set ref_58 to '60'.",
+      "shot": "045.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_59"
+        },
+        "value": "60.32"
+      },
+      "error": false,
+      "result": "Set ref_59 to '60.32'.",
+      "shot": "046.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_61"
+        },
+        "value": "PLUG-USB-C USB-C 快充接口板 65W"
+      },
+      "error": false,
+      "result": "Set ref_61 to 'PLUG-USB-C USB-C 快充接口板 65W'.",
+      "shot": "047.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_62"
+        },
+        "value": "2400"
+      },
+      "error": false,
+      "result": "Set ref_62 to '2400'.",
+      "shot": "048.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_63"
+        },
+        "value": "17.36"
+      },
+      "error": false,
+      "result": "Set ref_63 to '17.36'.",
+      "shot": "049.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_65"
+        },
+        "value": "INV-PCB-1K 1000W 逆变器主板"
+      },
+      "error": false,
+      "result": "Set ref_65 to 'INV-PCB-1K 1000W 逆变器主板'.",
+      "shot": "050.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_66"
+        },
+        "value": "480"
+      },
+      "error": false,
+      "result": "Set ref_66 to '480'.",
+      "shot": "051.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_67"
+        },
+        "value": "186.00"
+      },
+      "error": false,
+      "result": "Set ref_67 to '186.00'.",
+      "shot": "052.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_69"
+        },
+        "value": "LB-18650-26 18650 锂电芯 2600mAh"
+      },
+      "error": false,
+      "result": "Set ref_69 to 'LB-18650-26 18650 锂电芯 2600mAh'.",
+      "shot": "053.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_70"
+        },
+        "value": "480"
+      },
+      "error": false,
+      "result": "Set ref_70 to '480'.",
+      "shot": "054.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "form_input",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_71"
+        },
+        "value": "8.99"
+      },
+      "error": false,
+      "result": "Set ref_71 to '8.99'.",
+      "shot": "055.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "056.jpg",
+      "url": "http://127.0.0.1:64200/po/new",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "ref",
+          "ref": "ref_39"
+        }
+      },
+      "error": false,
+      "result": "Clicked element ref_39.",
+      "shot": "057.jpg",
+      "url": "http://127.0.0.1:64200/po/24?saved=1",
+      "note": "Total matches. Save."
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "058.jpg",
+      "url": "http://127.0.0.1:64200/po/24?saved=1",
+      "note": ""
+    },
+    {
+      "kind": "tool",
+      "action": "finish",
+      "input": {
+        "summary": "已录入采购单 PO-20261114-024：供应商中山市小榄镇金鼎线材有限公司，对方单号 XS909150，日期 2026-11-14，10行，合计 197,380.80，详情页核对一致。",
+        "needs_review": true,
+        "review_reason": "部分商品名称是按含义对应的：“C口65瓦快充模块”对应“USB-C 快充接口板 65W”，“光伏MC4接头”对应“MC4 光伏连接器（对）”，“1000瓦逆变器主控板”对应“1000W 逆变器主板”。请复核这些对应关系。"
+      },
+      "result": "已结束。",
+      "note": ""
+    }
+  ],
+  "document": "document.jpg",
+  "verdict": {
+    "doc": "H05",
+    "kind": "normal",
+    "expect": "enter",
+    "action": "finish",
+    "conflict": false,
+    "category": "",
+    "new_pos": 1,
+    "deleted_existing": 0,
+    "needs_review": true,
+    "verdict": "pass",
+    "gate_rejections": 0,
+    "postcheck_rejections": 0,
+    "fields": {
+      "supplier": true,
+      "date": true,
+      "ext_no": true,
+      "lines": true
+    },
+    "line_recall": 1.0,
+    "success": true
+  },
+  "kind": "normal",
+  "hard": "",
+  "run": {
+    "stop_reason": "finished",
+    "turns": 11,
+    "cost_usd": 0.14719770000000001,
+    "seconds": 51.3,
+    "actions": 58,
+    "input_tokens": 29631,
+    "output_tokens": 4256,
+    "cache_read_tokens": 152861,
+    "served_models": [
+      "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+  }
+}

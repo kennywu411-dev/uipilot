@@ -1,0 +1,127 @@
+{
+  "name": "scout-b04",
+  "title": "复现：删除删掉的是另一张单",
+  "subtitle": "测试 Agent 报出的缺陷，在重置后的环境里由另一个 Agent 按步骤重做",
+  "steps": [
+    {
+      "kind": "browser",
+      "action": "navigate",
+      "input": {
+        "url": "http://127.0.0.1:64287"
+      },
+      "error": false,
+      "result": "",
+      "shot": "001.jpg",
+      "url": "http://127.0.0.1:64287/po",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "002.jpg",
+      "url": "http://127.0.0.1:64287/po",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 1176,
+          "y": 190
+        }
+      },
+      "error": false,
+      "result": "Clicked (1176, 190).",
+      "shot": "003.jpg",
+      "url": "http://127.0.0.1:64287/po/23/delete",
+      "note": "Row1 is 023, row2 is 022."
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {
+        "tab_id": "tab-1"
+      },
+      "error": false,
+      "result": "",
+      "shot": "004.jpg",
+      "url": "http://127.0.0.1:64287/po/23/delete",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "left_click",
+      "input": {
+        "target": {
+          "type": "coordinate",
+          "x": 62,
+          "y": 163
+        }
+      },
+      "error": false,
+      "result": "Clicked (62, 163).",
+      "shot": "005.jpg",
+      "url": "http://127.0.0.1:64287/po?msg=%E5%B7%B2%E5%88%A0%E9%99%A4",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {
+        "tab_id": "tab-1"
+      },
+      "error": false,
+      "result": "",
+      "shot": "006.jpg",
+      "url": "http://127.0.0.1:64287/po?msg=%E5%B7%B2%E5%88%A0%E9%99%A4",
+      "note": ""
+    },
+    {
+      "kind": "tool",
+      "action": "verdict",
+      "input": {
+        "reproduced": true,
+        "notes": "确认页显示的是 PO-20260907-023（第1行）。确认删除后，023 仍在列表里，PO-20260925-022（第2行）不见了，总数从 23 条变成 22 条。"
+      },
+      "result": "已记录。",
+      "note": "023 still there, 022 gone."
+    }
+  ],
+  "report": {
+    "title": "删除采购单删掉的是另一张",
+    "rule": "R9",
+    "steps": [
+      "打开采购单列表，记下第 1 行和第 2 行的采购单号",
+      "点第 1 行的“删除”，在确认页点“确认删除”",
+      "回到列表，查看哪一张不见了"
+    ],
+    "expected": "被删除的是第 1 行那张，第 2 行仍在",
+    "actual": "第 1 行那张还在，消失的是另一张（编号相邻的上一张）",
+    "severity": "critical",
+    "reproduced": true,
+    "repro_notes": "确认页显示的是 PO-20260907-023（第1行）。确认删除后，023 仍在列表里，PO-20260925-022（第2行）不见了，总数从 23 条变成 22 条。",
+    "matched": null
+  },
+  "cost": 0.0380336,
+  "run": {
+    "stop_reason": "finished",
+    "turns": 4,
+    "cost_usd": 0.0380336,
+    "seconds": 12.0,
+    "actions": 6,
+    "input_tokens": 11354,
+    "output_tokens": 467,
+    "cache_read_tokens": 24918,
+    "served_models": [
+      "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+  }
+}

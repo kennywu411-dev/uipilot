@@ -1,0 +1,124 @@
+{
+  "name": "entry-h13",
+  "title": "名字只差两个字的另一家公司",
+  "subtitle": "三档模型都曾把它录错；按税号做代码校验后直接转人工",
+  "steps": [
+    {
+      "kind": "tool",
+      "action": "record_document",
+      "input": {
+        "supplier_name": "深圳市华强电子科技有限公司",
+        "supplier_tax_id": "91440400MAF44C735D",
+        "ext_no": "XS220735",
+        "date": "2026-10-27",
+        "printed_total": "141069.60",
+        "lines": [
+          {
+            "label": "21700电芯 5000mAh",
+            "qty": 360,
+            "unit_price": "13.20"
+          },
+          {
+            "label": "CE标贴",
+            "qty": 2400,
+            "unit_price": "0.36"
+          },
+          {
+            "label": "1000W逆变主板",
+            "qty": 240,
+            "unit_price": "193.44"
+          },
+          {
+            "label": "8S保护板 60A",
+            "qty": 1200,
+            "unit_price": "51.04"
+          },
+          {
+            "label": "300W铝外壳",
+            "qty": 240,
+            "unit_price": "42.00"
+          },
+          {
+            "label": "12AWG硅胶线",
+            "qty": 1200,
+            "unit_price": "3.05"
+          },
+          {
+            "label": "MC4连接器(对)",
+            "qty": 3600,
+            "unit_price": "3.90"
+          }
+        ]
+      },
+      "result": "校验未通过，必须转人工（调用 escalate，category 用下面第一条开头的类别）：\n- unknown_supplier：系统中没有税号为 91440400MAF44C735D 的供应商（单据抬头“深圳市华强电子科技有限公司”），即使名称相近也不是同一家",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "navigate",
+      "input": {
+        "url": "http://127.0.0.1:61350"
+      },
+      "error": false,
+      "result": "",
+      "shot": "001.jpg",
+      "url": "http://127.0.0.1:61350/po",
+      "note": ""
+    },
+    {
+      "kind": "browser",
+      "action": "screenshot",
+      "input": {},
+      "error": false,
+      "result": "",
+      "shot": "002.jpg",
+      "url": "http://127.0.0.1:61350/po",
+      "note": ""
+    },
+    {
+      "kind": "tool",
+      "action": "escalate",
+      "input": {
+        "category": "unknown_supplier",
+        "reason": "单据供应商“深圳市华强电子科技有限公司”（税号 91440400MAF44C735D）在系统中没有对应税号的供应商。系统里有名称相近的“深圳市华强电子有限公司”，但不是同一家。未录入，请人工处理。"
+      },
+      "result": "已转人工处理。",
+      "note": ""
+    }
+  ],
+  "document": "document.jpg",
+  "verdict": {
+    "doc": "H13",
+    "kind": "unknown_supplier",
+    "expect": "escalate",
+    "action": "escalate",
+    "conflict": false,
+    "category": "unknown_supplier",
+    "new_pos": 0,
+    "deleted_existing": 0,
+    "needs_review": false,
+    "verdict": "escalate",
+    "gate_rejections": 0,
+    "postcheck_rejections": 0,
+    "success": true,
+    "category_ok": true
+  },
+  "kind": "unknown_supplier",
+  "hard": "名字和“深圳市华强电子有限公司”只差两个字",
+  "run": {
+    "stop_reason": "finished",
+    "turns": 2,
+    "cost_usd": 0.0386122,
+    "seconds": 18.1,
+    "actions": 2,
+    "input_tokens": 11006,
+    "output_tokens": 940,
+    "cache_read_tokens": 8501,
+    "served_models": [
+      "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+  }
+}

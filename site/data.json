@@ -1,0 +1,2518 @@
+{
+ "audit": {
+  "reports": 270,
+  "judge_fixes": 4
+ },
+ "scout": [
+  {
+   "key": "haiku-dom",
+   "model": "Haiku 5.5",
+   "mode": "只看页面结构",
+   "signals": true,
+   "calc": false,
+   "repeats": 3,
+   "recall": 0.857,
+   "recall_judge": 0.857,
+   "found": 36,
+   "total": 42,
+   "false_positives": 0,
+   "cost_per_round": 0.264,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     2,
+     3
+    ],
+    "B04": [
+     3,
+     3
+    ],
+    "B05": [
+     1,
+     3
+    ],
+    "B06": [
+     0,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     3,
+     3
+    ],
+    "B09": [
+     3,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     3,
+     3
+    ],
+    "B12": [
+     3,
+     3
+    ],
+    "B13": [
+     3,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-haiku-dom-20261106-222948"
+  },
+  {
+   "key": "haiku-hybrid",
+   "model": "Haiku 5.5",
+   "mode": "截图 + 页面结构",
+   "signals": true,
+   "calc": false,
+   "repeats": 3,
+   "recall": 0.881,
+   "recall_judge": 0.881,
+   "found": 37,
+   "total": 42,
+   "false_positives": 0,
+   "cost_per_round": 0.258,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     3,
+     3
+    ],
+    "B04": [
+     3,
+     3
+    ],
+    "B05": [
+     1,
+     3
+    ],
+    "B06": [
+     0,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     3,
+     3
+    ],
+    "B09": [
+     3,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     3,
+     3
+    ],
+    "B12": [
+     3,
+     3
+    ],
+    "B13": [
+     3,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-haiku-hybrid-20261106-220452"
+  },
+  {
+   "key": "haiku-hybrid-nosig",
+   "model": "Haiku 5.5",
+   "mode": "截图 + 页面结构",
+   "signals": false,
+   "calc": false,
+   "repeats": 3,
+   "recall": 0.881,
+   "recall_judge": 0.857,
+   "found": 37,
+   "total": 42,
+   "false_positives": 0,
+   "cost_per_round": 0.295,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     3,
+     3
+    ],
+    "B04": [
+     3,
+     3
+    ],
+    "B05": [
+     2,
+     3
+    ],
+    "B06": [
+     0,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     2,
+     3
+    ],
+    "B09": [
+     3,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     3,
+     3
+    ],
+    "B12": [
+     3,
+     3
+    ],
+    "B13": [
+     3,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-haiku-hybrid-nosig-20261106-222302"
+  },
+  {
+   "key": "haiku-vision",
+   "model": "Haiku 5.5",
+   "mode": "只看截图",
+   "signals": true,
+   "calc": false,
+   "repeats": 3,
+   "recall": 0.762,
+   "recall_judge": 0.762,
+   "found": 32,
+   "total": 42,
+   "false_positives": 0,
+   "cost_per_round": 0.369,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     3,
+     3
+    ],
+    "B04": [
+     2,
+     3
+    ],
+    "B05": [
+     1,
+     3
+    ],
+    "B06": [
+     0,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     2,
+     3
+    ],
+    "B09": [
+     2,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     3,
+     3
+    ],
+    "B12": [
+     1,
+     3
+    ],
+    "B13": [
+     3,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-haiku-vision-20261106-225301"
+  },
+  {
+   "key": "opus-hybrid",
+   "model": "Opus 5.5",
+   "mode": "截图 + 页面结构",
+   "signals": true,
+   "calc": false,
+   "repeats": 3,
+   "recall": 0.905,
+   "recall_judge": 0.881,
+   "found": 38,
+   "total": 42,
+   "false_positives": 0,
+   "cost_per_round": 1.685,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     3,
+     3
+    ],
+    "B04": [
+     1,
+     3
+    ],
+    "B05": [
+     3,
+     3
+    ],
+    "B06": [
+     3,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     2,
+     3
+    ],
+    "B09": [
+     3,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     3,
+     3
+    ],
+    "B12": [
+     3,
+     3
+    ],
+    "B13": [
+     2,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-opus-hybrid-20261106-231253"
+  },
+  {
+   "key": "sonnet-hybrid",
+   "model": "Sonnet 5.5",
+   "mode": "截图 + 页面结构",
+   "signals": true,
+   "calc": false,
+   "repeats": 3,
+   "recall": 0.881,
+   "recall_judge": 0.881,
+   "found": 37,
+   "total": 42,
+   "false_positives": 1,
+   "cost_per_round": 0.92,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     3,
+     3
+    ],
+    "B04": [
+     3,
+     3
+    ],
+    "B05": [
+     2,
+     3
+    ],
+    "B06": [
+     0,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     2,
+     3
+    ],
+    "B09": [
+     3,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     3,
+     3
+    ],
+    "B12": [
+     3,
+     3
+    ],
+    "B13": [
+     3,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-sonnet-hybrid-20261106-230425"
+  },
+  {
+   "key": "sonnet-hybrid-calc",
+   "model": "Sonnet 5.5",
+   "mode": "截图 + 页面结构",
+   "signals": true,
+   "calc": true,
+   "repeats": 3,
+   "recall": 0.857,
+   "recall_judge": 0.833,
+   "found": 36,
+   "total": 42,
+   "false_positives": 0,
+   "cost_per_round": 0.932,
+   "hits": {
+    "B01": [
+     3,
+     3
+    ],
+    "B02": [
+     3,
+     3
+    ],
+    "B03": [
+     3,
+     3
+    ],
+    "B04": [
+     1,
+     3
+    ],
+    "B05": [
+     3,
+     3
+    ],
+    "B06": [
+     0,
+     3
+    ],
+    "B07": [
+     3,
+     3
+    ],
+    "B08": [
+     3,
+     3
+    ],
+    "B09": [
+     3,
+     3
+    ],
+    "B10": [
+     3,
+     3
+    ],
+    "B11": [
+     2,
+     3
+    ],
+    "B12": [
+     3,
+     3
+    ],
+    "B13": [
+     3,
+     3
+    ],
+    "B14": [
+     3,
+     3
+    ]
+   },
+   "run": "scout-sonnet-hybrid-calc-20261107-013043"
+  }
+ ],
+ "entry": [
+  {
+   "set": "基础集",
+   "model": "Haiku 5.5",
+   "mode": "只看页面结构",
+   "checks": false,
+   "n": 24,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0048,
+   "run": "entry-haiku-dom-20261106-221324"
+  },
+  {
+   "set": "基础集",
+   "model": "Haiku 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 48,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0044,
+   "run": "entry-haiku-hybrid-20261106-223442"
+  },
+  {
+   "set": "基础集",
+   "model": "Haiku 5.5",
+   "mode": "只看截图",
+   "checks": false,
+   "n": 24,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0046,
+   "run": "entry-haiku-vision-20261106-221820"
+  },
+  {
+   "set": "基础集",
+   "model": "Opus 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 24,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.1321,
+   "run": "entry-opus-hybrid-20261106-222634"
+  },
+  {
+   "set": "基础集",
+   "model": "Sonnet 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 24,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0785,
+   "run": "entry-sonnet-hybrid-20261106-222252"
+  },
+  {
+   "set": "难题集",
+   "model": "Haiku 5.5",
+   "mode": "只看页面结构",
+   "checks": false,
+   "n": 20,
+   "success": 0.9,
+   "normal": 0.833,
+   "traps": 1.0,
+   "false_escalations": 2,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0071,
+   "run": "entryhard-haiku-dom-20261106-225120"
+  },
+  {
+   "set": "难题集",
+   "model": "Haiku 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 40,
+   "success": 0.85,
+   "normal": 0.875,
+   "traps": 0.812,
+   "false_escalations": 3,
+   "wrong_entries": 3,
+   "needs_review": 0,
+   "cost_per_doc": 0.0061,
+   "run": "entryhard-haiku-hybrid-20261106-224303"
+  },
+  {
+   "set": "难题集",
+   "model": "Haiku 5.5",
+   "mode": "只看截图",
+   "checks": false,
+   "n": 20,
+   "success": 0.85,
+   "normal": 0.75,
+   "traps": 1.0,
+   "false_escalations": 3,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0047,
+   "run": "entryhard-haiku-vision-20261106-225643"
+  },
+  {
+   "set": "难题集",
+   "model": "Opus 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 20,
+   "success": 0.95,
+   "normal": 1.0,
+   "traps": 0.875,
+   "false_escalations": 0,
+   "wrong_entries": 1,
+   "needs_review": 0,
+   "cost_per_doc": 0.1832,
+   "run": "entryhard-opus-hybrid-20261106-230349"
+  },
+  {
+   "set": "难题集",
+   "model": "Sonnet 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 20,
+   "success": 0.95,
+   "normal": 1.0,
+   "traps": 0.875,
+   "false_escalations": 0,
+   "wrong_entries": 1,
+   "needs_review": 0,
+   "cost_per_doc": 0.0993,
+   "run": "entryhard-sonnet-hybrid-20261106-225959"
+  },
+  {
+   "set": "难题集 + 税号",
+   "model": "Haiku 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 20,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0051,
+   "run": "entryhardtax-haiku-hybrid-20261107-000625"
+  },
+  {
+   "set": "难题集 + 税号",
+   "model": "Haiku 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": true,
+   "n": 40,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 14,
+   "cost_per_doc": 0.0054,
+   "run": "entryhardtax-haiku-hybrid-checks-20261107-001025"
+  },
+  {
+   "set": "难题集 + 税号",
+   "model": "Opus 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 20,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.1698,
+   "run": "entryhardtax-opus-hybrid-20261107-002327"
+  },
+  {
+   "set": "难题集 + 税号",
+   "model": "Opus 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": true,
+   "n": 20,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 1,
+   "cost_per_doc": 0.1597,
+   "run": "entryhardtax-opus-hybrid-checks-20261107-002714"
+  },
+  {
+   "set": "难题集 + 税号",
+   "model": "Sonnet 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": false,
+   "n": 20,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 0,
+   "cost_per_doc": 0.0913,
+   "run": "entryhardtax-sonnet-hybrid-20261107-001702"
+  },
+  {
+   "set": "难题集 + 税号",
+   "model": "Sonnet 5.5",
+   "mode": "截图 + 页面结构",
+   "checks": true,
+   "n": 20,
+   "success": 1.0,
+   "normal": 1.0,
+   "traps": 1.0,
+   "false_escalations": 0,
+   "wrong_entries": 0,
+   "needs_review": 4,
+   "cost_per_doc": 0.0881,
+   "run": "entryhardtax-sonnet-hybrid-checks-20261107-002020"
+  }
+ ],
+ "replays": [
+  {
+   "name": "entry-h05",
+   "title": "录入一张 10 行的送货单",
+   "subtitle": "低分辨率扫描件 → 登记 → 代码校验通过 → 逐行录入 → 保存后回读比对",
+   "steps": [
+    {
+     "kind": "tool",
+     "action": "record_document",
+     "input": {
+      "supplier_name": "中山市小榄镇金鼎线材有限公司",
+      "supplier_tax_id": "91442000MA4XHB1L5D",
+      "ext_no": "XS909150",
+      "date": "2026-11-14",
+      "printed_total": "197380.80",
+      "lines": [
+       {
+        "label": "12号硅胶软线(米)",
+        "qty": 360,
+        "unit_price": "2.92"
+       },
+       {
+        "label": "21700电芯 5000mAh",
+        "qty": 1200,
+        "unit_price": "13.77"
+       },
+       {
+        "label": "IRF3205 MOS管",
+        "qty": 360,
+        "unit_price": "1.84"
+       },
+       {
+        "label": "光伏MC4接头",
+        "qty": 3600,
+        "unit_price": "3.43"
+       },
+       {
+        "label": "4S保护板 30A",
+        "qty": 1200,
+        "unit_price": "21.85"
+       },
+       {
+        "label": "8025风扇 DC12V",
+        "qty": 240,
+        "unit_price": "7.07"
+       },
+       {
+        "label": "8S保护板 60A",
+        "qty": 60,
+        "unit_price": "60.32"
+       },
+       {
+        "label": "C口65瓦快充模块",
+        "qty": 2400,
+        "unit_price": "17.36"
+       },
+       {
+        "label": "1000瓦逆变器主控板",
+        "qty": 480,
+        "unit_price": "186.00"
+       },
+       {
+        "label": "18650电芯 2600毫安",
+        "qty": 480,
+        "unit_price": "8.99"
+       }
+      ]
+     },
+     "result": "校验通过：税号对应系统供应商“中山市小榄镇金鼎线材有限公司”，请在下拉框里选这一家；10 行合计与单据一致；单号未录过。请开始录入。",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "navigate",
+     "input": {
+      "url": "http://127.0.0.1:64200"
+     },
+     "error": false,
+     "result": "",
+     "shot": "001.jpg",
+     "url": "http://127.0.0.1:64200/po",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "002.jpg",
+     "url": "http://127.0.0.1:64200/po",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "navigate",
+     "input": {
+      "url": "http://127.0.0.1:64200/product"
+     },
+     "error": false,
+     "result": "",
+     "shot": "003.jpg",
+     "url": "http://127.0.0.1:64200/product",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "get_page_text",
+     "input": {},
+     "error": false,
+     "result": "URL: http://127.0.0.1:64200/product\nTitle: \n{\"detail\":\"Not Found\"}",
+     "shot": "004.jpg",
+     "url": "http://127.0.0.1:64200/product",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "navigate",
+     "input": {
+      "url": "http://127.0.0.1:64200/po"
+     },
+     "error": false,
+     "result": "",
+     "shot": "005.jpg",
+     "url": "http://127.0.0.1:64200/po",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 376,
+       "y": 48
+      }
+     },
+     "error": false,
+     "result": "Clicked (376, 48).",
+     "shot": "006.jpg",
+     "url": "http://127.0.0.1:64200/products",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "get_page_text",
+     "input": {},
+     "error": false,
+     "result": "URL: http://127.0.0.1:64200/products\nTitle: 商品资料 - 宏远进销存管理系统 V3.2\n宏远进销存管理系统 V3.2\n操作员：张会计 ｜ 深圳宏远储能科技有限公司 ｜ 2026-11-06\n采购单新建采购单发票登记 供应商商品资料业务规则说明\n商品资料\n编码\t名称\t单位\t参考单价\nLB-18650-26\t18650 锂电芯 2600mAh\t个\t8.65\nLB-21700-50\t21700 锂电芯 5000mAh\t个\t14.20\nBMS-4S-30A\t4 串锂电保护板 30A\t块\t23.50\nBMS-8S-60A\t8 串锂电保护板 60A\t块\t58.00\nINV-PCB-1K\t1000W 逆变器主板\t块\t186.00\nINV-PCB-2K\t2000W 逆变器主板\t块\t312.50\nFAN-8025\t8025 散热风扇 12V\t个\t6.80\nCASE-AL-300\t铝合金外壳 300W\t套\t42.00\nCASE-AL-600\t铝合金外壳 600W\t套\t68.50\nWIRE-12AWG\t12AWG 硅胶线（米）\t米\t3.15\nWIRE-16AWG\t16AWG 硅胶线（米）\t米\t1.85\nPLUG-AC-UK\t英标交流插座\t个\t4.60\nPLUG-AC-EU\t欧标交流插座\t个\t4.30\nPLUG-USB-C\tUSB-C 快充接口板 65W\t块\t17.90\nLCD-2.4\t2.4 寸电量显示屏\t块\t21.00\nSCREW-M3\tM3 不锈钢螺丝（百个）\t包\t5.50\nBOX-CTN-S\t瓦楞纸箱 小号\t个\t2.35\nBOX-CTN-L\t瓦楞纸箱 大号\t个\t4.75\nFOAM-EPE\tEPE 珍珠棉内衬\t套\t1.95\nLABEL-CE\tCE 认证铭牌贴纸\t张\t0.38\nMANUAL-EN\t英文说明书\t本\t1.20\nSOLAR-MC4\tMC4 光伏连接器（对）\t对\t3.90\nCAP-470UF\t470uF 电解电容\t个\t0.85\nMOS-IRF3205\tIRF3205 场效应管\t个\t2.10\nTRANS-EI40\tEI40 变压器\t个\t15.60",
+     "shot": "007.jpg",
+     "url": "http://127.0.0.1:64200/products",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 114,
+       "y": 48
+      }
+     },
+     "error": false,
+     "result": "Clicked (114, 48).",
+     "shot": "008.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "009.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 68,
+       "y": 306
+      }
+     },
+     "error": false,
+     "result": "Clicked (68, 306).",
+     "shot": "010.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": "Add 9 more rows, then read the form."
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 68,
+       "y": 306
+      }
+     },
+     "error": false,
+     "result": "Clicked (68, 306).",
+     "shot": "011.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {
+      "tab_id": "tab-1"
+     },
+     "error": false,
+     "result": "",
+     "shot": "012.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "find",
+     "input": {
+      "query": "添加明细行 button"
+     },
+     "error": false,
+     "result": "button \"添加明细行\" [ref_37]\nbutton \"删除本行\" [ref_26]\nbutton \"删除本行\" [ref_36]\nbutton \"保存\" [ref_39]",
+     "shot": "013.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "014.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "015.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "016.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "017.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "018.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "019.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "020.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_37"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_37.",
+     "shot": "021.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "read_page",
+     "input": {
+      "filter": "interactive"
+     },
+     "error": false,
+     "result": "URL: http://127.0.0.1:64200/po/new\nTitle: 新建采购单 - 宏远进销存管理系统 V3.2\nlink \"采购单\" [ref_1]\nlink \"新建采购单\" [ref_2]\nlink \"发票登记\" [ref_3]\nlink \"供应商\" [ref_4]\nlink \"商品资料\" [ref_5]\nlink \"业务规则说明\" [ref_6]\ncombobox \"供应商\" selected=\"-- 请选择 --\" options=[\"-- 请选择 --\", \"深圳市华强电子有限公司\", \"东莞市恒达精密五金制品厂\", \"佛山市南海区顺鑫塑料包装有限公司\", \"惠州市德赛锂电池科技有限公司\", \"广州市白云区联创纸品有限公司\", \"深圳市宝安区福永镇鸿运物流有限公司\", \"中山市小榄镇金鼎线材有限公司\", \"ANKER TRADING (SHENZHEN) CO., LTD.\", \"珠海市格润电源技术有限公司\", \"深圳市龙岗区欣旺达电子有限公司\", \"江门市新会区宏图五金塑胶厂\", \"Shenzhen Brightway Electronics Co., Ltd.\"] [ref_8]\ntextbox \"订单日期\" value=\"\" [ref_9]\ntextbox \"对方单号\" value=\"\" [ref_10]\ncombobox \"第1行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_19]\ntextbox \"第1行数量\" value=\"\" [ref_21]\ntextbox \"第1行单价\" value=\"\" [ref_23]\nbutton \"删除本行\" [ref_26]\ncombobox \"第2行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_29]\ntextbox \"第2行数量\" value=\"\" [ref_31]\ntextbox \"第2行单价\" value=\"\" [ref_33]\nbutton \"删除本行\" [ref_36]\ncombobox \"第3行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_41]\ntextbox \"第3行数量\" value=\"\" [ref_42]\ntextbox \"第3行单价\" value=\"\" [ref_43]\nbutton \"删除本行\" [ref_44]\ncombobox \"第4行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_45]\ntextbox \"第4行数量\" value=\"\" [ref_46]\ntextbox \"第4行单价\" value=\"\" [ref_47]\nbutton \"删除本行\" [ref_48]\ncombobox \"第5行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_49]\ntextbox \"第5行数量\" value=\"\" [ref_50]\ntextbox \"第5行单价\" value=\"\" [ref_51]\nbutton \"删除本行\" [ref_52]\ncombobox \"第6行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_53]\ntextbox \"第6行数量\" value=\"\" [ref_54]\ntextbox \"第6行单价\" value=\"\" [ref_55]\nbutton \"删除本行\" [ref_56]\ncombobox \"第7行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_57]\ntextbox \"第7行数量\" value=\"\" [ref_58]\ntextbox \"第7行单价\" value=\"\" [ref_59]\nbutton \"删除本行\" [ref_60]\ncombobox \"第8行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_61]\ntextbox \"第8行数量\" value=\"\" [ref_62]\ntextbox \"第8行单价\" value=\"\" [ref_63]\nbutton \"删除本行\" [ref_64]\ncombobox \"第9行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_65]\ntextbox \"第9行数量\" value=\"\" [ref_66]\ntextbox \"第9行单价\" value=\"\" [ref_67]\nbutton \"删除本行\" [ref_68]\ncombobox \"第10行商品\" selected=\"-- 选择商品 --\" options=[\"-- 选择商品 --\", \"LB-18650-26 18650 锂电芯 2600mAh\", \"LB-21700-50 21700 锂电芯 5000mAh\", \"BMS-4S-30A 4 串锂电保护板 30A\", \"BMS-8S-60A 8 串锂电保护板 60A\", \"INV-PCB-1K 1000W 逆变器主板\", \"INV-PCB-2K 2000W 逆变器主板\", \"FAN-8025 8025 散热风扇 12V\", \"CASE-AL-300 铝合金外壳 300W\", \"CASE-AL-600 铝合金外壳 600W\", \"WIRE-12AWG 12AWG 硅胶线（米）\", \"WIRE-16AWG 16AWG 硅胶线（米）\", \"PLUG-AC-UK 英标交流插座\", \"PLUG-AC-EU 欧标交流插座\", \"PLUG-USB-C USB-C 快充接口板 65W\", \"LCD-2.4 2.4 寸电量显示屏\", \"SCREW-M3 M3 不锈钢螺丝（百个）\", \"BOX-CTN-S 瓦楞纸箱 小号\", \"BOX-CTN-L 瓦楞纸箱 大号\", \"FOAM-EPE EPE 珍珠棉内衬\", \"LABEL-CE CE 认证铭牌贴纸\", \"MANUAL-EN 英文说明书\", \"SOLAR-MC4 MC4 光伏连接器（对）\", \"CAP-470UF 470uF 电解电容\", \"MOS-IRF3205 IRF3205 场效应管\", \"TRANS-EI40 EI40 变压器\"] [ref_69]\ntextbox \"第10行数量\" value=\"\" [ref_70]\ntextbox \"第10行单价\" value=\"\" [ref_71]\nbutton \"删除本行\" [ref_72]\nbutton \"添加明细行\" [ref_37]\ntextbox \"备注\" value=\"\" [ref_38]\nbutton \"保存\" [ref_39]\nlink \"取消\" [ref_40]",
+     "shot": "022.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_8"
+      },
+      "value": "中山市小榄镇金鼎线材有限公司"
+     },
+     "error": false,
+     "result": "Set ref_8 to '中山市小榄镇金鼎线材有限公司'.",
+     "shot": "023.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_9"
+      },
+      "value": "2026-11-14"
+     },
+     "error": false,
+     "result": "Set ref_9 to '2026-11-14'.",
+     "shot": "024.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_10"
+      },
+      "value": "XS909150"
+     },
+     "error": false,
+     "result": "Set ref_10 to 'XS909150'.",
+     "shot": "025.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_19"
+      },
+      "value": "WIRE-12AWG 12AWG 硅胶线（米）"
+     },
+     "error": false,
+     "result": "Set ref_19 to 'WIRE-12AWG 12AWG 硅胶线（米）'.",
+     "shot": "026.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_21"
+      },
+      "value": "360"
+     },
+     "error": false,
+     "result": "Set ref_21 to '360'.",
+     "shot": "027.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_23"
+      },
+      "value": "2.92"
+     },
+     "error": false,
+     "result": "Set ref_23 to '2.92'.",
+     "shot": "028.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_29"
+      },
+      "value": "LB-21700-50 21700 锂电芯 5000mAh"
+     },
+     "error": false,
+     "result": "Set ref_29 to 'LB-21700-50 21700 锂电芯 5000mAh'.",
+     "shot": "029.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_31"
+      },
+      "value": "1200"
+     },
+     "error": false,
+     "result": "Set ref_31 to '1200'.",
+     "shot": "030.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_33"
+      },
+      "value": "13.77"
+     },
+     "error": false,
+     "result": "Set ref_33 to '13.77'.",
+     "shot": "031.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_41"
+      },
+      "value": "MOS-IRF3205 IRF3205 场效应管"
+     },
+     "error": false,
+     "result": "Set ref_41 to 'MOS-IRF3205 IRF3205 场效应管'.",
+     "shot": "032.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_42"
+      },
+      "value": "360"
+     },
+     "error": false,
+     "result": "Set ref_42 to '360'.",
+     "shot": "033.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_43"
+      },
+      "value": "1.84"
+     },
+     "error": false,
+     "result": "Set ref_43 to '1.84'.",
+     "shot": "034.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_45"
+      },
+      "value": "SOLAR-MC4 MC4 光伏连接器（对）"
+     },
+     "error": false,
+     "result": "Set ref_45 to 'SOLAR-MC4 MC4 光伏连接器（对）'.",
+     "shot": "035.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_46"
+      },
+      "value": "3600"
+     },
+     "error": false,
+     "result": "Set ref_46 to '3600'.",
+     "shot": "036.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_47"
+      },
+      "value": "3.43"
+     },
+     "error": false,
+     "result": "Set ref_47 to '3.43'.",
+     "shot": "037.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_49"
+      },
+      "value": "BMS-4S-30A 4 串锂电保护板 30A"
+     },
+     "error": false,
+     "result": "Set ref_49 to 'BMS-4S-30A 4 串锂电保护板 30A'.",
+     "shot": "038.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_50"
+      },
+      "value": "1200"
+     },
+     "error": false,
+     "result": "Set ref_50 to '1200'.",
+     "shot": "039.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_51"
+      },
+      "value": "21.85"
+     },
+     "error": false,
+     "result": "Set ref_51 to '21.85'.",
+     "shot": "040.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_53"
+      },
+      "value": "FAN-8025 8025 散热风扇 12V"
+     },
+     "error": false,
+     "result": "Set ref_53 to 'FAN-8025 8025 散热风扇 12V'.",
+     "shot": "041.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_54"
+      },
+      "value": "240"
+     },
+     "error": false,
+     "result": "Set ref_54 to '240'.",
+     "shot": "042.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_55"
+      },
+      "value": "7.07"
+     },
+     "error": false,
+     "result": "Set ref_55 to '7.07'.",
+     "shot": "043.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_57"
+      },
+      "value": "BMS-8S-60A 8 串锂电保护板 60A"
+     },
+     "error": false,
+     "result": "Set ref_57 to 'BMS-8S-60A 8 串锂电保护板 60A'.",
+     "shot": "044.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_58"
+      },
+      "value": "60"
+     },
+     "error": false,
+     "result": "Set ref_58 to '60'.",
+     "shot": "045.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_59"
+      },
+      "value": "60.32"
+     },
+     "error": false,
+     "result": "Set ref_59 to '60.32'.",
+     "shot": "046.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_61"
+      },
+      "value": "PLUG-USB-C USB-C 快充接口板 65W"
+     },
+     "error": false,
+     "result": "Set ref_61 to 'PLUG-USB-C USB-C 快充接口板 65W'.",
+     "shot": "047.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_62"
+      },
+      "value": "2400"
+     },
+     "error": false,
+     "result": "Set ref_62 to '2400'.",
+     "shot": "048.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_63"
+      },
+      "value": "17.36"
+     },
+     "error": false,
+     "result": "Set ref_63 to '17.36'.",
+     "shot": "049.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_65"
+      },
+      "value": "INV-PCB-1K 1000W 逆变器主板"
+     },
+     "error": false,
+     "result": "Set ref_65 to 'INV-PCB-1K 1000W 逆变器主板'.",
+     "shot": "050.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_66"
+      },
+      "value": "480"
+     },
+     "error": false,
+     "result": "Set ref_66 to '480'.",
+     "shot": "051.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_67"
+      },
+      "value": "186.00"
+     },
+     "error": false,
+     "result": "Set ref_67 to '186.00'.",
+     "shot": "052.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_69"
+      },
+      "value": "LB-18650-26 18650 锂电芯 2600mAh"
+     },
+     "error": false,
+     "result": "Set ref_69 to 'LB-18650-26 18650 锂电芯 2600mAh'.",
+     "shot": "053.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_70"
+      },
+      "value": "480"
+     },
+     "error": false,
+     "result": "Set ref_70 to '480'.",
+     "shot": "054.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "form_input",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_71"
+      },
+      "value": "8.99"
+     },
+     "error": false,
+     "result": "Set ref_71 to '8.99'.",
+     "shot": "055.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "056.jpg",
+     "url": "http://127.0.0.1:64200/po/new",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "ref",
+       "ref": "ref_39"
+      }
+     },
+     "error": false,
+     "result": "Clicked element ref_39.",
+     "shot": "057.jpg",
+     "url": "http://127.0.0.1:64200/po/24?saved=1",
+     "note": "Total matches. Save."
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "058.jpg",
+     "url": "http://127.0.0.1:64200/po/24?saved=1",
+     "note": ""
+    },
+    {
+     "kind": "tool",
+     "action": "finish",
+     "input": {
+      "summary": "已录入采购单 PO-20261114-024：供应商中山市小榄镇金鼎线材有限公司，对方单号 XS909150，日期 2026-11-14，10行，合计 197,380.80，详情页核对一致。",
+      "needs_review": true,
+      "review_reason": "部分商品名称是按含义对应的：“C口65瓦快充模块”对应“USB-C 快充接口板 65W”，“光伏MC4接头”对应“MC4 光伏连接器（对）”，“1000瓦逆变器主控板”对应“1000W 逆变器主板”。请复核这些对应关系。"
+     },
+     "result": "已结束。",
+     "note": ""
+    }
+   ],
+   "document": "document.jpg",
+   "verdict": {
+    "doc": "H05",
+    "kind": "normal",
+    "expect": "enter",
+    "action": "finish",
+    "conflict": false,
+    "category": "",
+    "new_pos": 1,
+    "deleted_existing": 0,
+    "needs_review": true,
+    "verdict": "pass",
+    "gate_rejections": 0,
+    "postcheck_rejections": 0,
+    "fields": {
+     "supplier": true,
+     "date": true,
+     "ext_no": true,
+     "lines": true
+    },
+    "line_recall": 1.0,
+    "success": true
+   },
+   "kind": "normal",
+   "hard": "",
+   "run": {
+    "stop_reason": "finished",
+    "turns": 11,
+    "cost_usd": 0.14719770000000001,
+    "seconds": 51.3,
+    "actions": 58,
+    "input_tokens": 29631,
+    "output_tokens": 4256,
+    "cache_read_tokens": 152861,
+    "served_models": [
+     "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+   },
+   "base": "replays/entry-h05/"
+  },
+  {
+   "name": "entry-h13",
+   "title": "名字只差两个字的另一家公司",
+   "subtitle": "三档模型都曾把它录错；按税号做代码校验后直接转人工",
+   "steps": [
+    {
+     "kind": "tool",
+     "action": "record_document",
+     "input": {
+      "supplier_name": "深圳市华强电子科技有限公司",
+      "supplier_tax_id": "91440400MAF44C735D",
+      "ext_no": "XS220735",
+      "date": "2026-10-27",
+      "printed_total": "141069.60",
+      "lines": [
+       {
+        "label": "21700电芯 5000mAh",
+        "qty": 360,
+        "unit_price": "13.20"
+       },
+       {
+        "label": "CE标贴",
+        "qty": 2400,
+        "unit_price": "0.36"
+       },
+       {
+        "label": "1000W逆变主板",
+        "qty": 240,
+        "unit_price": "193.44"
+       },
+       {
+        "label": "8S保护板 60A",
+        "qty": 1200,
+        "unit_price": "51.04"
+       },
+       {
+        "label": "300W铝外壳",
+        "qty": 240,
+        "unit_price": "42.00"
+       },
+       {
+        "label": "12AWG硅胶线",
+        "qty": 1200,
+        "unit_price": "3.05"
+       },
+       {
+        "label": "MC4连接器(对)",
+        "qty": 3600,
+        "unit_price": "3.90"
+       }
+      ]
+     },
+     "result": "校验未通过，必须转人工（调用 escalate，category 用下面第一条开头的类别）：\n- unknown_supplier：系统中没有税号为 91440400MAF44C735D 的供应商（单据抬头“深圳市华强电子科技有限公司”），即使名称相近也不是同一家",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "navigate",
+     "input": {
+      "url": "http://127.0.0.1:61350"
+     },
+     "error": false,
+     "result": "",
+     "shot": "001.jpg",
+     "url": "http://127.0.0.1:61350/po",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "002.jpg",
+     "url": "http://127.0.0.1:61350/po",
+     "note": ""
+    },
+    {
+     "kind": "tool",
+     "action": "escalate",
+     "input": {
+      "category": "unknown_supplier",
+      "reason": "单据供应商“深圳市华强电子科技有限公司”（税号 91440400MAF44C735D）在系统中没有对应税号的供应商。系统里有名称相近的“深圳市华强电子有限公司”，但不是同一家。未录入，请人工处理。"
+     },
+     "result": "已转人工处理。",
+     "note": ""
+    }
+   ],
+   "document": "document.jpg",
+   "verdict": {
+    "doc": "H13",
+    "kind": "unknown_supplier",
+    "expect": "escalate",
+    "action": "escalate",
+    "conflict": false,
+    "category": "unknown_supplier",
+    "new_pos": 0,
+    "deleted_existing": 0,
+    "needs_review": false,
+    "verdict": "escalate",
+    "gate_rejections": 0,
+    "postcheck_rejections": 0,
+    "success": true,
+    "category_ok": true
+   },
+   "kind": "unknown_supplier",
+   "hard": "名字和“深圳市华强电子有限公司”只差两个字",
+   "run": {
+    "stop_reason": "finished",
+    "turns": 2,
+    "cost_usd": 0.0386122,
+    "seconds": 18.1,
+    "actions": 2,
+    "input_tokens": 11006,
+    "output_tokens": 940,
+    "cache_read_tokens": 8501,
+    "served_models": [
+     "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+   },
+   "base": "replays/entry-h13/"
+  },
+  {
+   "name": "scout-b04",
+   "title": "复现：删除删掉的是另一张单",
+   "subtitle": "测试 Agent 报出的缺陷，在重置后的环境里由另一个 Agent 按步骤重做",
+   "steps": [
+    {
+     "kind": "browser",
+     "action": "navigate",
+     "input": {
+      "url": "http://127.0.0.1:64287"
+     },
+     "error": false,
+     "result": "",
+     "shot": "001.jpg",
+     "url": "http://127.0.0.1:64287/po",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "002.jpg",
+     "url": "http://127.0.0.1:64287/po",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 1176,
+       "y": 190
+      }
+     },
+     "error": false,
+     "result": "Clicked (1176, 190).",
+     "shot": "003.jpg",
+     "url": "http://127.0.0.1:64287/po/23/delete",
+     "note": "Row1 is 023, row2 is 022."
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {
+      "tab_id": "tab-1"
+     },
+     "error": false,
+     "result": "",
+     "shot": "004.jpg",
+     "url": "http://127.0.0.1:64287/po/23/delete",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 62,
+       "y": 163
+      }
+     },
+     "error": false,
+     "result": "Clicked (62, 163).",
+     "shot": "005.jpg",
+     "url": "http://127.0.0.1:64287/po?msg=%E5%B7%B2%E5%88%A0%E9%99%A4",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {
+      "tab_id": "tab-1"
+     },
+     "error": false,
+     "result": "",
+     "shot": "006.jpg",
+     "url": "http://127.0.0.1:64287/po?msg=%E5%B7%B2%E5%88%A0%E9%99%A4",
+     "note": ""
+    },
+    {
+     "kind": "tool",
+     "action": "verdict",
+     "input": {
+      "reproduced": true,
+      "notes": "确认页显示的是 PO-20260907-023（第1行）。确认删除后，023 仍在列表里，PO-20260925-022（第2行）不见了，总数从 23 条变成 22 条。"
+     },
+     "result": "已记录。",
+     "note": "023 still there, 022 gone."
+    }
+   ],
+   "report": {
+    "title": "删除采购单删掉的是另一张",
+    "rule": "R9",
+    "steps": [
+     "打开采购单列表，记下第 1 行和第 2 行的采购单号",
+     "点第 1 行的“删除”，在确认页点“确认删除”",
+     "回到列表，查看哪一张不见了"
+    ],
+    "expected": "被删除的是第 1 行那张，第 2 行仍在",
+    "actual": "第 1 行那张还在，消失的是另一张（编号相邻的上一张）",
+    "severity": "critical",
+    "reproduced": true,
+    "repro_notes": "确认页显示的是 PO-20260907-023（第1行）。确认删除后，023 仍在列表里，PO-20260925-022（第2行）不见了，总数从 23 条变成 22 条。",
+    "matched": null
+   },
+   "cost": 0.0380336,
+   "run": {
+    "stop_reason": "finished",
+    "turns": 4,
+    "cost_usd": 0.0380336,
+    "seconds": 12.0,
+    "actions": 6,
+    "input_tokens": 11354,
+    "output_tokens": 467,
+    "cache_read_tokens": 24918,
+    "served_models": [
+     "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+   },
+   "base": "replays/scout-b04/"
+  },
+  {
+   "name": "todomvc-esc",
+   "title": "TodoMVC React：按 Esc 没退出编辑",
+   "subtitle": "官方测试只检查内容没变，没有检查是否离开编辑状态",
+   "steps": [
+    {
+     "kind": "browser",
+     "action": "navigate",
+     "input": {
+      "url": "http://127.0.0.1:64374"
+     },
+     "error": false,
+     "result": "",
+     "shot": "001.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "002.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "left_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 600,
+       "y": 162
+      }
+     },
+     "error": false,
+     "result": "Clicked (600, 162).",
+     "shot": "003.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "type",
+     "input": {
+      "text": "buy milk"
+     },
+     "error": false,
+     "result": "Typed.",
+     "shot": "004.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "key",
+     "input": {
+      "text": "Return"
+     },
+     "error": false,
+     "result": "Pressed Return.",
+     "shot": "005.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "double_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 500,
+       "y": 245
+      }
+     },
+     "error": false,
+     "result": "Clicked (500, 245).",
+     "shot": "006.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "key",
+     "input": {
+      "text": "ctrl+a"
+     },
+     "error": false,
+     "result": "Pressed ctrl+a.",
+     "shot": "007.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "type",
+     "input": {
+      "text": "changed"
+     },
+     "error": false,
+     "result": "Typed.",
+     "shot": "008.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "key",
+     "input": {
+      "text": "Escape"
+     },
+     "error": false,
+     "result": "Pressed Escape.",
+     "shot": "009.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "010.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "key",
+     "input": {
+      "text": "Return"
+     },
+     "error": false,
+     "result": "Pressed Return.",
+     "shot": "011.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "double_click",
+     "input": {
+      "target": {
+       "type": "coordinate",
+       "x": 500,
+       "y": 226
+      }
+     },
+     "error": false,
+     "result": "Clicked (500, 226).",
+     "shot": "012.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "key",
+     "input": {
+      "text": "ctrl+a"
+     },
+     "error": false,
+     "result": "Pressed ctrl+a.",
+     "shot": "013.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "type",
+     "input": {
+      "text": "changed"
+     },
+     "error": false,
+     "result": "Typed.",
+     "shot": "014.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "015.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "key",
+     "input": {
+      "text": "Escape"
+     },
+     "error": false,
+     "result": "Pressed Escape.",
+     "shot": "016.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "browser",
+     "action": "screenshot",
+     "input": {},
+     "error": false,
+     "result": "",
+     "shot": "017.jpg",
+     "url": "http://127.0.0.1:64374/",
+     "note": ""
+    },
+    {
+     "kind": "tool",
+     "action": "verdict",
+     "input": {
+      "reproduced": true,
+      "notes": "我在编辑框里输入文字后按 Esc，编辑框仍然开着，条目停留在编辑状态，没有回到普通条目的显示。ctrl+a 没有选中全部文字，所以编辑框里的文字变成了“changedchangedbuy milk”这样的拼接内容。因此我没能单独确认“修改被放弃”这一半，但报告的主要现象（Esc 不退出编辑）已出现。"
+     },
+     "result": "已记录。",
+     "note": ""
+    }
+   ],
+   "report": {
+    "title": "编辑时按 Esc 没有退出编辑状态",
+    "rule": "Editing",
+    "steps": [
+     "打开首页，在输入框输入 buy milk 后回车",
+     "双击 buy milk 进入编辑",
+     "把内容改成 changed，按 Esc"
+    ],
+    "expected": "规格：按 Esc 应离开编辑状态并放弃修改，显示回 buy milk 的普通条目",
+    "actual": "修改被放弃，但编辑框仍然开着，条目停留在编辑状态",
+    "severity": "minor",
+    "reproduced": true,
+    "repro_notes": "我在编辑框里输入文字后按 Esc，编辑框仍然开着，条目停留在编辑状态，没有回到普通条目的显示。ctrl+a 没有选中全部文字，所以编辑框里的文字变成了“changedchangedbuy milk”这样的拼接内容。因此我没能单独确认“修改被放弃”这一半，但报告的主要现象（Esc 不退出编辑）已出现。",
+    "matched": null
+   },
+   "cost": 0.0465945,
+   "run": {
+    "stop_reason": "finished",
+    "turns": 4,
+    "cost_usd": 0.0465945,
+    "seconds": 16.4,
+    "actions": 17,
+    "input_tokens": 13207,
+    "output_tokens": 855,
+    "cache_read_tokens": 25160,
+    "served_models": [
+     "claude-sonnet-5-5"
+    ],
+    "errors": 0,
+    "blocked": 0,
+    "misrouted": 0
+   },
+   "base": "replays/todomvc-esc/"
+  }
+ ],
+ "bugs": [
+  {
+   "id": "B01",
+   "title": "采购单合计丢掉了单价的小数部分",
+   "oracle": false
+  },
+  {
+   "id": "B02",
+   "title": "采购单列表第 2 页重复了第 1 页最后一条",
+   "oracle": false
+  },
+  {
+   "id": "B03",
+   "title": "供应商搜索只匹配名称开头",
+   "oracle": false
+  },
+  {
+   "id": "B04",
+   "title": "删除采购单删掉的是另一张",
+   "oracle": false
+  },
+  {
+   "id": "B05",
+   "title": "备注超过 50 字时保存报 500",
+   "oracle": true
+  },
+  {
+   "id": "B06",
+   "title": "数量可以填负数",
+   "oracle": false
+  },
+  {
+   "id": "B07",
+   "title": "日期的月和日被对调",
+   "oracle": false
+  },
+  {
+   "id": "B08",
+   "title": "发票税额总按 6% 计算",
+   "oracle": false
+  },
+  {
+   "id": "B09",
+   "title": "编辑采购单保存后最后一行明细丢失",
+   "oracle": false
+  },
+  {
+   "id": "B10",
+   "title": "供应商税号可以重复",
+   "oracle": false
+  },
+  {
+   "id": "B11",
+   "title": "添加第 6 行明细时前端报错",
+   "oracle": true
+  },
+  {
+   "id": "B12",
+   "title": "按金额排序是按字符串排的",
+   "oracle": false
+  },
+  {
+   "id": "B13",
+   "title": "登记发票后采购单状态没变",
+   "oracle": false
+  },
+  {
+   "id": "B14",
+   "title": "已开票的采购单还能删除",
+   "oracle": false
+  }
+ ],
+ "monkey": {
+  "runs": 9,
+  "steps": 300,
+  "recall": 0.0
+ },
+ "external": {
+  "lede": "TodoMVC 的框架实现都要遵守同一份公开规格书。测试 Agent 拿规格书当业务规则，在 11 个官方实现上用 Haiku、Sonnet、Opus 各探索一遍（Opus 共三遍），复现确认的报告再逐条用确定性脚本按真人操作复核。其中 lit 和 web-components 用了 shadow DOM，不在官方默认测试集里。",
+  "summary": {
+   "implementations": 11,
+   "haiku": {
+    "confirmed_reports": 20,
+    "true_deviations": 8,
+    "known": 10,
+    "rejected": 1,
+    "not_counted": 1,
+    "cost": 1.2
+   },
+   "sonnet": {
+    "confirmed_reports": 16,
+    "true_deviations": 6,
+    "known": 10,
+    "rejected": 0,
+    "cost": 2.52
+   },
+   "opus": {
+    "confirmed_reports": 23,
+    "true_deviations": 12,
+    "known": 10,
+    "rejected": 0,
+    "not_counted": 1,
+    "cost": 7.57
+   },
+   "opus_3runs": {
+    "runs": 3,
+    "cost": 21.35,
+    "distinct_found": 15,
+    "found_every_run": 10,
+    "found_twice": 1,
+    "found_once": 4
+   }
+  },
+  "findings": [
+   {
+    "impl": "react",
+    "clause": "Editing",
+    "status": "confirmed",
+    "found_by": "Haiku、Sonnet、Opus",
+    "title": "按 Esc 不退出编辑，修改也没有真正放弃",
+    "detail": "规格要求按 Esc 时离开编辑状态并放弃修改。React 实现按 Esc 后编辑框一直开着；之后一失焦，刚才“放弃”的修改就被保存了。官方测试只断言按 Esc 那一刻的标签文字，所以这个实现能通过官方测试。"
+   },
+   {
+    "impl": "javascript-es5",
+    "clause": "Mark all as complete",
+    "status": "confirmed",
+    "found_by": "Haiku、Sonnet、Opus",
+    "title": "“全选”框不随条目状态同步",
+    "detail": "三种表现：逐个勾完所有条目，全选框不勾上；全选后取消一条，全选框仍是勾选，再点会把全部取消；点 Clear completed 后再新加一条未完成的待办，全选框依然勾着。javascript-es6、jquery、vue、react 都正常。"
+   },
+   {
+    "impl": "javascript-es6",
+    "clause": "New todo",
+    "status": "confirmed",
+    "found_by": "Haiku、Sonnet、Opus",
+    "title": "新建的待办插到了列表顶部",
+    "detail": "规格写的是回车后把新待办 appends 到列表。这个实现（2.0 里改名为 Modern JavaScript）把新条目放在最前面；它不在官方默认测试集里，“should append new items to the bottom of the list”这条测试平时不会跑到它。"
+   },
+   {
+    "impl": "lit",
+    "clause": "Editing",
+    "status": "confirmed",
+    "found_by": "Opus（根因），Haiku、Sonnet（症状）",
+    "title": "双击进入编辑后，编辑框没有获得焦点",
+    "detail": "焦点停在页面上，打字、Esc、Enter 都没有反应，条目一直停在编辑状态。Haiku 和 Sonnet 先报了这些症状，我最初用 fill() 复核没复现出来，判为不成立；Opus 指出根因后按真人的键盘操作重测才确认。判错的是复核脚本：fill() 会强制让输入框获得焦点。"
+   },
+   {
+    "impl": "lit",
+    "clause": "New todo",
+    "status": "confirmed",
+    "found_by": "Haiku、Opus",
+    "title": "只输入空格也会新建一条空白待办",
+    "detail": "规格要求先 trim 再判断是否为空。官方测试脚本因为看不进三层嵌套的 shadow DOM，把 lit 排除在默认测试之外，并在注释里写“这个实现本身是正确的”。"
+   },
+   {
+    "impl": "lit",
+    "clause": "New todo",
+    "status": "confirmed",
+    "found_by": "Haiku、Opus",
+    "title": "新建待办时不做 trim，首尾空格留在标签里",
+    "detail": "输入“  lead”，标签文字保留了前导空格。同样因为 shadow DOM，官方默认测试覆盖不到。"
+   },
+   {
+    "impl": "web-components",
+    "clause": "New todo",
+    "status": "confirmed",
+    "found_by": "Haiku",
+    "title": "只输入空格也会新建一条空白待办",
+    "detail": "和 lit 一样是 shadow DOM 实现，也不在官方默认测试集里。"
+   },
+   {
+    "impl": "web-components",
+    "clause": "Clear completed button",
+    "status": "confirmed",
+    "found_by": "Haiku、Sonnet",
+    "title": "没有已完成条目时，Clear completed 按钮仍然显示",
+    "detail": "规格要求没有已完成条目时隐藏这个按钮。"
+   },
+   {
+    "impl": "svelte",
+    "clause": "Editing",
+    "status": "confirmed",
+    "found_by": "Opus、复核脚本",
+    "title": "把条目改成只有空格再回车，会留下一条空白待办",
+    "detail": "规格要求编辑内容 trim 后为空就删除这条待办；清空成空字符串时处理正确，纯空格不行。官方测试只测了空字符串。Haiku 和 Sonnet 都没报，Opus 和复核脚本各自发现。"
+   },
+   {
+    "impl": "svelte",
+    "clause": "Routing",
+    "status": "confirmed",
+    "found_by": "Opus",
+    "title": "在某个筛选下刷新页面，筛选没有保留",
+    "detail": "在 #/completed 下刷新，地址栏仍是 #/completed，筛选按钮却回到 All。规格要求刷新后保留当前筛选；vue 在同样操作下正常。"
+   },
+   {
+    "impl": "web-components",
+    "clause": "Editing",
+    "status": "confirmed",
+    "found_by": "Opus",
+    "title": "把条目改成只有空格再回车，会留下一条空白待办",
+    "detail": "和 svelte 同样的问题：trim 后为空应删除这条待办，这里留下了一条空白条目。"
+   },
+   {
+    "impl": "web-components",
+    "clause": "Item",
+    "status": "confirmed",
+    "found_by": "Opus",
+    "title": "双击条目时常进不了编辑模式（间歇性）",
+    "detail": "复核时 5 次双击只有 3 次进入编辑；编辑后点别处退出，再双击 4 次只进去 2 次。规格要求双击标签进入编辑。"
+   },
+   {
+    "impl": "svelte",
+    "clause": "Editing",
+    "status": "confirmed",
+    "found_by": "Opus",
+    "title": "编辑保存时不做 trim，标题首尾空格被原样保存",
+    "detail": "规格要求编辑内容先 trim 再保存。把条目改成“  spaced  ”回车，svelte 保留了空格，vue、react、preact 都会去掉。"
+   },
+   {
+    "impl": "web-components",
+    "clause": "Editing",
+    "status": "confirmed",
+    "found_by": "Opus",
+    "title": "编辑后点别处失焦，修改被丢掉",
+    "detail": "规格要求失焦和回车都要保存修改。这个实现失焦后内容恢复成原文。"
+   },
+   {
+    "impl": "mithril",
+    "clause": "Routing",
+    "status": "confirmed",
+    "found_by": "Opus",
+    "title": "在 Active 筛选下删除一条待办，被删掉的是另一条隐藏的已完成条目",
+    "detail": "新建三条、完成第一条，切到 Active，删除“keep-a”，回到 All 看到被删的是已完成的那条，keep-a 还在。同样操作在 vue 上删的是正确的那条。这是删错数据的问题。"
+   },
+   {
+    "impl": "10 个实现",
+    "clause": "Persistence",
+    "status": "known",
+    "found_by": "Haiku、Sonnet、Opus",
+    "title": "刷新页面后数据丢失",
+    "detail": "规格书仍要求持久化到 localStorage，但官方测试代码里写明多数现代重写版只放在内存里，并对它们豁免了这项检查。属于规格书没同步，不算新问题。"
+   },
+   {
+    "impl": "backbone",
+    "clause": "Routing",
+    "status": "rejected",
+    "found_by": "Haiku",
+    "title": "不支持 #!/ 形式的路由（复核不成立）",
+    "detail": "规格只是允许用 #!/ 代替 #/，并不要求两种都支持。"
+   },
+   {
+    "impl": "web-components、react",
+    "clause": "Mark all as complete",
+    "status": "rejected",
+    "found_by": "Opus",
+    "title": "在 Completed 筛选下，全选框显示为勾选（规格有歧义，不计入）",
+    "detail": "规格写的是“所有待办都完成时勾上”，筛选状态下有两种理解；vue、jquery、preact、svelte、backbone 不勾，web-components 和 react 会勾。按保守原则不计入。"
+   }
+  ]
+ }
+}
