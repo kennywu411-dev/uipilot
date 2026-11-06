@@ -16,8 +16,10 @@ from pathlib import Path
 
 from .agent import AgentConfig
 from .entry import agent as entry
+from .entry.checks import EntryChecks
 from .erp.server import ERPServer
 from .scout import agent as scout
+from .scout import external
 from .scout.judge import match_reports, score
 from .scout.monkey import run_monkey
 
@@ -68,7 +70,8 @@ def _scout_row(tag: str, data: dict, active: list[str]) -> dict:
 def cmd_scout(args) -> None:
     # --resume 指向一个已有运行目录时，跳过已完成的轮次，汇总按目录里全部逐轮结果重算
     out = Path(args.resume) if args.resume else run_dir(
-        f"scout-{args.model.split('-')[1]}-{args.mode}" + ("-nosig" if args.no_signals else ""))
+        f"scout-{args.model.split('-')[1]}-{args.mode}" + ("-nosig" if args.no_signals else "")
+        + ("-calc" if args.check_expectation else ""))
     budget = Budget(args.total_budget)
     jobs = [(g, r) for g in args.groups for r in range(args.repeats)]
 
@@ -98,7 +101,8 @@ def cmd_scout(args) -> None:
                 if budget.left <= 0:
                     break
                 erp.reset(active)
-                rr = scout.reproduce(erp.base_url, rep_, repro_cfg, out / "traces" / f"{tag}-repro{i}.jsonl")
+                rr = scout.reproduce(erp.base_url, rep_, repro_cfg, out / "traces" / f"{tag}-repro{i}.jsonl",
+                                     check_expectation=args.check_expectation)
                 budget.add(rr.cost_usd)
                 result.repro_runs.append(rr)
         judge_cost = match_reports(reports, active) if reports else 0.0
@@ -131,20 +135,29 @@ def cmd_scout(args) -> None:
 
 
 def cmd_entry(args) -> None:
-    root = ROOT / "evals" / ("entry_hard" if args.set == "hard" else "entry")
+    root = ROOT / "evals" / {"basic": "entry", "hard": "entry_hard", "hardtax": "entry_hard_tax"}[args.set]
     tasks = [t for t in entry.load_tasks(root) if not args.docs or t["id"] in args.docs]
-    out = run_dir(f"entry{'hard' if args.set == 'hard' else ''}-{args.model.split('-')[1]}-{args.mode}")
+    prefix = {"basic": "entry", "hard": "entryhard", "hardtax": "entryhardtax"}[args.set]
+    out = run_dir(f"{prefix}-{args.model.split('-')[1]}-{args.mode}" + ("-checks" if args.checks else ""))
     budget = Budget(args.total_budget)
 
     def one(item):
         doc, rep = item
         if budget.left <= 0:
             return {"doc": doc["id"], "skipped": "budget"}
+        try:
+            return run_one(doc, rep)
+        except Exception as e:  # 单张出错不拖垮整组
+            print(f"[{doc['id']}-{rep}] 出错：{e!r}", flush=True)
+            return {"doc": doc["id"], "repeat": rep, "error": repr(e)[:300]}
+
+    def run_one(doc, rep):
         with ERPServer() as erp:
             erp.reset()
             before = erp.state()
+            checks = EntryChecks(before, erp.state) if args.checks else None
             outcome = entry.enter_document(erp.base_url, doc["id"], root / "docs" / f"{doc['id']}.jpg",
-                                           cfg_from(args), out / "traces" / f"{doc['id']}-{rep}.jsonl")
+                                           cfg_from(args), out / "traces" / f"{doc['id']}-{rep}.jsonl", checks)
             after = erp.state()
         budget.add(outcome.run.cost_usd)
         res = entry.check(doc, before, after, outcome)
@@ -170,6 +183,9 @@ def cmd_entry(args) -> None:
         "field_accuracy": {f: round(sum(r["fields"][f] for r in normal) / max(1, len(normal)), 3)
                            for f in ("supplier", "date", "ext_no", "lines")},
         "deleted_existing": sum(r["deleted_existing"] for r in done),
+        "wrong_entries": sum(r["expect"] == "escalate" and r["new_pos"] > 0 for r in done),
+        "needs_review": sum(r.get("needs_review", False) for r in done),
+        "postcheck_rejections": sum(r.get("postcheck_rejections", 0) for r in done),
         "blocked_actions": sum(r["blocked"] for r in done),
         "cost": round(budget.spent, 4),
         "cost_per_doc": round(budget.spent / max(1, len(done)), 4),
@@ -178,6 +194,54 @@ def cmd_entry(args) -> None:
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({k: v for k, v in summary.items() if k not in ("runs", "config")}, ensure_ascii=False))
     print(f"→ {out}")
+
+
+def cmd_external(args) -> None:
+    """真实开源应用：没有植入清单，不做自动评判，确认的报告留给人工复核（docs/外部实战.md）。"""
+    out = Path(args.resume) if args.resume else run_dir(f"external-{args.model.split('-')[1]}")
+    budget = Budget(args.total_budget)
+    rules = external.todomvc_rules()
+
+    def one(job):
+        name, rep = job
+        tag = f"{external.safe_name(name)}-{rep}"
+        if (out / f"{tag}.json").exists():
+            return json.loads((out / f"{tag}.json").read_text(encoding="utf-8")) | {"tag": tag}
+        if budget.left <= 0:
+            return {"tag": tag, "skipped": "budget"}
+        try:
+            with external.StaticSite(external.todomvc_dir(name)) as site:
+                system = external.EXTERNAL_SYSTEM.format(name=name, rules=rules)
+                first = f"被测应用地址：{site.base_url}/ （TodoMVC 的 {name} 实现）"
+                reports, res, coverage = scout.explore(site.base_url, cfg_from(args), out / "traces" / f"{tag}-explore.jsonl",
+                                                       system=system, first_text=first)
+                budget.add(res.cost_usd)
+                result = scout.ScoutResult(reports=reports, explore=res, coverage=coverage)
+                repro_cfg = cfg_from(args, model=args.repro_model, max_turns=25, budget_usd=0.4)
+                for i, r in enumerate(reports):
+                    if budget.left <= 0:
+                        break
+                    rr = scout.reproduce(site.base_url, r, repro_cfg, out / "traces" / f"{tag}-repro{i}.jsonl",
+                                         system=external.EXTERNAL_REPRO)
+                    budget.add(rr.cost_usd)
+                    result.repro_runs.append(rr)
+            scout.save(result, out / f"{tag}.json")
+            confirmed = [r.title for r in reports if r.reproduced]
+            print(f"[{tag}] 报告 {len(reports)} 复现 {len(confirmed)}  ${result.cost:.3f}  {confirmed}", flush=True)
+            return json.loads((out / f"{tag}.json").read_text(encoding="utf-8")) | {"tag": tag}
+        except Exception as e:  # 单个目标出错不影响其他目标
+            print(f"[{tag}] 出错：{e!r}", flush=True)
+            return {"tag": tag, "error": repr(e)[:300]}
+
+    with ThreadPoolExecutor(args.workers) as pool:
+        rows = list(pool.map(one, [(n, r) for n in args.targets for r in range(args.repeats)]))
+    summary = {"config": vars(args) | {"func": None},
+               "runs": [{"tag": r["tag"], "reports": len(r.get("reports", [])),
+                         "confirmed": sum(1 for x in r.get("reports", []) if x.get("reproduced")),
+                         "cost": r.get("cost"), "error": r.get("error")} for r in rows],
+               "cost": round(sum(r.get("cost") or 0 for r in rows), 4)}
+    (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"cost": summary["cost"], "confirmed": sum(r["confirmed"] for r in summary["runs"])}), f"→ {out}")
 
 
 def cmd_monkey(args) -> None:
@@ -216,14 +280,30 @@ def main() -> None:
     sub.choices["scout"].add_argument("--groups", nargs="+", default=["A", "B", "C", "clean"])
     sub.choices["scout"].add_argument("--repro-model", default="claude-sonnet-5-5")
     sub.choices["scout"].add_argument("--resume", help="继续一个已有的运行目录")
+    sub.choices["scout"].add_argument("--check-expectation", action="store_true",
+                                      help="复现时用 calc 工具独立核对报告的期望值（问题日志 P14）")
     sub.choices["entry"].add_argument("--docs", nargs="*")
-    sub.choices["entry"].add_argument("--set", default="basic", choices=["basic", "hard"])
+    sub.choices["entry"].add_argument("--set", default="basic", choices=["basic", "hard", "hardtax"])
+    sub.choices["entry"].add_argument("--checks", action="store_true", help="启用代码校验（record_document + 回读）")
+    x = sub.add_parser("external")
+    x.add_argument("--targets", nargs="+", required=True, help="TodoMVC 实现名，如 react vue svelte")
+    x.add_argument("--model", default="claude-sonnet-5-5")
+    x.add_argument("--repro-model", default="claude-sonnet-5-5")
+    x.add_argument("--effort", default="medium")
+    x.add_argument("--mode", default="hybrid", choices=["vision", "dom", "hybrid"])
+    x.add_argument("--max-turns", type=int, default=60)
+    x.add_argument("--run-budget", type=float, default=1.5)
+    x.add_argument("--total-budget", type=float, default=5.0)
+    x.add_argument("--repeats", type=int, default=1)
+    x.add_argument("--workers", type=int, default=3)
+    x.add_argument("--no-signals", action="store_true")
+    x.add_argument("--resume")
     m = sub.add_parser("monkey")
     m.add_argument("--steps", type=int, default=300)
     m.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
     m.add_argument("--groups", nargs="+", default=["A", "B", "C"])
     args = p.parse_args()
-    {"scout": cmd_scout, "entry": cmd_entry, "monkey": cmd_monkey}[args.cmd](args)
+    {"scout": cmd_scout, "entry": cmd_entry, "external": cmd_external, "monkey": cmd_monkey}[args.cmd](args)
 
 
 if __name__ == "__main__":

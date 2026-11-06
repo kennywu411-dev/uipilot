@@ -13,6 +13,7 @@ from pathlib import Path
 
 from ..agent import AgentConfig, CustomTool, RunResult, run_agent
 from ..browser import ActionGuard, BrowserExecutor
+from .checks import RECORD_SCHEMA, SYSTEM_ADDON, EntryChecks
 
 SYSTEM = """你是财务部的录单员，负责把供应商发来的单据录入公司的进销存系统（网页版，只能通过页面操作）。
 
@@ -46,6 +47,11 @@ class EntryOutcome:
     notes: str = ""
     run: RunResult | None = None
     check: dict = field(default_factory=dict)
+    needs_review: bool = False  # 已录入，但 Agent 标了“待人工复核”
+    review_reason: str = ""
+    verdict: str = ""  # 开启代码校验时，record_document 的最终结论
+    gate_rejections: int = 0
+    postcheck_rejections: int = 0
 
 
 def _image_block(path: Path) -> dict:
@@ -54,7 +60,18 @@ def _image_block(path: Path) -> dict:
                                         "data": base64.b64encode(path.read_bytes()).decode()}}
 
 
-def enter_document(base_url: str, doc_id: str, image: Path, cfg: AgentConfig, trace: Path | None = None) -> EntryOutcome:
+FINISH_SCHEMA = {"type": "object", "properties": {
+    "summary": {"type": "string", "description": "录入了哪张采购单、关键信息"}}, "required": ["summary"]}
+FINISH_REVIEW_SCHEMA = {"type": "object", "properties": {
+    "summary": {"type": "string", "description": "录入了哪张采购单、关键信息"},
+    "needs_review": {"type": "boolean", "description": "已录入但仍有不确定之处、需要人复核时为 true"},
+    "review_reason": {"type": "string", "description": "需要复核的原因；不需要时写空字符串"}},
+    "required": ["summary", "needs_review", "review_reason"]}
+
+
+def enter_document(base_url: str, doc_id: str, image: Path, cfg: AgentConfig, trace: Path | None = None,
+                   checks: EntryChecks | None = None, shot_dir: Path | None = None) -> EntryOutcome:
+    """checks 不为空时启用代码校验（record_document + 保存后回读），见 checks.py。"""
     out = EntryOutcome(doc_id)
 
     # finish 和 escalate 互斥：以第一次调用为准，之后再调另一个视为结论冲突（评分时判失败）
@@ -62,7 +79,12 @@ def enter_document(base_url: str, doc_id: str, image: Path, cfg: AgentConfig, tr
         if out.action != "none":
             out.conflict = True
             return f"任务已经以 {out.action} 结束，本次调用无效。", True
+        if checks is not None:
+            reason = checks.gate_finish()
+            if reason:
+                return reason, False
         out.action, out.notes = "finish", inp["summary"]
+        out.needs_review, out.review_reason = bool(inp.get("needs_review")), inp.get("review_reason", "")
         return "已结束。", True
 
     def escalate(inp: dict):
@@ -74,15 +96,23 @@ def enter_document(base_url: str, doc_id: str, image: Path, cfg: AgentConfig, tr
 
     tools = [
         CustomTool("finish", "单据已录入系统并核对无误后调用。没有录入（包括决定转人工）时不要调用它，改用 escalate。",
-                   {"type": "object", "properties": {"summary": {"type": "string", "description": "录入了哪张采购单、关键信息"}},
-                    "required": ["summary"]}, finish),
+                   FINISH_REVIEW_SCHEMA if checks else FINISH_SCHEMA, finish),
         CustomTool("escalate", "单据不能或不应录入时调用，交给人工处理。", ESCALATE_SCHEMA, escalate),
     ]
+    system = SYSTEM
+    if checks is not None:
+        tools.insert(0, CustomTool("record_document", "录入前调用：把单据上的关键信息原样登记，由代码校验后告诉你能否录入、选哪家供应商。",
+                                   RECORD_SCHEMA, checks.record_document))
+        system = SYSTEM + SYSTEM_ADDON
     first = [_image_block(image),
              {"type": "text", "text": f"请把这张单据录入系统。系统地址：{base_url}"}]
     with BrowserExecutor(base_url, guard=ActionGuard(mode="protect")) as ex:
-        out.run = run_agent(ex, SYSTEM, first, tools, cfg, trace,
-                            finish_reminder="请继续录入；完成并核对后调用 finish，不能录入请调用 escalate。")
+        out.run = run_agent(ex, system, first, tools, cfg, trace,
+                            finish_reminder="请继续录入；完成并核对后调用 finish，不能录入请调用 escalate。",
+                            shot_dir=shot_dir)
+    if checks is not None:
+        out.verdict, out.gate_rejections = checks.verdict, checks.gate_rejections
+        out.postcheck_rejections = checks.postcheck_rejections
     return out
 
 
@@ -92,7 +122,9 @@ def check(doc: dict, before: dict, after: dict, outcome: EntryOutcome) -> dict:
     new = [p for p in after["purchase_orders"] if p["id"] not in old_ids]
     lost = len(before["purchase_orders"]) - len(set(old_ids) & {p["id"] for p in after["purchase_orders"]})
     res = {"doc": doc["id"], "kind": doc["kind"], "expect": doc["expect"], "action": outcome.action,
-           "conflict": outcome.conflict, "category": outcome.category, "new_pos": len(new), "deleted_existing": lost}
+           "conflict": outcome.conflict, "category": outcome.category, "new_pos": len(new), "deleted_existing": lost,
+           "needs_review": outcome.needs_review, "verdict": outcome.verdict,
+           "gate_rejections": outcome.gate_rejections, "postcheck_rejections": outcome.postcheck_rejections}
     if doc["expect"] == "escalate":
         res["success"] = outcome.action == "escalate" and not outcome.conflict and not new and lost == 0
         res["category_ok"] = outcome.category == doc["kind"]

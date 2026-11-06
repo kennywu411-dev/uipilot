@@ -14,6 +14,7 @@ from pathlib import Path
 
 from ..agent import AgentConfig, CustomTool, RunResult, run_agent
 from ..browser import ActionGuard, BrowserExecutor
+from ..calc import calculate
 
 EXPLORE_SYSTEM = """你是一名资深的软件测试工程师，正在对一个网页版进销存 ERP 做探索式测试。
 
@@ -78,7 +79,9 @@ class ScoutResult:
         return (self.explore.cost_usd if self.explore else 0) + sum(r.cost_usd for r in self.repro_runs)
 
 
-def explore(base_url: str, cfg: AgentConfig, trace: Path | None = None) -> tuple[list[BugReport], RunResult, str]:
+def explore(base_url: str, cfg: AgentConfig, trace: Path | None = None, system: str = EXPLORE_SYSTEM,
+            first_text: str | None = None) -> tuple[list[BugReport], RunResult, str]:
+    """system / first_text 默认是靶子 ERP 的；测外部应用时由 external.py 传入该应用的规格。"""
     reports: list[BugReport] = []
     summary = {"coverage": ""}
 
@@ -96,25 +99,44 @@ def explore(base_url: str, cfg: AgentConfig, trace: Path | None = None) -> tuple
                    {"type": "object", "properties": {"coverage": {"type": "string", "description": "覆盖了哪些规则、做了哪些验证"}},
                     "required": ["coverage"]}, finish),
     ]
-    first = [{"type": "text", "text": f"被测系统地址：{base_url}\n请从 {base_url}/help 开始。"}]
+    first = [{"type": "text", "text": first_text or f"被测系统地址：{base_url}\n请从 {base_url}/help 开始。"}]
     with BrowserExecutor(base_url, guard=ActionGuard(mode="sandbox")) as ex:
-        res = run_agent(ex, EXPLORE_SYSTEM, first, tools, cfg, trace,
+        res = run_agent(ex, system, first, tools, cfg, trace,
                         finish_reminder="请继续按规则测试；如果已经测完，请调用 finish。")
     return reports, res, summary["coverage"]
 
 
-def reproduce(base_url: str, report: BugReport, cfg: AgentConfig, trace: Path | None = None) -> RunResult:
+EXPECTATION_ADDON = """
+
+另外，报告里的“期望结果”可能本身就错了（例如报告人自己算错了数）。在判断之前，先只依据业务规则独立推出期望结果。
+涉及金额的计算必须调用 calc 工具，不要心算（模型心算大数乘法容易出错）。调用 verdict 时：
+- reproduced：报告描述的“实际结果”是否真的出现；
+- expectation_ok：报告的“期望结果”是否符合业务规则。期望本身错了，就算现象出现，这也不是缺陷。"""
+
+
+def reproduce(base_url: str, report: BugReport, cfg: AgentConfig, trace: Path | None = None,
+              system: str = REPRO_SYSTEM, shot_dir: Path | None = None, check_expectation: bool = False) -> RunResult:
+    """check_expectation=True 时复现 Agent 还要独立核对报告的期望值（问题日志 P14），两者都成立才算确认。"""
     def verdict(inp: dict):
-        report.reproduced, report.repro_notes = bool(inp["reproduced"]), inp["notes"]
+        ok = bool(inp["reproduced"]) and (bool(inp["expectation_ok"]) if check_expectation else True)
+        report.reproduced, report.repro_notes = ok, inp["notes"]
         return "已记录。", True
 
-    tools = [CustomTool("verdict", "复核结束时调用。",
-                        {"type": "object", "properties": {"reproduced": {"type": "boolean"}, "notes": {"type": "string"}},
-                         "required": ["reproduced", "notes"]}, verdict)]
+    props = {"reproduced": {"type": "boolean"}, "notes": {"type": "string"}}
+    if check_expectation:
+        props["expectation_ok"] = {"type": "boolean"}
+        system = system + EXPECTATION_ADDON
+    tools = [CustomTool("verdict", "复核结束时调用。", {"type": "object", "properties": props,
+                                                     "required": list(props)}, verdict)]
+    if check_expectation:
+        tools.append(CustomTool("calc", "精确计算四则运算表达式（支持 + - * / 括号和 %），返回精确结果和四舍五入到分的结果。",
+                                {"type": "object", "properties": {"expression": {"type": "string"}},
+                                 "required": ["expression"]},
+                                lambda inp: (calculate(inp["expression"]), False)))
     first = [{"type": "text", "text": f"被测系统地址：{base_url}\n\n缺陷报告：\n{report.as_text()}"}]
     with BrowserExecutor(base_url, guard=ActionGuard(mode="sandbox")) as ex:
-        return run_agent(ex, REPRO_SYSTEM, first, tools, cfg, trace,
-                         finish_reminder="请按步骤复核，然后调用 verdict。")
+        return run_agent(ex, system, first, tools, cfg, trace,
+                         finish_reminder="请按步骤复核，然后调用 verdict。", shot_dir=shot_dir)
 
 
 def save(result: ScoutResult, path: Path, judge_cost: float = 0.0) -> None:

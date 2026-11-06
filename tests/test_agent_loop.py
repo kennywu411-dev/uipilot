@@ -90,3 +90,14 @@ def test_history_is_append_only():
     assert [len(s) for s in snapshots] == [1, 3, 5]
     for prev, cur in zip(snapshots, snapshots[1:], strict=False):
         assert cur[:len(prev)] == prev
+
+
+def test_disabled_member_gets_error_instead_of_running():
+    client = FakeClient([[tool_use("new_tab", {}, "browser", "a"), tool_use("navigate", {"url": "/"}, "browser", "b")],
+                         [tool_use("escalate", {"reason": "x"}, None, "c")]])
+    ex = FakeExecutor()
+    run_agent(ex, "sys", [{"type": "text", "text": "go"}], make_tools([]), AgentConfig(model="claude-haiku-5-5"),
+              client=client)
+    results = client.sent[1][-1]["content"]
+    assert ex.calls == [] and results[0]["is_error"] and "not enabled" in results[0]["content"]
+    assert results[1]["content"].startswith("Not executed")

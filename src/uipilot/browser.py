@@ -446,7 +446,9 @@ class BrowserExecutor:
 
     def _do_new_tab(self, inp):
         self.context.new_page()  # _register 会把它设为当前标签
-        return [self.browser_state()]
+        state = self.browser_state()
+        state["state_changes"] = [{"type": "tab_opened", "tab_id": self.active}]  # 协议要求注明新开的是哪个标签
+        return [state]
 
     def _do_list_tabs(self, inp):
         return [self.browser_state()]

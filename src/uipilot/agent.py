@@ -54,6 +54,7 @@ class AgentConfig:
     max_turns: int = 40
     budget_usd: float = 1.0
     oracle_signals: bool = True  # 把控制台报错 / 5xx 等确定性信号附在工具结果里给模型看
+    narrate: bool = False  # 让 Opus / Sonnet 返回工具调用之间的进度说明（给回放页用）
     fallbacks: bool = True  # Opus / Sonnet 拒答时由服务端换模型重试（会记录在轨迹里）
 
 
@@ -95,10 +96,14 @@ def _signal_note(signals) -> str:
 
 def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict], tools: list[CustomTool],
               cfg: AgentConfig, trace_path: Path | None = None, client: anthropic.Anthropic | None = None,
-              finish_reminder: str = "请继续完成任务；如果已经完成，请调用 finish 工具结束。") -> RunResult:
+              finish_reminder: str = "请继续完成任务；如果已经完成，请调用 finish 工具结束。",
+              shot_dir: Path | None = None) -> RunResult:
+    """shot_dir 不为空时，每个浏览器动作执行后存一张截图，轨迹里记下文件名（给回放页用）。"""
     client = client or anthropic.Anthropic(max_retries=4)
     by_name = {t.name: t for t in tools}
-    tool_defs = [toolset(cfg.mode)] + [t.definition() for t in tools]
+    browser_toolset = toolset(cfg.mode)
+    disabled = set(browser_toolset["configs"])  # 关掉的成员模型仍可能调用，必须回错误而不是照常执行
+    tool_defs = [browser_toolset] + [t.definition() for t in tools]
     messages: list[dict] = [{"role": "user", "content": first_message}]
     result = RunResult("max_turns", 0, 0.0, 0.0, 0)
     start = time.time()
@@ -119,8 +124,11 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                           output_config={"effort": cfg.effort}, cache_control={"type": "ephemeral"})
             try:
                 if cfg.fallbacks and cfg.model in ("claude-opus-5-5", "claude-sonnet-5-5"):
-                    resp = client.beta.messages.create(**kwargs, betas=["server-side-fallback-2026-07-01"],
-                                                       fallbacks="default")
+                    betas = ["server-side-fallback-2026-07-01"]
+                    if cfg.narrate:
+                        betas.append("thinking-display-updates-2026-08-18")
+                        kwargs["thinking"] = {"type": "adaptive", "display": "updates"}
+                    resp = client.beta.messages.create(**kwargs, betas=betas, fallbacks="default")
                 else:
                     resp = client.messages.create(**kwargs)
             except anthropic.BadRequestError as e:
@@ -140,6 +148,7 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                 result.served_models.append(resp.model)
             messages.append({"role": "assistant", "content": resp.content})
             texts = [b.text for b in resp.content if b.type == "text"]
+            texts += [b.thinking for b in resp.content if b.type == "thinking" and getattr(b, "thinking", "")]
             log({"turn": turn, "stop": resp.stop_reason, "cost": round(cost, 5), "model": resp.model,
                  "text": texts, "usage": resp.usage.model_dump()})
 
@@ -170,6 +179,10 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                     inp = b.input if isinstance(b.input, dict) else b.input.model_dump(exclude_none=True)
                     if failed:
                         entry.update(content=NOT_EXECUTED, is_error=True)
+                    elif b.name in disabled:
+                        entry.update(content=f"Error: {b.name} is not enabled in this environment.", is_error=True)
+                        failed = True
+                        result.errors += 1
                     else:
                         try:
                             entry["content"] = executor.execute(b.name, inp)
@@ -178,9 +191,13 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                                          is_error=True)
                             failed = True
                             result.errors += 1
+                    shot = None
+                    if shot_dir is not None and executor.tabs:
+                        shot = f"{executor.action_count:03d}.jpg"
+                        executor.page.screenshot(path=str(shot_dir / shot), type="jpeg", quality=72)
                     log({"turn": turn, "action": b.name, "input": inp, "error": entry.get("is_error", False),
                          "result": entry["content"] if isinstance(entry["content"], str) else "[blocks]",
-                         "url": executor.page.url if executor.tabs else ""})
+                         "url": executor.page.url if executor.tabs else "", "shot": shot})
                     results.append(entry)
                     last_browser = entry
                 else:

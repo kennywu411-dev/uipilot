@@ -74,8 +74,10 @@ def render_html(doc: dict) -> str:
         f"<tr><td>{i}</td><td>{l['label']}</td><td class=r>{l['qty']:,}</td><td class=r>{money(l['price_cents'])}</td>"
         f"<td class=r>{money(l['qty'] * l['price_cents'])}</td></tr>" for i, l in enumerate(doc["lines"], 1))
     total = money(doc["printed_total_cents"])
+    tax = doc.get("tax_id")
     if doc["layout"] == "formal":
-        return f"""<div class=doc style=position:relative><div style="font-size:18px;text-align:center">{doc['supplier_label']}</div>
+        tax_line = f'<div style="font-size:13px;text-align:center;color:#333">税号：{tax}</div>' if tax else ""
+        return f"""<div class=doc style=position:relative><div style="font-size:18px;text-align:center">{doc['supplier_label']}</div>{tax_line}
 <h1>销 售 订 单</h1><div class=meta><span>购货单位：深圳宏远储能科技有限公司</span><span>单号：{doc['ext_no']}</span></div>
 <div class=meta><span>日期：{doc['date_text']}</span><span>付款方式：月结30天</span></div>
 <table><tr><th>序号</th><th>品名规格</th><th>数量</th><th>单价(元)</th><th>金额(元)</th></tr>{rows}
@@ -85,7 +87,7 @@ def render_html(doc: dict) -> str:
     if doc["layout"] == "english":
         rows = rows.replace("<td>", "<td style=font-family:Helvetica>")
         return f"""<div class=doc style="font-family:Helvetica,Arial"><div style="font-size:22px;font-weight:bold">{doc['supplier_label']}</div>
-<div style="color:#555">Bao'an District, Shenzhen, China</div><h1 style="letter-spacing:1px;font-size:22px;text-align:left;margin-top:18px">SALES ORDER CONFIRMATION</h1>
+<div style="color:#555">Bao'an District, Shenzhen, China{f" · USCC/Tax ID: {tax}" if tax else ""}</div><h1 style="letter-spacing:1px;font-size:22px;text-align:left;margin-top:18px">SALES ORDER CONFIRMATION</h1>
 <div class=meta><span>Bill To: Shenzhen Hongyuan Energy Storage Tech Co., Ltd.</span><span>Order No.: {doc['ext_no']}</span></div>
 <div class=meta><span>Date: {doc['date_text']}</span><span>Currency: CNY</span></div>
 <table><tr><th>#</th><th>Description</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr>{rows}
@@ -93,6 +95,7 @@ def render_html(doc: dict) -> str:
 <p style="font-size:13px;color:#444;margin-top:18px">Prices include 13% VAT. Delivery within 7 days after confirmation.</p></div>"""
     return f"""<div class="doc hand" style="background:#fbf8ef"><div style="text-align:center;font-size:24px">送 货 单</div>
 <div class=meta><span>送货单位：{doc['supplier_label']}</span><span>No. {doc['ext_no']}</span></div>
+{f"<div class=meta><span>税号：{tax}</span></div>" if tax else ""}
 <div class=meta><span>收货单位：宏远储能</span><span>{doc['date_text']}</span></div>
 <table class=hand><tr><th>行</th><th>货品</th><th>数量</th><th>单价</th><th>金额</th></tr>{rows}
 <tr><td colspan=4 class=r>合计金额</td><td class=r>{total}</td></tr></table>
@@ -166,7 +169,15 @@ def make_docs(n_normal: int = 18, seed_value: int = 11) -> list[dict]:
     return docs
 
 
-def make_hard_docs(seed_value: int = 23) -> list[dict]:
+def fake_tax_id(doc_id: str) -> str:
+    """给系统里不存在的公司编一个 18 位统一社会信用代码（不占用随机数序列，保证其余内容和无税号版一致）。"""
+    import hashlib
+    h = hashlib.sha256(doc_id.encode()).hexdigest().upper()
+    body = "".join(c for c in h if c.isalnum())[:8]
+    return f"9144{['0300', '1300', '1900', '0400'][int(h[0], 16) % 4]}MA{body}"
+
+
+def make_hard_docs(seed_value: int = 23, with_tax: bool = False) -> list[dict]:
     """难题集：明细多（6–10 行）、扫描更糊；陷阱都是“看着像”的：
     名字相近的另一家公司、规格只差一点的商品、只差几毛钱的合计、藏在列表后几页的重复单号。"""
     rng = random.Random(seed_value)
@@ -218,6 +229,8 @@ def make_hard_docs(seed_value: int = 23) -> list[dict]:
     for d in docs:
         d["printed_total_cents"] = sum(l["qty"] * l["price_cents"] for l in d["lines"]) + d.pop("delta", 0)
         d["expect"] = "enter" if d["kind"] == "normal" else "escalate"
+        if with_tax:
+            d["tax_id"] = fake_tax_id(d["id"]) if d["kind"] == "unknown_supplier" else seed.SUPPLIERS[d["supplier_id"] - 1][1]
     return docs
 
 
@@ -234,10 +247,10 @@ def degrade_hard(png: bytes, rng: random.Random) -> bytes:
 
 def main() -> None:
     import sys
-    hard = "--hard" in sys.argv
-    out = OUT.parent / "entry_hard" if hard else OUT
+    hard, tax = "--hard" in sys.argv, "--tax" in sys.argv
+    out = OUT.parent / ("entry_hard_tax" if tax else "entry_hard" if hard else "entry")
     (out / "docs").mkdir(parents=True, exist_ok=True)
-    docs = make_hard_docs() if hard else make_docs()
+    docs = make_hard_docs(with_tax=tax) if hard or tax else make_docs()
     rng = random.Random(5)
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
@@ -245,7 +258,7 @@ def main() -> None:
         for d in docs:
             page.set_content(f"<style>{CSS}</style>{render_html(d)}")
             png = page.locator(".doc").screenshot(type="png")
-            (out / "docs" / f"{d['id']}.jpg").write_bytes((degrade_hard if hard else degrade)(png, rng))
+            (out / "docs" / f"{d['id']}.jpg").write_bytes((degrade_hard if hard or tax else degrade)(png, rng))
         browser.close()
     (out / "tasks.json").write_text(json.dumps(docs, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"生成 {len(docs)} 张单据 → {out}")
