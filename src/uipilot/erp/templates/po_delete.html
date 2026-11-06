@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}删除确认{% endblock %}
+{% block body %}
+<h2>删除确认</h2>
+<p>确定要删除采购单 <b>{{ po.po_no }}</b>（{{ po.supplier }}，合计 {{ money(total) }} 元）吗？删除后不可恢复。</p>
+<form method="post" action="/po/{{ po.id }}/delete">
+  <button type="submit" class="btn-danger">确认删除</button> <a class="btn" href="/po">取消</a>
+</form>
+{% endblock %}

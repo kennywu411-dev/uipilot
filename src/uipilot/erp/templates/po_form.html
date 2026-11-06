@@ -1,0 +1,85 @@
+{% extends "base.html" %}{% block title %}{{ title }}{% endblock %}
+{% block body %}
+<h2>{{ title }}</h2>
+{% if errors %}<div class="errors">{% for e in errors %}<div>{{ e }}</div>{% endfor %}</div>{% endif %}
+<form method="post" action="{{ action }}" id="po-form">
+  <div class="form-row"><label for="supplier_id">供应商</label>
+    <select id="supplier_id" name="supplier_id">
+      <option value="">-- 请选择 --</option>
+      {% for s in suppliers %}<option value="{{ s.id }}" {% if form.supplier_id|string == s.id|string %}selected{% endif %}>{{ s.name }}</option>{% endfor %}
+    </select></div>
+  <div class="form-row"><label for="order_date">订单日期</label><input id="order_date" name="order_date" value="{{ form.order_date or '' }}" placeholder="YYYY-MM-DD" size="12"></div>
+  <div class="form-row"><label for="ext_no">对方单号</label><input id="ext_no" name="ext_no" value="{{ form.ext_no or '' }}" size="20"></div>
+  <table class="grid" id="lines" style="margin:8px 0">
+    <tr><th style="width:40px">行号</th><th>商品</th><th style="width:90px">数量</th><th style="width:110px">单价（元）</th><th style="width:110px" class="num">金额</th><th style="width:60px">操作</th></tr>
+    {% for l in form.lines %}
+    <tr class="line">
+      <td class="rowno">{{ loop.index }}</td>
+      <td><select name="product_id" aria-label="第{{ loop.index }}行商品">
+        <option value="">-- 选择商品 --</option>
+        {% for p in products %}<option value="{{ p.id }}" data-price="{{ '%.2f'|format(p.price_cents / 100) }}" {% if l.product_id|string == p.id|string %}selected{% endif %}>{{ p.sku }} {{ p.name }}</option>{% endfor %}
+      </select></td>
+      <td><input name="qty" value="{{ l.qty or '' }}" size="6" aria-label="第{{ loop.index }}行数量"></td>
+      <td><input name="price" value="{{ l.price or '' }}" size="8" aria-label="第{{ loop.index }}行单价"></td>
+      <td class="num amount"></td>
+      <td><button type="button" class="del-row">删除本行</button></td>
+    </tr>
+    {% endfor %}
+  </table>
+  <button type="button" id="add-row">添加明细行</button>
+  <span style="margin-left:30px">合计：<b id="live-total">0.00</b> 元</span>
+  <div class="form-row"><label for="remark">备注</label><textarea id="remark" name="remark" rows="2" cols="60">{{ form.remark or '' }}</textarea></div>
+  <div class="form-row"><label></label><button type="submit">保存</button> <a class="btn" href="/po">取消</a></div>
+</form>
+<script>
+const BUGS = {{ bugs|tojson }};
+const table = document.getElementById('lines');
+function renumber() {
+  table.querySelectorAll('tr.line').forEach((tr, i) => {
+    tr.querySelector('.rowno').textContent = i + 1;
+    tr.querySelector('select').setAttribute('aria-label', '第' + (i + 1) + '行商品');
+    tr.querySelector('[name=qty]').setAttribute('aria-label', '第' + (i + 1) + '行数量');
+    tr.querySelector('[name=price]').setAttribute('aria-label', '第' + (i + 1) + '行单价');
+  });
+}
+function recalc() {
+  let total = 0;
+  table.querySelectorAll('tr.line').forEach(tr => {
+    const q = parseFloat(tr.querySelector('[name=qty]').value) || 0;
+    const p = parseFloat(tr.querySelector('[name=price]').value) || 0;
+    const amt = Math.round(q * p * 100) / 100;
+    tr.querySelector('.amount').textContent = amt ? amt.toFixed(2) : '';
+    total += amt;
+  });
+  document.getElementById('live-total').textContent = total.toFixed(2);
+}
+function bindRow(tr) {
+  tr.querySelector('select').addEventListener('change', e => {
+    const opt = e.target.selectedOptions[0];
+    const price = tr.querySelector('[name=price]');
+    if (opt && opt.dataset.price && !price.value) price.value = opt.dataset.price;
+    recalc();
+  });
+  tr.querySelectorAll('input').forEach(i => i.addEventListener('input', recalc));
+  tr.querySelector('.del-row').addEventListener('click', () => {
+    if (table.querySelectorAll('tr.line').length > 1) { tr.remove(); renumber(); recalc(); }
+  });
+}
+table.querySelectorAll('tr.line').forEach(bindRow);
+document.getElementById('add-row').addEventListener('click', () => {
+  const rows = table.querySelectorAll('tr.line');
+  if (BUGS.includes('B11') && rows.length >= 5) {
+    const cfg = null;
+    cfg.maxRows.toString();  // 缺陷 B11
+  }
+  if (rows.length >= 20) { alert('明细最多 20 行'); return; }
+  const tr = rows[rows.length - 1].cloneNode(true);
+  tr.querySelectorAll('input').forEach(i => i.value = '');
+  tr.querySelector('select').value = '';
+  tr.querySelector('.amount').textContent = '';
+  table.appendChild(tr);
+  bindRow(tr); renumber(); recalc();
+});
+recalc();
+</script>
+{% endblock %}

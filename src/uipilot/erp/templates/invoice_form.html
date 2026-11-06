@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block title %}登记发票{% endblock %}
+{% block body %}
+<h2>登记进项发票</h2>
+{% if errors %}<div class="errors">{% for e in errors %}<div>{{ e }}</div>{% endfor %}</div>{% endif %}
+<form method="post" action="/invoices/new">
+  <div class="form-row"><label for="invoice_no">发票号码</label><input id="invoice_no" name="invoice_no" value="{{ form.invoice_no or '' }}" size="24"></div>
+  <div class="form-row"><label for="supplier_id">销售方</label>
+    <select id="supplier_id" name="supplier_id"><option value="">-- 请选择 --</option>
+      {% for s in suppliers %}<option value="{{ s.id }}" {% if form.supplier_id|string == s.id|string %}selected{% endif %}>{{ s.name }}</option>{% endfor %}
+    </select></div>
+  <div class="form-row"><label for="po_id">关联采购单</label>
+    <select id="po_id" name="po_id"><option value="">-- 不关联 --</option>
+      {% for p in pos %}<option value="{{ p.id }}" {% if form.po_id|string == p.id|string %}selected{% endif %}>{{ p.po_no }} {{ p.supplier }}</option>{% endfor %}
+    </select> <span class="muted">只列出待开票的采购单</span></div>
+  <div class="form-row"><label for="invoice_date">开票日期</label><input id="invoice_date" name="invoice_date" value="{{ form.invoice_date or '' }}" placeholder="YYYY-MM-DD" size="12"></div>
+  <div class="form-row"><label for="amount">不含税金额</label><input id="amount" name="amount" value="{{ form.amount or '' }}" size="12"></div>
+  <div class="form-row"><label for="tax_rate">税率</label>
+    <select id="tax_rate" name="tax_rate"><option value="">--</option>
+      {% for r in rates %}<option value="{{ r }}" {% if form.tax_rate == r %}selected{% endif %}>{{ r }}</option>{% endfor %}
+    </select></div>
+  <div class="form-row"><label></label><button type="submit">保存</button> <a class="btn" href="/invoices">返回</a></div>
+</form>
+{% endblock %}

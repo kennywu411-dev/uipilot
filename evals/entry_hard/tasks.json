@@ -1,0 +1,1168 @@
+[
+  {
+    "id": "H01",
+    "kind": "normal",
+    "layout": "english",
+    "supplier_id": 8,
+    "supplier": "ANKER TRADING (SHENZHEN) CO., LTD.",
+    "supplier_label": "Anker Trading Shenzhen",
+    "date": "2026-10-19",
+    "date_text": "19-Oct-2026",
+    "ext_no": "SO544331",
+    "lines": [
+      {
+        "sku": "LABEL-CE",
+        "label": "CE Label Sticker",
+        "qty": 60,
+        "price_cents": 39
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700 Cell 5.0Ah",
+        "qty": 3600,
+        "price_cents": 1377
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1KW Inverter PCB",
+        "qty": 120,
+        "price_cents": 18600
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "Carton Box (L)",
+        "qty": 3600,
+        "price_cents": 475
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "Aluminium Case 300W",
+        "qty": 60,
+        "price_cents": 4368
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025 Cooling Fan 12V",
+        "qty": 2400,
+        "price_cents": 598
+      }
+    ],
+    "printed_total_cents": 10598820,
+    "expect": "enter"
+  },
+  {
+    "id": "H02",
+    "kind": "normal",
+    "layout": "formal",
+    "supplier_id": 9,
+    "supplier": "珠海市格润电源技术有限公司",
+    "supplier_label": "格润电源",
+    "date": "2026-10-26",
+    "date_text": "2026/10/26",
+    "ext_no": "XS789871",
+    "lines": [
+      {
+        "sku": "BOX-CTN-L",
+        "label": "瓦楞箱-大",
+        "qty": 1200,
+        "price_cents": 418
+      },
+      {
+        "sku": "MOS-IRF3205",
+        "label": "IRF3205 MOS管",
+        "qty": 3600,
+        "price_cents": 184
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300瓦铝壳(套)",
+        "qty": 3600,
+        "price_cents": 4074
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000W逆变主板",
+        "qty": 240,
+        "price_cents": 18042
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 360,
+        "price_cents": 343
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "英规插座",
+        "qty": 120,
+        "price_cents": 404
+      }
+    ],
+    "printed_total_cents": 20332440,
+    "expect": "enter"
+  },
+  {
+    "id": "H03",
+    "kind": "normal",
+    "layout": "handwritten",
+    "supplier_id": 2,
+    "supplier": "东莞市恒达精密五金制品厂",
+    "supplier_label": "东莞恒达精密五金",
+    "date": "2026-10-19",
+    "date_text": "2026/10/19",
+    "ext_no": "XS960527",
+    "lines": [
+      {
+        "sku": "MOS-IRF3205",
+        "label": "IRF3205 MOS管",
+        "qty": 480,
+        "price_cents": 184
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000W逆变主板",
+        "qty": 120,
+        "price_cents": 18042
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 1200,
+        "price_cents": 6032
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4连接器(对)",
+        "qty": 120,
+        "price_cents": 343
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025风扇 DC12V",
+        "qty": 3600,
+        "price_cents": 707
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 2400,
+        "price_cents": 1420
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12AWG硅胶线",
+        "qty": 240,
+        "price_cents": 327
+      },
+      {
+        "sku": "LABEL-CE",
+        "label": "CE铭牌贴",
+        "qty": 360,
+        "price_cents": 36
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300瓦铝壳(套)",
+        "qty": 120,
+        "price_cents": 4200
+      }
+    ],
+    "printed_total_cents": 16081560,
+    "expect": "enter"
+  },
+  {
+    "id": "H04",
+    "kind": "normal",
+    "layout": "formal",
+    "supplier_id": 9,
+    "supplier": "珠海市格润电源技术有限公司",
+    "supplier_label": "格润电源",
+    "date": "2026-11-16",
+    "date_text": "2026年11月16日",
+    "ext_no": "XS179562",
+    "lines": [
+      {
+        "sku": "FAN-8025",
+        "label": "8025风扇 DC12V",
+        "qty": 120,
+        "price_cents": 659
+      },
+      {
+        "sku": "LB-18650-26",
+        "label": "18650电芯 2600毫安",
+        "qty": 360,
+        "price_cents": 761
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 2400,
+        "price_cents": 1320
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300W铝外壳",
+        "qty": 3600,
+        "price_cents": 4074
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 240,
+        "price_cents": 362
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12号硅胶软线(米)",
+        "qty": 120,
+        "price_cents": 277
+      }
+    ],
+    "printed_total_cents": 18307560,
+    "expect": "enter"
+  },
+  {
+    "id": "H05",
+    "kind": "normal",
+    "layout": "handwritten",
+    "supplier_id": 7,
+    "supplier": "中山市小榄镇金鼎线材有限公司",
+    "supplier_label": "中山市小榄镇金鼎线材有限公司",
+    "date": "2026-11-14",
+    "date_text": "2026/11/14",
+    "ext_no": "XS909150",
+    "lines": [
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12号硅胶软线(米)",
+        "qty": 360,
+        "price_cents": 292
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 1200,
+        "price_cents": 1377
+      },
+      {
+        "sku": "MOS-IRF3205",
+        "label": "IRF3205 MOS管",
+        "qty": 360,
+        "price_cents": 184
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 3600,
+        "price_cents": 343
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S保护板 30A",
+        "qty": 1200,
+        "price_cents": 2185
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025风扇 DC12V",
+        "qty": 240,
+        "price_cents": 707
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 60,
+        "price_cents": 6032
+      },
+      {
+        "sku": "PLUG-USB-C",
+        "label": "C口65瓦快充模块",
+        "qty": 2400,
+        "price_cents": 1736
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000瓦逆变器主控板",
+        "qty": 480,
+        "price_cents": 18600
+      },
+      {
+        "sku": "LB-18650-26",
+        "label": "18650电芯 2600毫安",
+        "qty": 480,
+        "price_cents": 899
+      }
+    ],
+    "printed_total_cents": 19738080,
+    "expect": "enter"
+  },
+  {
+    "id": "H06",
+    "kind": "normal",
+    "layout": "english",
+    "supplier_id": 8,
+    "supplier": "ANKER TRADING (SHENZHEN) CO., LTD.",
+    "supplier_label": "Anker Trading Shenzhen",
+    "date": "2026-10-02",
+    "date_text": "02-Oct-2026",
+    "ext_no": "SO495674",
+    "lines": [
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4 Connector Pair",
+        "qty": 1200,
+        "price_cents": 362
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S BMS 30A",
+        "qty": 1200,
+        "price_cents": 2444
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "UK AC Socket",
+        "qty": 480,
+        "price_cents": 427
+      },
+      {
+        "sku": "LB-18650-26",
+        "label": "18650 Li-ion Cell 2600mAh",
+        "qty": 240,
+        "price_cents": 804
+      },
+      {
+        "sku": "MOS-IRF3205",
+        "label": "IRF3205 MOSFET",
+        "qty": 60,
+        "price_cents": 218
+      },
+      {
+        "sku": "LABEL-CE",
+        "label": "CE Label Sticker",
+        "qty": 3600,
+        "price_cents": 39
+      }
+    ],
+    "printed_total_cents": 3918600,
+    "expect": "enter"
+  },
+  {
+    "id": "H07",
+    "kind": "normal",
+    "layout": "english",
+    "supplier_id": 8,
+    "supplier": "ANKER TRADING (SHENZHEN) CO., LTD.",
+    "supplier_label": "ANKER TRADING (SHENZHEN) CO., LTD.",
+    "date": "2026-11-23",
+    "date_text": "23-Nov-2026",
+    "ext_no": "SO502673",
+    "lines": [
+      {
+        "sku": "CASE-AL-300",
+        "label": "Aluminium Case 300W",
+        "qty": 60,
+        "price_cents": 4368
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025 Cooling Fan 12V",
+        "qty": 480,
+        "price_cents": 680
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "Carton Box (L)",
+        "qty": 360,
+        "price_cents": 475
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700 Cell 5.0Ah",
+        "qty": 3600,
+        "price_cents": 1249
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1KW Inverter PCB",
+        "qty": 2400,
+        "price_cents": 18600
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S BMS 60A",
+        "qty": 480,
+        "price_cents": 5800
+      },
+      {
+        "sku": "LB-18650-26",
+        "label": "18650 Li-ion Cell 2600mAh",
+        "qty": 1200,
+        "price_cents": 839
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S BMS 30A",
+        "qty": 240,
+        "price_cents": 2068
+      },
+      {
+        "sku": "PLUG-USB-C",
+        "label": "USB-C PD Board 65W",
+        "qty": 120,
+        "price_cents": 1575
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4 Connector Pair",
+        "qty": 2400,
+        "price_cents": 378
+      }
+    ],
+    "printed_total_cents": 55279200,
+    "expect": "enter"
+  },
+  {
+    "id": "H08",
+    "kind": "normal",
+    "layout": "formal",
+    "supplier_id": 9,
+    "supplier": "珠海市格润电源技术有限公司",
+    "supplier_label": "格润电源",
+    "date": "2026-10-20",
+    "date_text": "2026年10月20日",
+    "ext_no": "XS226108",
+    "lines": [
+      {
+        "sku": "PLUG-USB-C",
+        "label": "Type-C快充板65W",
+        "qty": 60,
+        "price_cents": 1664
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "大号纸箱",
+        "qty": 1200,
+        "price_cents": 418
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S保护板 30A",
+        "qty": 1200,
+        "price_cents": 2350
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4连接器(对)",
+        "qty": 360,
+        "price_cents": 390
+      },
+      {
+        "sku": "MOS-IRF3205",
+        "label": "3205场效应管",
+        "qty": 1200,
+        "price_cents": 203
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "英规插座",
+        "qty": 2400,
+        "price_cents": 404
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025风扇 DC12V",
+        "qty": 480,
+        "price_cents": 632
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300W铝外壳",
+        "qty": 1200,
+        "price_cents": 4368
+      }
+    ],
+    "printed_total_cents": 10320000,
+    "expect": "enter"
+  },
+  {
+    "id": "H09",
+    "kind": "normal",
+    "layout": "handwritten",
+    "supplier_id": 10,
+    "supplier": "深圳市龙岗区欣旺达电子有限公司",
+    "supplier_label": "深圳市龙岗区欣旺达电子有限公司",
+    "date": "2026-10-16",
+    "date_text": "2026/10/16",
+    "ext_no": "XS859332",
+    "lines": [
+      {
+        "sku": "CASE-AL-300",
+        "label": "300W铝外壳",
+        "qty": 60,
+        "price_cents": 4368
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 3600,
+        "price_cents": 362
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "英式交流插座",
+        "qty": 1200,
+        "price_cents": 446
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700锂电芯5000毫安时",
+        "qty": 60,
+        "price_cents": 1377
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "瓦楞箱-大",
+        "qty": 240,
+        "price_cents": 441
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12号硅胶软线(米)",
+        "qty": 3600,
+        "price_cents": 327
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000瓦逆变器主控板",
+        "qty": 240,
+        "price_cents": 18600
+      },
+      {
+        "sku": "PLUG-USB-C",
+        "label": "Type-C快充板65W",
+        "qty": 2400,
+        "price_cents": 1861
+      }
+    ],
+    "printed_total_cents": 12396540,
+    "expect": "enter"
+  },
+  {
+    "id": "H10",
+    "kind": "normal",
+    "layout": "formal",
+    "supplier_id": 2,
+    "supplier": "东莞市恒达精密五金制品厂",
+    "supplier_label": "东莞恒达精密五金",
+    "date": "2026-10-13",
+    "date_text": "2026/10/13",
+    "ext_no": "XS159887",
+    "lines": [
+      {
+        "sku": "PLUG-USB-C",
+        "label": "C口65瓦快充模块",
+        "qty": 120,
+        "price_cents": 1790
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "四串锂电保护板30安",
+        "qty": 3600,
+        "price_cents": 2350
+      },
+      {
+        "sku": "LABEL-CE",
+        "label": "CE标贴",
+        "qty": 120,
+        "price_cents": 36
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12AWG硅胶线",
+        "qty": 360,
+        "price_cents": 277
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000W逆变主板",
+        "qty": 1200,
+        "price_cents": 16368
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025散热风机",
+        "qty": 480,
+        "price_cents": 632
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "瓦楞箱-大",
+        "qty": 480,
+        "price_cents": 494
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 360,
+        "price_cents": 5394
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 120,
+        "price_cents": 1249
+      }
+    ],
+    "printed_total_cents": 31052640,
+    "expect": "enter"
+  },
+  {
+    "id": "H11",
+    "kind": "normal",
+    "layout": "handwritten",
+    "supplier_id": 4,
+    "supplier": "惠州市德赛锂电池科技有限公司",
+    "supplier_label": "德赛锂电",
+    "date": "2026-11-09",
+    "date_text": "2026年11月9日",
+    "ext_no": "XS969562",
+    "lines": [
+      {
+        "sku": "BMS-8S-60A",
+        "label": "八串保护板60A",
+        "qty": 2400,
+        "price_cents": 5394
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4连接器(对)",
+        "qty": 120,
+        "price_cents": 390
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S保护板 30A",
+        "qty": 360,
+        "price_cents": 2279
+      },
+      {
+        "sku": "LB-18650-26",
+        "label": "18650电芯 2600毫安",
+        "qty": 240,
+        "price_cents": 899
+      },
+      {
+        "sku": "PLUG-USB-C",
+        "label": "Type-C快充板65W",
+        "qty": 2400,
+        "price_cents": 1664
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700锂电芯5000毫安时",
+        "qty": 60,
+        "price_cents": 1420
+      }
+    ],
+    "printed_total_cents": 18107400,
+    "expect": "enter"
+  },
+  {
+    "id": "H12",
+    "kind": "normal",
+    "layout": "formal",
+    "supplier_id": 1,
+    "supplier": "深圳市华强电子有限公司",
+    "supplier_label": "华强电子",
+    "date": "2026-10-26",
+    "date_text": "2026/10/26",
+    "ext_no": "XS777307",
+    "lines": [
+      {
+        "sku": "MOS-IRF3205",
+        "label": "3205场效应管",
+        "qty": 480,
+        "price_cents": 218
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 240,
+        "price_cents": 1249
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 120,
+        "price_cents": 378
+      },
+      {
+        "sku": "LABEL-CE",
+        "label": "CE铭牌贴",
+        "qty": 240,
+        "price_cents": 36
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S保护板 30A",
+        "qty": 2400,
+        "price_cents": 2068
+      },
+      {
+        "sku": "LB-18650-26",
+        "label": "18650电芯 2600毫安",
+        "qty": 240,
+        "price_cents": 761
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 120,
+        "price_cents": 5104
+      }
+    ],
+    "printed_total_cents": 6216720,
+    "expect": "enter"
+  },
+  {
+    "id": "H13",
+    "kind": "unknown_supplier",
+    "layout": "handwritten",
+    "supplier_id": 1,
+    "supplier": "深圳市华强电子有限公司",
+    "supplier_label": "深圳市华强电子科技有限公司",
+    "date": "2026-10-27",
+    "date_text": "2026年10月27日",
+    "ext_no": "XS220735",
+    "lines": [
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 360,
+        "price_cents": 1320
+      },
+      {
+        "sku": "LABEL-CE",
+        "label": "CE标贴",
+        "qty": 2400,
+        "price_cents": 36
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000W逆变主板",
+        "qty": 240,
+        "price_cents": 19344
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 1200,
+        "price_cents": 5104
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300W铝外壳",
+        "qty": 240,
+        "price_cents": 4200
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12AWG硅胶线",
+        "qty": 1200,
+        "price_cents": 305
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4连接器(对)",
+        "qty": 3600,
+        "price_cents": 390
+      }
+    ],
+    "hard": "名字和“深圳市华强电子有限公司”只差两个字",
+    "printed_total_cents": 14106960,
+    "expect": "escalate"
+  },
+  {
+    "id": "H14",
+    "kind": "unknown_supplier",
+    "layout": "formal",
+    "supplier_id": 4,
+    "supplier": "惠州市德赛锂电池科技有限公司",
+    "supplier_label": "惠州市德赛电池有限公司",
+    "date": "2026-10-09",
+    "date_text": "2026年10月9日",
+    "ext_no": "XS586760",
+    "lines": [
+      {
+        "sku": "PLUG-USB-C",
+        "label": "C口65瓦快充模块",
+        "qty": 3600,
+        "price_cents": 1790
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 2400,
+        "price_cents": 390
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "英规插座",
+        "qty": 240,
+        "price_cents": 478
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000W逆变主板",
+        "qty": 60,
+        "price_cents": 16368
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025散热风机",
+        "qty": 240,
+        "price_cents": 680
+      }
+    ],
+    "hard": "和“惠州市德赛锂电池科技有限公司”相近",
+    "printed_total_cents": 8640000,
+    "expect": "escalate"
+  },
+  {
+    "id": "H15",
+    "kind": "unknown_supplier",
+    "layout": "english",
+    "supplier_id": 12,
+    "supplier": "Shenzhen Brightway Electronics Co., Ltd.",
+    "supplier_label": "Brightway Electronic (HK) Limited",
+    "date": "2026-11-13",
+    "date_text": "13-Nov-2026",
+    "ext_no": "SO529383",
+    "lines": [
+      {
+        "sku": "FAN-8025",
+        "label": "8025 Cooling Fan 12V",
+        "qty": 2400,
+        "price_cents": 598
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "Carton Box (L)",
+        "qty": 480,
+        "price_cents": 460
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700 Cell 5.0Ah",
+        "qty": 1200,
+        "price_cents": 1476
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12AWG Silicone Wire (m)",
+        "qty": 60,
+        "price_cents": 305
+      },
+      {
+        "sku": "PLUG-USB-C",
+        "label": "USB-C PD Board 65W",
+        "qty": 480,
+        "price_cents": 1664
+      }
+    ],
+    "hard": "香港公司，不是深圳的 Brightway",
+    "printed_total_cents": 4244220,
+    "expect": "escalate"
+  },
+  {
+    "id": "H16",
+    "kind": "unknown_product",
+    "layout": "formal",
+    "supplier_id": 9,
+    "supplier": "珠海市格润电源技术有限公司",
+    "supplier_label": "珠海格润电源技术有限公司",
+    "date": "2026-11-16",
+    "date_text": "2026年11月16日",
+    "ext_no": "XS918432",
+    "lines": [
+      {
+        "sku": "LABEL-CE",
+        "label": "CE铭牌贴",
+        "qty": 360,
+        "price_cents": 38
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "英式交流插座",
+        "qty": 360,
+        "price_cents": 427
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 480,
+        "price_cents": 5104
+      },
+      {
+        "sku": null,
+        "label": "18650锂电芯 3000mAh",
+        "qty": 240,
+        "price_cents": 960
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025风扇 DC12V",
+        "qty": 360,
+        "price_cents": 632
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "大号纸箱",
+        "qty": 3600,
+        "price_cents": 460
+      }
+    ],
+    "hard": "系统只有 2600mAh",
+    "printed_total_cents": 4731240,
+    "expect": "escalate"
+  },
+  {
+    "id": "H17",
+    "kind": "unknown_product",
+    "layout": "handwritten",
+    "supplier_id": 2,
+    "supplier": "东莞市恒达精密五金制品厂",
+    "supplier_label": "恒达五金",
+    "date": "2026-11-12",
+    "date_text": "2026/11/12",
+    "ext_no": "XS991241",
+    "lines": [
+      {
+        "sku": "PLUG-USB-C",
+        "label": "Type-C快充板65W",
+        "qty": 240,
+        "price_cents": 1736
+      },
+      {
+        "sku": null,
+        "label": "8串保护板 80A",
+        "qty": 240,
+        "price_cents": 7350
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "四串锂电保护板30安",
+        "qty": 480,
+        "price_cents": 2350
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12号硅胶软线(米)",
+        "qty": 240,
+        "price_cents": 305
+      },
+      {
+        "sku": "LABEL-CE",
+        "label": "CE标贴",
+        "qty": 1200,
+        "price_cents": 38
+      },
+      {
+        "sku": "INV-PCB-1K",
+        "label": "1000瓦逆变器主控板",
+        "qty": 360,
+        "price_cents": 17298
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "八串保护板60A",
+        "qty": 480,
+        "price_cents": 5104
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700电芯 5000mAh",
+        "qty": 240,
+        "price_cents": 1249
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 2400,
+        "price_cents": 390
+      }
+    ],
+    "hard": "系统只有 60A",
+    "printed_total_cents": 13340400,
+    "expect": "escalate"
+  },
+  {
+    "id": "H18",
+    "kind": "total_mismatch",
+    "layout": "formal",
+    "supplier_id": 10,
+    "supplier": "深圳市龙岗区欣旺达电子有限公司",
+    "supplier_label": "深圳市龙岗区欣旺达电子有限公司",
+    "date": "2026-11-01",
+    "date_text": "2026/11/01",
+    "ext_no": "XS917137",
+    "lines": [
+      {
+        "sku": "CASE-AL-300",
+        "label": "300W铝外壳",
+        "qty": 120,
+        "price_cents": 3906
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700锂电芯5000毫安时",
+        "qty": 60,
+        "price_cents": 1320
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "瓦楞箱-大",
+        "qty": 3600,
+        "price_cents": 441
+      },
+      {
+        "sku": "PLUG-AC-UK",
+        "label": "英式交流插座",
+        "qty": 240,
+        "price_cents": 404
+      },
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12号硅胶软线(米)",
+        "qty": 2400,
+        "price_cents": 277
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "4S保护板 30A",
+        "qty": 360,
+        "price_cents": 2279
+      }
+    ],
+    "hard": "合计只差 0.10 元",
+    "printed_total_cents": 3717730,
+    "expect": "escalate"
+  },
+  {
+    "id": "H19",
+    "kind": "total_mismatch",
+    "layout": "handwritten",
+    "supplier_id": 7,
+    "supplier": "中山市小榄镇金鼎线材有限公司",
+    "supplier_label": "中山市小榄镇金鼎线材有限公司",
+    "date": "2026-10-28",
+    "date_text": "2026年10月28日",
+    "ext_no": "XS871902",
+    "lines": [
+      {
+        "sku": "WIRE-12AWG",
+        "label": "12AWG硅胶线",
+        "qty": 2400,
+        "price_cents": 292
+      },
+      {
+        "sku": "FAN-8025",
+        "label": "8025风扇 DC12V",
+        "qty": 2400,
+        "price_cents": 680
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "大号纸箱",
+        "qty": 60,
+        "price_cents": 460
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "MC4连接器(对)",
+        "qty": 120,
+        "price_cents": 343
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300W铝外壳",
+        "qty": 240,
+        "price_cents": 4200
+      },
+      {
+        "sku": "MOS-IRF3205",
+        "label": "IRF3205 MOS管",
+        "qty": 60,
+        "price_cents": 195
+      },
+      {
+        "sku": "LB-21700-50",
+        "label": "21700锂电芯5000毫安时",
+        "qty": 1200,
+        "price_cents": 1249
+      },
+      {
+        "sku": "BMS-4S-30A",
+        "label": "四串锂电保护板30安",
+        "qty": 120,
+        "price_cents": 2068
+      }
+    ],
+    "hard": "合计只差 1.00 元",
+    "printed_total_cents": 5168120,
+    "expect": "escalate"
+  },
+  {
+    "id": "H20",
+    "kind": "duplicate",
+    "layout": "formal",
+    "supplier_id": 1,
+    "supplier": "深圳市华强电子有限公司",
+    "supplier_label": "华强电子",
+    "date": "2026-11-02",
+    "date_text": "2026年11月2日",
+    "ext_no": "SO2026255",
+    "lines": [
+      {
+        "sku": "BMS-4S-30A",
+        "label": "四串锂电保护板30安",
+        "qty": 480,
+        "price_cents": 2350
+      },
+      {
+        "sku": "CASE-AL-300",
+        "label": "300瓦铝壳(套)",
+        "qty": 60,
+        "price_cents": 4368
+      },
+      {
+        "sku": "BMS-8S-60A",
+        "label": "8S保护板 60A",
+        "qty": 60,
+        "price_cents": 5800
+      },
+      {
+        "sku": "PLUG-USB-C",
+        "label": "C口65瓦快充模块",
+        "qty": 60,
+        "price_cents": 1664
+      },
+      {
+        "sku": "SOLAR-MC4",
+        "label": "光伏MC4接头",
+        "qty": 360,
+        "price_cents": 343
+      },
+      {
+        "sku": "BOX-CTN-L",
+        "label": "大号纸箱",
+        "qty": 1200,
+        "price_cents": 441
+      }
+    ],
+    "hard": "重复单号在列表第 2 页",
+    "printed_total_cents": 2490600,
+    "expect": "escalate"
+  }
+]

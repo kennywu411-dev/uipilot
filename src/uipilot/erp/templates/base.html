@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>{% block title %}宏远进销存{% endblock %} - 宏远进销存管理系统 V3.2</title>
+<style>
+  body { font-family: "SimSun", "Songti SC", serif; font-size: 13px; margin: 0; background: #e8e8e8; color: #111; }
+  .top { background: linear-gradient(#3a6ea5, #1f4e85); color: #fff; padding: 6px 12px; }
+  .top b { font-size: 16px; letter-spacing: 1px; }
+  .top span { float: right; font-size: 12px; }
+  .nav { background: #d4d0c8; border-bottom: 1px solid #808080; padding: 4px 8px; }
+  .nav a { color: #000; margin-right: 14px; text-decoration: none; padding: 2px 6px; border: 1px solid transparent; }
+  .nav a:hover { border: 1px outset #fff; }
+  .main { background: #fff; margin: 10px; padding: 10px 14px; border: 1px solid #999; min-height: 500px; }
+  h2 { font-size: 15px; border-left: 4px solid #1f4e85; padding-left: 6px; margin: 4px 0 10px; }
+  table.grid { border-collapse: collapse; width: 100%; }
+  table.grid th { background: #d4d0c8; border: 1px solid #808080; padding: 3px 6px; font-weight: normal; text-align: left; }
+  table.grid td { border: 1px solid #b0b0b0; padding: 3px 6px; }
+  table.grid tr:nth-child(even) td { background: #f4f7fb; }
+  .num { text-align: right; font-family: Consolas, monospace; }
+  input, select, textarea { font-size: 13px; font-family: inherit; border: 1px solid #7f9db9; padding: 2px 3px; }
+  button, .btn { font-size: 13px; background: #ece9d8; border: 1px outset #fff; padding: 2px 10px; cursor: pointer; color: #000; text-decoration: none; display: inline-block; }
+  .btn-danger { color: #a00; }
+  .errors { background: #fff0f0; border: 1px solid #d00; color: #a00; padding: 6px 10px; margin-bottom: 10px; }
+  .ok { background: #f0fff0; border: 1px solid #090; color: #060; padding: 6px 10px; margin-bottom: 10px; }
+  .form-row { margin: 6px 0; }
+  .form-row label { display: inline-block; width: 90px; text-align: right; margin-right: 6px; }
+  .pager { margin-top: 8px; }
+  .muted { color: #666; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="top"><b>宏远进销存管理系统 V3.2</b><span>操作员：张会计 ｜ 深圳宏远储能科技有限公司 ｜ 2026-11-06</span></div>
+<div class="nav">
+  <a href="/po">采购单</a><a href="/po/new">新建采购单</a><a href="/invoices">发票登记</a>
+  <a href="/suppliers">供应商</a><a href="/products">商品资料</a><a href="/help">业务规则说明</a>
+</div>
+<div class="main">{% block body %}{% endblock %}</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}供应商{% endblock %}
+{% block body %}
+<h2>供应商档案</h2>
+<form method="get" action="/suppliers" style="margin-bottom:8px">
+  名称：<input name="q" value="{{ q }}" aria-label="供应商名称搜索"> <button type="submit">查询</button>
+  <a class="btn" href="/suppliers/new" style="margin-left:20px">新增供应商</a>
+</form>
+<table class="grid">
+  <tr><th>编号</th><th>供应商名称</th><th>税号</th><th>联系人</th><th>电话</th></tr>
+  {% for r in rows %}
+  <tr><td>{{ r.id }}</td><td>{{ r.name }}</td><td>{{ r.tax_id }}</td><td>{{ r.contact }}</td><td>{{ r.phone }}</td></tr>
+  {% else %}
+  <tr><td colspan="5" class="muted">没有找到符合条件的供应商</td></tr>
+  {% endfor %}
+</table>
+<p class="muted">共 {{ rows|length }} 条</p>
+{% endblock %}

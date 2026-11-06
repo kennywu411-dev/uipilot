@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block title %}采购单 {{ po.po_no }}{% endblock %}
+{% block body %}
+<h2>采购单详情：{{ po.po_no }}</h2>
+{% if saved %}<div class="ok">保存成功</div>{% endif %}
+<table class="grid" style="width:auto;margin-bottom:10px">
+  <tr><th>供应商</th><td>{{ po.supplier }}</td><th>订单日期</th><td>{{ po.order_date }}</td></tr>
+  <tr><th>对方单号</th><td>{{ po.ext_no }}</td><th>状态</th><td>{{ po.status }}</td></tr>
+  <tr><th>备注</th><td colspan="3">{{ po.remark }}</td></tr>
+</table>
+<table class="grid">
+  <tr><th>行号</th><th>商品编码</th><th>商品名称</th><th>单位</th><th class="num">数量</th><th class="num">单价</th><th class="num">金额</th></tr>
+  {% for l in lines %}
+  <tr><td>{{ loop.index }}</td><td>{{ l.sku }}</td><td>{{ l.name }}</td><td>{{ l.unit }}</td>
+      <td class="num">{{ l.qty }}</td><td class="num">{{ money(l.price_cents) }}</td><td class="num">{{ money(l.qty * l.price_cents) }}</td></tr>
+  {% endfor %}
+  <tr><td colspan="6" class="num"><b>合计</b></td><td class="num"><b>{{ money(total) }}</b></td></tr>
+</table>
+{% if invoice %}<p>已关联发票：{{ invoice.invoice_no }}（价税合计 {{ money(invoice.total_cents) }} 元）</p>{% endif %}
+<p><a class="btn" href="/po/{{ po.id }}/edit">编辑</a> <a class="btn" href="/po">返回列表</a></p>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}发票登记{% endblock %}
+{% block body %}
+<h2>进项发票登记簿</h2>
+<p><a class="btn" href="/invoices/new">登记新发票</a></p>
+<table class="grid">
+  <tr><th>发票号码</th><th>供应商</th><th>关联采购单</th><th>开票日期</th><th class="num">不含税金额</th><th>税率</th><th class="num">税额</th><th class="num">价税合计</th></tr>
+  {% for r in rows %}
+  <tr><td>{{ r.invoice_no }}</td><td>{{ r.supplier }}</td><td>{{ r.po_no or '' }}</td><td>{{ r.invoice_date }}</td>
+      <td class="num">{{ money(r.amount_cents) }}</td><td>{{ r.tax_rate }}</td><td class="num">{{ money(r.tax_cents) }}</td><td class="num">{{ money(r.total_cents) }}</td></tr>
+  {% else %}<tr><td colspan="8" class="muted">暂无发票</td></tr>{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% block title %}采购单{% endblock %}
+{% block body %}
+<h2>采购单列表</h2>
+{% if msg %}<div class="ok">{{ msg }}</div>{% endif %}
+<form method="get" action="/po" style="margin-bottom:8px">
+  单号/供应商：<input name="q" value="{{ q }}" aria-label="单号或供应商搜索">
+  排序：<select name="sort" aria-label="排序方式">
+    <option value="" {% if not sort %}selected{% endif %}>按录入时间（新到旧）</option>
+    <option value="amount" {% if sort == 'amount' %}selected{% endif %}>按金额（大到小）</option>
+  </select>
+  <button type="submit">查询</button>
+  <a class="btn" href="/po/new" style="margin-left:20px">新建采购单</a>
+</form>
+<table class="grid">
+  <tr><th>采购单号</th><th>对方单号</th><th>供应商</th><th>日期</th><th class="num">合计（元）</th><th>状态</th><th>操作</th></tr>
+  {% for i in items %}
+  <tr>
+    <td><a href="/po/{{ i.id }}">{{ i.po_no }}</a></td><td>{{ i.ext_no }}</td><td>{{ i.supplier }}</td><td>{{ i.order_date }}</td>
+    <td class="num">{{ money(i.total) }}</td><td>{{ i.status }}</td>
+    <td><a href="/po/{{ i.id }}/edit">编辑</a>
+      {% if i.status != '已开票' or 'B14' in bugs %} ｜ <a class="btn-danger" href="/po/{{ i.id }}/delete">删除</a>{% endif %}</td>
+  </tr>
+  {% else %}<tr><td colspan="7" class="muted">没有采购单</td></tr>{% endfor %}
+</table>
+<div class="pager">
+  共 {{ total_count }} 条，第 {{ page }} / {{ pages }} 页
+  {% if page > 1 %}<a href="/po?page={{ page - 1 }}&sort={{ sort }}&q={{ q }}">上一页</a>{% endif %}
+  {% if page < pages %}<a href="/po?page={{ page + 1 }}&sort={{ sort }}&q={{ q }}">下一页</a>{% endif %}
+</div>
+{% endblock %}

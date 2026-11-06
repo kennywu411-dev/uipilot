@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}新增供应商{% endblock %}
+{% block body %}
+<h2>新增供应商</h2>
+{% if errors %}<div class="errors">{% for e in errors %}<div>{{ e }}</div>{% endfor %}</div>{% endif %}
+<form method="post" action="/suppliers/new">
+  <div class="form-row"><label for="name">供应商名称</label><input id="name" name="name" size="40" value="{{ form.name or '' }}"></div>
+  <div class="form-row"><label for="tax_id">税号</label><input id="tax_id" name="tax_id" size="24" value="{{ form.tax_id or '' }}"></div>
+  <div class="form-row"><label for="contact">联系人</label><input id="contact" name="contact" value="{{ form.contact or '' }}"></div>
+  <div class="form-row"><label for="phone">电话</label><input id="phone" name="phone" value="{{ form.phone or '' }}"></div>
+  <div class="form-row"><label></label><button type="submit">保存</button> <a class="btn" href="/suppliers">返回</a></div>
+</form>
+{% endblock %}
