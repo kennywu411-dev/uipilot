@@ -528,7 +528,7 @@ function field(d) {
     }).join("")}</tbody></table>`;
   } else $("#field-table").remove();
   const label = { confirmed: ["pass", "已确认"], known: ["mark", "官方已知"], rejected: ["fail", "复核不成立"] };
-  $("#findings").innerHTML = ex.findings.map(f => `<div class="finding"><div class="where"><span>${esc(f.impl)}</span><span>${esc(f.clause)}</span><span>发现者：${esc(f.found_by)}</span><span class="chip ${label[f.status][0]}">${label[f.status][1]}</span></div><h3>${esc(f.title)}</h3><p>${esc(f.detail)}</p></div>`).join("");
+  $("#findings").innerHTML = ex.findings.map(f => `<div class="finding"><div class="where"><span>${esc(f.impl)}</span><span>${esc(f.clause)}</span><span>发现者：${esc(f.found_by)}</span><span class="chip ${label[f.status][0]}">${label[f.status][1]}</span>${f.issue ? `<a href="${esc(f.issue)}">#${esc(f.issue.split("/").pop())}</a>` : ""}</div><h3>${esc(f.title)}</h3><p>${esc(f.detail)}</p></div>`).join("");
 }
 
 fetch("data.json").then(r => r.json()).then(d => { figures(d); player(d); matrix(d); scatter(d); field(d); })

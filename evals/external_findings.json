@@ -1,5 +1,5 @@
 {
-  "lede": "TodoMVC 的框架实现都要遵守同一份公开规格书。测试 Agent 拿规格书当业务规则，在 11 个官方实现上用 Haiku、Sonnet、Opus 各探索一遍（Opus 共三遍），复现确认的报告再逐条用确定性脚本按真人操作复核。其中 lit 和 web-components 用了 shadow DOM，不在官方默认测试集里。",
+  "lede": "TodoMVC 的框架实现都要遵守同一份公开规格书。测试 Agent 拿规格书当业务规则，在 11 个官方实现上用 Haiku、Sonnet、Opus 各探索一遍（Opus 共三遍），复现确认的报告再逐条用确定性脚本按真人操作复核。其中 lit 和 web-components 用了 shadow DOM，不在官方默认测试集里。确认的偏差已按实现分成 7 份 issue 提交给维护者。",
   "summary": {
     "implementations": 11,
     "haiku": {
@@ -41,7 +41,8 @@
       "status": "confirmed",
       "found_by": "Haiku、Sonnet、Opus",
       "title": "按 Esc 不退出编辑，修改也没有真正放弃",
-      "detail": "规格要求按 Esc 时离开编辑状态并放弃修改。React 实现按 Esc 后编辑框一直开着；之后一失焦，刚才“放弃”的修改就被保存了。官方测试只断言按 Esc 那一刻的标签文字，所以这个实现能通过官方测试。"
+      "detail": "规格要求按 Esc 时离开编辑状态并放弃修改。React 实现按 Esc 后编辑框一直开着；之后一失焦，刚才“放弃”的修改就被保存了。官方测试只断言按 Esc 那一刻的标签文字，所以这个实现能通过官方测试。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2309"
     },
     {
       "impl": "javascript-es5",
@@ -49,7 +50,8 @@
       "status": "confirmed",
       "found_by": "Haiku、Sonnet、Opus",
       "title": "“全选”框不随条目状态同步",
-      "detail": "三种表现：逐个勾完所有条目，全选框不勾上；全选后取消一条，全选框仍是勾选，再点会把全部取消；点 Clear completed 后再新加一条未完成的待办，全选框依然勾着。javascript-es6、jquery、vue、react 都正常。"
+      "detail": "三种表现：逐个勾完所有条目，全选框不勾上；全选后取消一条，全选框仍是勾选，再点会把全部取消；点 Clear completed 后再新加一条未完成的待办，全选框依然勾着。javascript-es6、jquery、vue、react 都正常。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2310"
     },
     {
       "impl": "javascript-es6",
@@ -57,7 +59,8 @@
       "status": "confirmed",
       "found_by": "Haiku、Sonnet、Opus",
       "title": "新建的待办插到了列表顶部",
-      "detail": "规格写的是回车后把新待办 appends 到列表。这个实现（2.0 里改名为 Modern JavaScript）把新条目放在最前面；它不在官方默认测试集里，“should append new items to the bottom of the list”这条测试平时不会跑到它。"
+      "detail": "规格写的是回车后把新待办 appends 到列表。这个实现（2.0 里改名为 Modern JavaScript）把新条目放在最前面；它不在官方默认测试集里，“should append new items to the bottom of the list”这条测试平时不会跑到它。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2311"
     },
     {
       "impl": "lit",
@@ -65,7 +68,8 @@
       "status": "confirmed",
       "found_by": "Opus（根因），Haiku、Sonnet（症状）",
       "title": "双击进入编辑后，编辑框没有获得焦点",
-      "detail": "焦点停在页面上，打字、Esc、Enter 都没有反应，条目一直停在编辑状态。Haiku 和 Sonnet 先报了这些症状，我最初用 fill() 复核没复现出来，判为不成立；Opus 指出根因后按真人的键盘操作重测才确认。判错的是复核脚本：fill() 会强制让输入框获得焦点。"
+      "detail": "焦点停在页面上，打字、Esc、Enter 都没有反应，条目一直停在编辑状态。Haiku 和 Sonnet 先报了这些症状，我最初用 fill() 复核没复现出来，判为不成立；Opus 指出根因后按真人的键盘操作重测才确认。判错的是复核脚本：fill() 会强制让输入框获得焦点。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2313"
     },
     {
       "impl": "lit",
@@ -73,7 +77,8 @@
       "status": "confirmed",
       "found_by": "Haiku、Opus",
       "title": "只输入空格也会新建一条空白待办",
-      "detail": "规格要求先 trim 再判断是否为空。官方测试脚本因为看不进三层嵌套的 shadow DOM，把 lit 排除在默认测试之外，并在注释里写“这个实现本身是正确的”。"
+      "detail": "规格要求先 trim 再判断是否为空。官方测试脚本因为看不进三层嵌套的 shadow DOM，把 lit 排除在默认测试之外，并在注释里写“这个实现本身是正确的”。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2313"
     },
     {
       "impl": "lit",
@@ -81,7 +86,8 @@
       "status": "confirmed",
       "found_by": "Haiku、Opus",
       "title": "新建待办时不做 trim，首尾空格留在标签里",
-      "detail": "输入“  lead”，标签文字保留了前导空格。同样因为 shadow DOM，官方默认测试覆盖不到。"
+      "detail": "输入“  lead”，标签文字保留了前导空格。同样因为 shadow DOM，官方默认测试覆盖不到。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2313"
     },
     {
       "impl": "web-components",
@@ -89,7 +95,8 @@
       "status": "confirmed",
       "found_by": "Haiku",
       "title": "只输入空格也会新建一条空白待办",
-      "detail": "和 lit 一样是 shadow DOM 实现，也不在官方默认测试集里。"
+      "detail": "和 lit 一样是 shadow DOM 实现，也不在官方默认测试集里。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2314"
     },
     {
       "impl": "web-components",
@@ -97,7 +104,8 @@
       "status": "confirmed",
       "found_by": "Haiku、Sonnet",
       "title": "没有已完成条目时，Clear completed 按钮仍然显示",
-      "detail": "规格要求没有已完成条目时隐藏这个按钮。"
+      "detail": "规格要求没有已完成条目时隐藏这个按钮。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2314"
     },
     {
       "impl": "svelte",
@@ -105,7 +113,8 @@
       "status": "confirmed",
       "found_by": "Opus、复核脚本",
       "title": "把条目改成只有空格再回车，会留下一条空白待办",
-      "detail": "规格要求编辑内容 trim 后为空就删除这条待办；清空成空字符串时处理正确，纯空格不行。官方测试只测了空字符串。Haiku 和 Sonnet 都没报，Opus 和复核脚本各自发现。"
+      "detail": "规格要求编辑内容 trim 后为空就删除这条待办；清空成空字符串时处理正确，纯空格不行。官方测试只测了空字符串。Haiku 和 Sonnet 都没报，Opus 和复核脚本各自发现。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2315"
     },
     {
       "impl": "svelte",
@@ -113,7 +122,8 @@
       "status": "confirmed",
       "found_by": "Opus",
       "title": "在某个筛选下刷新页面，筛选没有保留",
-      "detail": "在 #/completed 下刷新，地址栏仍是 #/completed，筛选按钮却回到 All。规格要求刷新后保留当前筛选；vue 在同样操作下正常。"
+      "detail": "在 #/completed 下刷新，地址栏仍是 #/completed，筛选按钮却回到 All。规格要求刷新后保留当前筛选；vue 在同样操作下正常。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2315"
     },
     {
       "impl": "web-components",
@@ -121,7 +131,8 @@
       "status": "confirmed",
       "found_by": "Opus",
       "title": "把条目改成只有空格再回车，会留下一条空白待办",
-      "detail": "和 svelte 同样的问题：trim 后为空应删除这条待办，这里留下了一条空白条目。"
+      "detail": "和 svelte 同样的问题：trim 后为空应删除这条待办，这里留下了一条空白条目。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2314"
     },
     {
       "impl": "web-components",
@@ -129,7 +140,8 @@
       "status": "confirmed",
       "found_by": "Opus",
       "title": "双击条目时常进不了编辑模式（间歇性）",
-      "detail": "复核时 5 次双击只有 3 次进入编辑；编辑后点别处退出，再双击 4 次只进去 2 次。规格要求双击标签进入编辑。"
+      "detail": "复核时 5 次双击只有 3 次进入编辑；编辑后点别处退出，再双击 4 次只进去 2 次。规格要求双击标签进入编辑。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2314"
     },
     {
       "impl": "svelte",
@@ -137,7 +149,8 @@
       "status": "confirmed",
       "found_by": "Opus",
       "title": "编辑保存时不做 trim，标题首尾空格被原样保存",
-      "detail": "规格要求编辑内容先 trim 再保存。把条目改成“  spaced  ”回车，svelte 保留了空格，vue、react、preact 都会去掉。"
+      "detail": "规格要求编辑内容先 trim 再保存。把条目改成“  spaced  ”回车，svelte 保留了空格，vue、react、preact 都会去掉。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2315"
     },
     {
       "impl": "web-components",
@@ -145,7 +158,8 @@
       "status": "confirmed",
       "found_by": "Opus",
       "title": "编辑后点别处失焦，修改被丢掉",
-      "detail": "规格要求失焦和回车都要保存修改。这个实现失焦后内容恢复成原文。"
+      "detail": "规格要求失焦和回车都要保存修改。这个实现失焦后内容恢复成原文。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2314"
     },
     {
       "impl": "mithril",
@@ -153,7 +167,8 @@
       "status": "confirmed",
       "found_by": "Opus",
       "title": "在 Active 筛选下删除一条待办，被删掉的是另一条隐藏的已完成条目",
-      "detail": "新建三条、完成第一条，切到 Active，删除“keep-a”，回到 All 看到被删的是已完成的那条，keep-a 还在。同样操作在 vue 上删的是正确的那条。这是删错数据的问题。"
+      "detail": "新建三条、完成第一条，切到 Active，删除“keep-a”，回到 All 看到被删的是已完成的那条，keep-a 还在。同样操作在 vue 上删的是正确的那条。这是删错数据的问题。",
+      "issue": "https://github.com/tastejs/todomvc/issues/2312"
     },
     {
       "impl": "10 个实现",
@@ -179,5 +194,6 @@
       "title": "在 Completed 筛选下，全选框显示为勾选（规格有歧义，不计入）",
       "detail": "规格写的是“所有待办都完成时勾上”，筛选状态下有两种理解；vue、jquery、preact、svelte、backbone 不勾，web-components 和 react 会勾。按保守原则不计入。"
     }
-  ]
+  ],
+  "issues_filed": "2026-11-07"
 }

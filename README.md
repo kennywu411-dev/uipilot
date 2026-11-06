@@ -15,7 +15,7 @@
 
 - **确认 7 个实现共 15 处规格偏差**，在仓库 issue 和 PR 里没搜到。例如 React 按 Esc 不退出编辑、之后一失焦“放弃”的修改反而被保存；mithril 在 Active 筛选下删除一条，删掉的是另一条隐藏的已完成条目。
 - 其中 8 处在 lit 和 web-components 上：它们用了 shadow DOM，官方测试工具看不进去，被排除在默认测试之外。Agent 通过浏览器工具集照样能测。
-- Haiku 1 遍 $1.20 找到 8 处，Sonnet 1 遍 $2.52 找到 5 处，Opus 3 遍 $21.35 找全了 15 处（10 处每遍都找到）。详见 [docs/外部实战.md](docs/外部实战.md)，issue 草稿在同一文件里（未提交）。
+- Haiku 1 遍 $1.20 找到 8 处，Sonnet 1 遍 $2.52 找到 5 处，Opus 3 遍 $21.35 找全了 15 处（10 处每遍都找到）。详见 [docs/外部实战.md](docs/外部实战.md)。已按实现分成 7 份 issue 提交给维护者：[#2309](https://github.com/tastejs/todomvc/issues/2309)–[#2315](https://github.com/tastejs/todomvc/issues/2315)。
 
 ### 测试 Agent：在 ERP 靶子上的对照评测
 
