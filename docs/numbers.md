@@ -1,6 +1,6 @@
 # 数字登记表
 
-所有数字来自 `runs/` 下的真实运行（运行目录不进 git，本机可查），每行写明运行目录。2026-11-06 到 11-07 跑完。汇总用 `uv run python scripts/build_site.py`（展示页数据）和 `scripts/report.py`。
+所有数字来自 `runs/` 下的真实运行（运行目录不进 git，本机可查），每行写明运行目录。汇总用 `uv run python scripts/build_site.py`（展示页数据）和 `scripts/report.py`。
 
 **成本口径**：按 claude-api 技能里的价目表（2026-10 缓存版）和每次响应的 `usage` 估算，包含复现和评判的调用。和账单的对照：
 
