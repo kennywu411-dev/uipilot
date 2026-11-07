@@ -5,7 +5,7 @@
 """
 
 import json
-import time
+import uuid
 from pathlib import Path
 
 from uipilot.agent import AgentConfig
@@ -20,10 +20,10 @@ ONLY_NEW = True  # 第二轮验证：只跑带 calc 工具的新复现，旧复�
 
 # (运行目录, 轮次, 标题前缀, 是否真缺陷)
 CASES = [
-    ("scout-sonnet-hybrid-20261106-230425", "B-2", "发票税额计算错误：大额时税额少 1 元", False),
-    ("scout-haiku-hybrid-20261106-220452", "C-1", "登记发票选择税率 9% 时", True),
-    ("scout-haiku-hybrid-20261106-220452", "A-1", "采购单合计按整数截断单价计算", True),
-    ("scout-haiku-hybrid-20261106-220452", "B-1", "订单日期录入 2026-03-12 保存后变为", True),
+    ("scout-sonnet-hybrid-6d1f9c", "B-2", "发票税额计算错误：大额时税额少 1 元", False),
+    ("scout-haiku-hybrid-bcff19", "C-1", "登记发票选择税率 9% 时", True),
+    ("scout-haiku-hybrid-bcff19", "A-1", "采购单合计按整数截断单价计算", True),
+    ("scout-haiku-hybrid-bcff19", "B-1", "订单日期录入 2026-03-12 保存后变为", True),
 ]
 
 
@@ -49,7 +49,7 @@ def main() -> None:
                              "confirmed": rep.reproduced, "notes": rep.repro_notes, "cost": round(res.cost_usd, 4)})
                 print(f"{'新' if check else '旧'} {'真缺陷' if real else '误报'} {prefix[:18]:20} 第{i + 1}次 → "
                       f"{'确认' if rep.reproduced else '不确认'}  ${res.cost_usd:.3f}", flush=True)
-    out = ROOT / "runs" / f"repro-expectation-{time.strftime('%Y%m%d-%H%M%S')}.json"
+    out = ROOT / "runs" / f"repro-expectation-{uuid.uuid4().hex[:6]}.json"
     out.write_text(json.dumps({"rows": rows, "cost": round(cost, 4)}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"共 ${cost:.2f} → {out}")
 

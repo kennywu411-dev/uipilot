@@ -1,4 +1,4 @@
-"""评测入口。每次运行写一个 runs/<名字>-<时间>/ 目录：轨迹、逐条结果、summary.json。
+"""评测入口。每次运行写一个 runs/<名字>-<6 位编号>/ 目录：轨迹、逐条结果、summary.json。
 
   uv run python -m uipilot.evaluate scout  --model claude-haiku-5-5 --mode hybrid --groups A B C clean
   uv run python -m uipilot.evaluate entry  --model claude-haiku-5-5 --mode hybrid --docs D01 D02 T01
@@ -10,7 +10,7 @@
 import argparse
 import json
 import threading
-import time
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -46,7 +46,7 @@ class Budget:
 
 
 def run_dir(name: str) -> Path:
-    d = ROOT / "runs" / f"{name}-{time.strftime('%Y%m%d-%H%M%S')}"
+    d = ROOT / "runs" / f"{name}-{uuid.uuid4().hex[:6]}"
     (d / "traces").mkdir(parents=True, exist_ok=True)
     return d
 

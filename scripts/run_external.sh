@@ -3,5 +3,5 @@
 set -u
 T=(react vue svelte preact lit javascript-es6 javascript-es5 web-components jquery backbone mithril)
 X="uv run python -m uipilot.evaluate external --workers 2"
-${=X} --targets $T --model claude-haiku-5-5 --total-budget 3 --resume runs/external-haiku-20261107-000843
+${=X} --targets $T --model claude-haiku-5-5 --total-budget 3 --resume runs/external-haiku-a79dc4
 ${=X} --targets $T --model claude-sonnet-5-5 --total-budget 17

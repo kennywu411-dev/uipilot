@@ -1,6 +1,6 @@
 [
   {
-    "run": "scout-opus-hybrid-20261106-231253",
+    "run": "scout-opus-hybrid-f60f4c",
     "tag": "C-0",
     "title_prefix": "编辑采购单时通过“添加明细行”新增的行保存后丢失",
     "bug": "B09",
@@ -8,7 +8,7 @@
     "verdict": "seeded"
   },
   {
-    "run": "scout-sonnet-hybrid-20261106-230425",
+    "run": "scout-sonnet-hybrid-6d1f9c",
     "tag": "B-2",
     "title_prefix": "发票税额计算错误：大额时税额少 1 元",
     "bug": null,
@@ -16,7 +16,7 @@
     "reason": "316,961.50 × 13% = 41,204.995，四舍五入为 41,205.00，系统正确；Sonnet 把期望值算成 41,206.00。复现 Agent 只核对现象出现，没有核对期望值"
   },
   {
-    "run": "scout-sonnet-hybrid-calc-20261107-013043",
+    "run": "scout-sonnet-hybrid-calc-1edb8c",
     "tag": "A-0",
     "title_prefix": "添加明细行到第5行后无法继续添加",
     "bug": "B11",
@@ -24,7 +24,7 @@
     "reason": "第 6 次添加明细行报 maxRows 空引用，正是 B11；评判模型漏判"
   },
   {
-    "run": "scout-haiku-vision-20261106-225301",
+    "run": "scout-haiku-vision-5e58bc",
     "tag": "B-2",
     "title_prefix": "已开票（已关联发票）的采购单仍可被删除",
     "bug": "B13",
@@ -32,7 +32,7 @@
     "reason": "B 组没有植入 B14；这是 B13（登记发票后状态没变）的连带症状：状态仍是待开票，删除按钮就一直可用。不是误报"
   },
   {
-    "run": "scout-haiku-hybrid-nosig-20261106-222302",
+    "run": "scout-haiku-hybrid-nosig-6e57fb",
     "tag": "A-2",
     "title_prefix": "新建采购单点“添加明细行”最多只能有 5 行",
     "bug": "B11",

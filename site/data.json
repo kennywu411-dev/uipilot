@@ -75,7 +75,7 @@
      3
     ]
    },
-   "run": "scout-haiku-dom-20261106-222948"
+   "run": "scout-haiku-dom-640293"
   },
   {
    "key": "haiku-hybrid",
@@ -148,7 +148,7 @@
      3
     ]
    },
-   "run": "scout-haiku-hybrid-20261106-220452"
+   "run": "scout-haiku-hybrid-bcff19"
   },
   {
    "key": "haiku-hybrid-nosig",
@@ -221,7 +221,7 @@
      3
     ]
    },
-   "run": "scout-haiku-hybrid-nosig-20261106-222302"
+   "run": "scout-haiku-hybrid-nosig-6e57fb"
   },
   {
    "key": "haiku-vision",
@@ -294,7 +294,7 @@
      3
     ]
    },
-   "run": "scout-haiku-vision-20261106-225301"
+   "run": "scout-haiku-vision-5e58bc"
   },
   {
    "key": "opus-hybrid",
@@ -367,7 +367,7 @@
      3
     ]
    },
-   "run": "scout-opus-hybrid-20261106-231253"
+   "run": "scout-opus-hybrid-f60f4c"
   },
   {
    "key": "sonnet-hybrid",
@@ -440,7 +440,7 @@
      3
     ]
    },
-   "run": "scout-sonnet-hybrid-20261106-230425"
+   "run": "scout-sonnet-hybrid-6d1f9c"
   },
   {
    "key": "sonnet-hybrid-calc",
@@ -513,7 +513,7 @@
      3
     ]
    },
-   "run": "scout-sonnet-hybrid-calc-20261107-013043"
+   "run": "scout-sonnet-hybrid-calc-1edb8c"
   }
  ],
  "entry": [
@@ -530,7 +530,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0048,
-   "run": "entry-haiku-dom-20261106-221324"
+   "run": "entry-haiku-dom-668f1d"
   },
   {
    "set": "基础集",
@@ -545,7 +545,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0044,
-   "run": "entry-haiku-hybrid-20261106-223442"
+   "run": "entry-haiku-hybrid-b795cd"
   },
   {
    "set": "基础集",
@@ -560,7 +560,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0046,
-   "run": "entry-haiku-vision-20261106-221820"
+   "run": "entry-haiku-vision-7cc858"
   },
   {
    "set": "基础集",
@@ -575,7 +575,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.1321,
-   "run": "entry-opus-hybrid-20261106-222634"
+   "run": "entry-opus-hybrid-2ed2a0"
   },
   {
    "set": "基础集",
@@ -590,7 +590,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0785,
-   "run": "entry-sonnet-hybrid-20261106-222252"
+   "run": "entry-sonnet-hybrid-a336e3"
   },
   {
    "set": "难题集",
@@ -605,7 +605,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0071,
-   "run": "entryhard-haiku-dom-20261106-225120"
+   "run": "entryhard-haiku-dom-0615a2"
   },
   {
    "set": "难题集",
@@ -620,7 +620,7 @@
    "wrong_entries": 3,
    "needs_review": 0,
    "cost_per_doc": 0.0061,
-   "run": "entryhard-haiku-hybrid-20261106-224303"
+   "run": "entryhard-haiku-hybrid-98b9b3"
   },
   {
    "set": "难题集",
@@ -635,7 +635,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0047,
-   "run": "entryhard-haiku-vision-20261106-225643"
+   "run": "entryhard-haiku-vision-463e1e"
   },
   {
    "set": "难题集",
@@ -650,7 +650,7 @@
    "wrong_entries": 1,
    "needs_review": 0,
    "cost_per_doc": 0.1832,
-   "run": "entryhard-opus-hybrid-20261106-230349"
+   "run": "entryhard-opus-hybrid-5d94a5"
   },
   {
    "set": "难题集",
@@ -665,7 +665,7 @@
    "wrong_entries": 1,
    "needs_review": 0,
    "cost_per_doc": 0.0993,
-   "run": "entryhard-sonnet-hybrid-20261106-225959"
+   "run": "entryhard-sonnet-hybrid-a362d5"
   },
   {
    "set": "难题集 + 税号",
@@ -680,7 +680,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0051,
-   "run": "entryhardtax-haiku-hybrid-20261107-000625"
+   "run": "entryhardtax-haiku-hybrid-925d40"
   },
   {
    "set": "难题集 + 税号",
@@ -695,7 +695,7 @@
    "wrong_entries": 0,
    "needs_review": 14,
    "cost_per_doc": 0.0054,
-   "run": "entryhardtax-haiku-hybrid-checks-20261107-001025"
+   "run": "entryhardtax-haiku-hybrid-checks-5db5ca"
   },
   {
    "set": "难题集 + 税号",
@@ -710,7 +710,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.1698,
-   "run": "entryhardtax-opus-hybrid-20261107-002327"
+   "run": "entryhardtax-opus-hybrid-0c50a6"
   },
   {
    "set": "难题集 + 税号",
@@ -725,7 +725,7 @@
    "wrong_entries": 0,
    "needs_review": 1,
    "cost_per_doc": 0.1597,
-   "run": "entryhardtax-opus-hybrid-checks-20261107-002714"
+   "run": "entryhardtax-opus-hybrid-checks-525ab4"
   },
   {
    "set": "难题集 + 税号",
@@ -740,7 +740,7 @@
    "wrong_entries": 0,
    "needs_review": 0,
    "cost_per_doc": 0.0913,
-   "run": "entryhardtax-sonnet-hybrid-20261107-001702"
+   "run": "entryhardtax-sonnet-hybrid-b011ca"
   },
   {
    "set": "难题集 + 税号",
@@ -755,7 +755,7 @@
    "wrong_entries": 0,
    "needs_review": 4,
    "cost_per_doc": 0.0881,
-   "run": "entryhardtax-sonnet-hybrid-checks-20261107-002020"
+   "run": "entryhardtax-sonnet-hybrid-checks-e1d67c"
   }
  ],
  "replays": [

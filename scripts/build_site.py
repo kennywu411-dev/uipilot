@@ -6,6 +6,7 @@ site/replays/*/episode.json（scripts/record_showcase.py 录制）。
 """
 
 import json
+import re
 from pathlib import Path
 
 from uipilot.erp.bugs import CATALOG
@@ -18,10 +19,19 @@ MODEL = {"haiku": "Haiku 5.5", "sonnet": "Sonnet 5.5", "opus": "Opus 5.5"}
 MODE = {"hybrid": "截图 + 页面结构", "dom": "只看页面结构", "vision": "只看截图"}
 
 
+RUN_ID = re.compile(r"-(?:\d{8}-\d{6}|[0-9a-f]{6})$")  # 目录名末尾的运行编号（旧格式是时间）
+
+
+def created(d: Path) -> float:
+    st = d.stat()
+    return getattr(st, "st_birthtime", st.st_mtime)
+
+
 def latest(prefix: str) -> dict[str, Path]:
+    """每个配置取最近创建的一次完整运行。"""
     out = {}
-    for d in sorted(RUNS.glob(f"{prefix}-*"), reverse=True):
-        key = d.name.rsplit("-", 2)[0].removeprefix(prefix + "-")
+    for d in sorted(RUNS.glob(f"{prefix}-*"), key=created, reverse=True):
+        key = RUN_ID.sub("", d.name).removeprefix(prefix + "-")
         if (d / "summary.json").exists() and key not in out:
             out[key] = d
     return out
