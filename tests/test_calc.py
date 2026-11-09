@@ -8,6 +8,7 @@ def test_large_multiplication_is_exact():
 
 def test_rejects_anything_but_arithmetic():
     import pytest
+
     for bad in ["__import__('os')", "2 ** 10", "a + 1"]:
         with pytest.raises(ValueError):
             calculate(bad)

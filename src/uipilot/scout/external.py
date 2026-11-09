@@ -40,7 +40,7 @@ class StaticSite:
 def todomvc_rules() -> str:
     """规格书里“Functionality”一节，原文英文。"""
     spec = (TODOMVC / "app-spec.md").read_text(encoding="utf-8")
-    return spec[spec.index("## Functionality"):].strip()
+    return spec[spec.index("## Functionality") :].strip()
 
 
 def todomvc_dir(name: str) -> Path:

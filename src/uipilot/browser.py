@@ -21,11 +21,32 @@ from playwright.sync_api import Page, sync_playwright
 SNAPSHOT_JS = (Path(__file__).parent / "snapshot.js").read_text(encoding="utf-8")
 
 KEY_ALIASES = {
-    "return": "Enter", "enter": "Enter", "esc": "Escape", "escape": "Escape", "tab": "Tab", "space": "Space",
-    "backspace": "Backspace", "delete": "Delete", "up": "ArrowUp", "down": "ArrowDown", "left": "ArrowLeft",
-    "right": "ArrowRight", "page_down": "PageDown", "page_up": "PageUp", "pagedown": "PageDown",
-    "pageup": "PageUp", "home": "Home", "end": "End", "ctrl": "Control", "control": "Control", "shift": "Shift",
-    "alt": "Alt", "cmd": "Meta", "super": "Meta", "meta": "Meta", "command": "Meta",
+    "return": "Enter",
+    "enter": "Enter",
+    "esc": "Escape",
+    "escape": "Escape",
+    "tab": "Tab",
+    "space": "Space",
+    "backspace": "Backspace",
+    "delete": "Delete",
+    "up": "ArrowUp",
+    "down": "ArrowDown",
+    "left": "ArrowLeft",
+    "right": "ArrowRight",
+    "page_down": "PageDown",
+    "page_up": "PageUp",
+    "pagedown": "PageDown",
+    "pageup": "PageUp",
+    "home": "Home",
+    "end": "End",
+    "ctrl": "Control",
+    "control": "Control",
+    "shift": "Shift",
+    "alt": "Alt",
+    "cmd": "Meta",
+    "super": "Meta",
+    "meta": "Meta",
+    "command": "Meta",
 }
 
 
@@ -69,8 +90,10 @@ class ActionGuard:
     def check(self, label: str, action: str, inert: bool = False) -> None:
         if self.mode == "protect" and not inert and re.search(self.pattern, label or "", re.IGNORECASE):
             self.blocked.append({"action": action, "label": label, "t": time.time()})
-            raise ActionError(f"Blocked by policy: “{label[:40]}” 是不可逆操作，当前任务不允许执行。"
-                              "如确有必要，请调用 escalate 交给人工处理。")
+            raise ActionError(
+                f"Blocked by policy: “{label[:40]}” 是不可逆操作，当前任务不允许执行。"
+                "如确有必要，请调用 escalate 交给人工处理。"
+            )
 
 
 @dataclass
@@ -81,8 +104,14 @@ class Signal:
 
 
 class BrowserExecutor:
-    def __init__(self, base_url: str, guard: ActionGuard | None = None, viewport=(1280, 800),
-                 headless: bool = True, blocked_prefixes: tuple[str, ...] = ("/__",)):
+    def __init__(
+        self,
+        base_url: str,
+        guard: ActionGuard | None = None,
+        viewport=(1280, 800),
+        headless: bool = True,
+        blocked_prefixes: tuple[str, ...] = ("/__",),
+    ):
         self.base_url = base_url.rstrip("/")
         self.origin = "{0.scheme}://{0.netloc}".format(urlsplit(self.base_url))
         self.guard = guard or ActionGuard()
@@ -122,11 +151,17 @@ class BrowserExecutor:
             return route.continue_()
         if origin != self.origin or any(parts.path.startswith(p) for p in self.blocked_prefixes):
             return route.abort("blockedbyclient")
-        if self.guard.mode == "protect" and route.request.method != "GET" and \
-                re.search(self.guard.request_pattern, parts.path, re.IGNORECASE):
-            self.guard.blocked.append({"action": "request", "label": f"{route.request.method} {parts.path}",
-                                       "t": time.time()})
-            self._emit("blocked_request", f"已拦截会改数据的请求 {route.request.method} {parts.path}", route.request.url)
+        if (
+            self.guard.mode == "protect"
+            and route.request.method != "GET"
+            and re.search(self.guard.request_pattern, parts.path, re.IGNORECASE)
+        ):
+            self.guard.blocked.append(
+                {"action": "request", "label": f"{route.request.method} {parts.path}", "t": time.time()}
+            )
+            self._emit(
+                "blocked_request", f"已拦截会改数据的请求 {route.request.method} {parts.path}", route.request.url
+            )
             return route.abort("blockedbyclient")
         return route.continue_()
 
@@ -177,15 +212,20 @@ class BrowserExecutor:
         page.wait_for_timeout(250)
 
     def browser_state(self) -> dict:
-        return {"type": "browser_state", "tabs": [
-            {"tab_id": tid, "title": p.title(), "url": p.url, "active": tid == self.active}
-            for tid, p in self.tabs.items()]}
+        return {
+            "type": "browser_state",
+            "tabs": [
+                {"tab_id": tid, "title": p.title(), "url": p.url, "active": tid == self.active}
+                for tid, p in self.tabs.items()
+            ],
+        }
 
     def _locate(self, page: Page, ref: str):
         loc = page.locator(f'[data-uip-ref="{ref}"]')
         if loc.count() == 0:
-            raise ActionError(f"{ref} is stale or not found on the current page. "
-                              "Re-read the page to get fresh references.")
+            raise ActionError(
+                f"{ref} is stale or not found on the current page. Re-read the page to get fresh references."
+            )
         return loc.first
 
     # 返回 [文字, 是否是不提交数据的纯页面按钮]
@@ -198,7 +238,8 @@ class BrowserExecutor:
                  const t = el.closest('a,button,input,select,textarea,[role]') || el;
                  return [(t.innerText || t.value || t.getAttribute('aria-label') || '').trim().slice(0, 80),
                          t.tagName === 'BUTTON' && (t.getAttribute('type') || '').toLowerCase() === 'button']; }""",
-            [x, y])
+            [x, y],
+        )
 
     def _point(self, page: Page, target: dict, action: str, guard: bool = True) -> tuple[float, float]:
         if target.get("type") == "ref":
@@ -213,8 +254,10 @@ class BrowserExecutor:
             return box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
         x, y = float(target["x"]), float(target["y"])
         if not (0 <= x <= self.viewport["width"] and 0 <= y <= self.viewport["height"]):
-            raise ActionError(f"Coordinate ({x:.0f}, {y:.0f}) is outside the viewport "
-                              f"{self.viewport['width']}x{self.viewport['height']}.")
+            raise ActionError(
+                f"Coordinate ({x:.0f}, {y:.0f}) is outside the viewport "
+                f"{self.viewport['width']}x{self.viewport['height']}."
+            )
         if guard:
             label, inert = self._label_at(page, x, y)
             self.guard.check(label, action, inert)
@@ -229,12 +272,17 @@ class BrowserExecutor:
             buf = io.BytesIO()
             img.save(buf, format="PNG")
             png = buf.getvalue()
-        return [{"type": "image", "source": {"type": "base64", "media_type": "image/png",
-                                             "data": base64.b64encode(png).decode()}}]
+        return [
+            {
+                "type": "image",
+                "source": {"type": "base64", "media_type": "image/png", "data": base64.b64encode(png).decode()},
+            }
+        ]
 
     def _snapshot(self, tab_id: str, page: Page, mode: str, depth: int = 15, ref: str | None = None) -> dict:
-        res = page.evaluate(SNAPSHOT_JS, {"mode": mode, "maxDepth": depth, "rootRef": ref,
-                                          "counter": self.counters.get(tab_id, 1)})
+        res = page.evaluate(
+            SNAPSHOT_JS, {"mode": mode, "maxDepth": depth, "rootRef": ref, "counter": self.counters.get(tab_id, 1)}
+        )
         self.counters[tab_id] = res["counter"]
         if res.get("error"):
             raise ActionError(res["error"])
@@ -268,9 +316,11 @@ class BrowserExecutor:
             if parts.scheme not in ("http", "https"):
                 raise ActionError("Error: Navigation refused. Only http and https URLs are allowed.")
             if f"{parts.scheme}://{parts.netloc}" != self.origin or any(
-                    parts.path.startswith(p) for p in self.blocked_prefixes):
-                raise ActionError(f"Error: Navigation refused. Only the application under test ({self.base_url}) "
-                                  "may be opened.")
+                parts.path.startswith(p) for p in self.blocked_prefixes
+            ):
+                raise ActionError(
+                    f"Error: Navigation refused. Only the application under test ({self.base_url}) may be opened."
+                )
             page.goto(url, wait_until="domcontentloaded", timeout=15000)
         self._settle(page)
         return [{"type": "text", "text": f"Navigated to {page.url}"}, self.browser_state()]
@@ -403,13 +453,13 @@ class BrowserExecutor:
         tid, page = self._tab(inp.get("tab_id"))
         cands = self._snapshot(tid, page, "candidates")["candidates"]
         q = inp["query"].lower()
-        grams = {q[i:i + 2] for i in range(len(q) - 1)} or {q}
+        grams = {q[i : i + 2] for i in range(len(q) - 1)} or {q}
 
         def score(c):
             name = (c["name"] + " " + c["role"]).lower()
             if q in name:
                 return 10 + (5 if c["role"] in ("button", "link", "textbox", "combobox") else 0)
-            g = {name[i:i + 2] for i in range(len(name) - 1)}
+            g = {name[i : i + 2] for i in range(len(name) - 1)}
             return len(grams & g) / max(1, len(grams))
 
         ranked = [c for c in sorted(cands, key=score, reverse=True) if score(c) > 0.3][:20]

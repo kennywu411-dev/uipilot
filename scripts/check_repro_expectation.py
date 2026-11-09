@@ -38,17 +38,29 @@ def main() -> None:
     rows, cost = [], 0.0
     for run, tag, prefix, real in CASES:
         group = tag.split("-")[0]
-        for check in ((True,) if ONLY_NEW else (False, True)):
+        for check in (True,) if ONLY_NEW else (False, True):
             for i in range(REPEATS):
                 rep = load(run, tag, prefix)
                 with ERPServer() as erp:
                     erp.reset(GROUPS[group])
                     res = reproduce(erp.base_url, rep, CFG, check_expectation=check)
                 cost += res.cost_usd
-                rows.append({"report": prefix, "real_bug": real, "check_expectation": check, "repeat": i,
-                             "confirmed": rep.reproduced, "notes": rep.repro_notes, "cost": round(res.cost_usd, 4)})
-                print(f"{'新' if check else '旧'} {'真缺陷' if real else '误报'} {prefix[:18]:20} 第{i + 1}次 → "
-                      f"{'确认' if rep.reproduced else '不确认'}  ${res.cost_usd:.3f}", flush=True)
+                rows.append(
+                    {
+                        "report": prefix,
+                        "real_bug": real,
+                        "check_expectation": check,
+                        "repeat": i,
+                        "confirmed": rep.reproduced,
+                        "notes": rep.repro_notes,
+                        "cost": round(res.cost_usd, 4),
+                    }
+                )
+                print(
+                    f"{'新' if check else '旧'} {'真缺陷' if real else '误报'} {prefix[:18]:20} 第{i + 1}次 → "
+                    f"{'确认' if rep.reproduced else '不确认'}  ${res.cost_usd:.3f}",
+                    flush=True,
+                )
     out = ROOT / "runs" / f"repro-expectation-{uuid.uuid4().hex[:6]}.json"
     out.write_text(json.dumps({"rows": rows, "cost": round(cost, 4)}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"共 ${cost:.2f} → {out}")

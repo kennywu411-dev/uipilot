@@ -26,14 +26,23 @@ def test_create_po_with_refs(erp):
     with BrowserExecutor(erp.base_url) as ex:
         ex.execute("navigate", {"url": "/po/new"})
         page = ex.execute("read_page", {"filter": "interactive"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'combobox "供应商"')},
-                                  "value": "深圳市华强电子有限公司"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "订单日期"')},
-                                  "value": "2026-11-03"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'combobox "第1行商品"')},
-                                  "value": "LB-18650-26 18650 锂电芯 2600mAh"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "第1行数量"')},
-                                  "value": "100"})
+        ex.execute(
+            "form_input",
+            {"target": {"type": "ref", "ref": ref_of(page, r'combobox "供应商"')}, "value": "深圳市华强电子有限公司"},
+        )
+        ex.execute(
+            "form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "订单日期"')}, "value": "2026-11-03"}
+        )
+        ex.execute(
+            "form_input",
+            {
+                "target": {"type": "ref", "ref": ref_of(page, r'combobox "第1行商品"')},
+                "value": "LB-18650-26 18650 锂电芯 2600mAh",
+            },
+        )
+        ex.execute(
+            "form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "第1行数量"')}, "value": "100"}
+        )
         # 再读一次页面，已发出的引用编号保持不变
         again = ex.execute("read_page", {"filter": "interactive"})
         assert ref_of(again, r'textbox "第1行数量"') == ref_of(page, r'textbox "第1行数量"')
@@ -104,11 +113,16 @@ def test_signals_capture_js_error_and_500(erp):
         assert "page_error" in kinds
         page = ex.execute("read_page", {"filter": "interactive"})
         ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'combobox "供应商"')}, "value": "1"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "订单日期"')},
-                                  "value": "2026-11-03"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'combobox "第1行商品"')}, "value": "1"})
+        ex.execute(
+            "form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "订单日期"')}, "value": "2026-11-03"}
+        )
+        ex.execute(
+            "form_input", {"target": {"type": "ref", "ref": ref_of(page, r'combobox "第1行商品"')}, "value": "1"}
+        )
         ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "第1行数量"')}, "value": "1"})
-        ex.execute("form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "备注"')}, "value": "长" * 60})
+        ex.execute(
+            "form_input", {"target": {"type": "ref", "ref": ref_of(page, r'textbox "备注"')}, "value": "长" * 60}
+        )
         ex.execute("left_click", {"target": {"type": "ref", "ref": ref_of(page, r'button "保存"')}})
         assert any(s.kind == "http_5xx" for s in ex.drain_signals())
     erp.reset()

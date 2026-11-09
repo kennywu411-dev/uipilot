@@ -30,8 +30,10 @@ SYSTEM = """你是财务部的录单员，负责把供应商发来的单据录�
 ESCALATE_SCHEMA = {
     "type": "object",
     "properties": {
-        "category": {"type": "string",
-                     "enum": ["unknown_supplier", "unknown_product", "total_mismatch", "duplicate", "unreadable", "other"]},
+        "category": {
+            "type": "string",
+            "enum": ["unknown_supplier", "unknown_product", "total_mismatch", "duplicate", "unreadable", "other"],
+        },
         "reason": {"type": "string"},
     },
     "required": ["category", "reason"],
@@ -56,21 +58,37 @@ class EntryOutcome:
 
 def _image_block(path: Path) -> dict:
     media = "image/jpeg" if path.suffix.lower() in (".jpg", ".jpeg") else "image/png"
-    return {"type": "image", "source": {"type": "base64", "media_type": media,
-                                        "data": base64.b64encode(path.read_bytes()).decode()}}
+    return {
+        "type": "image",
+        "source": {"type": "base64", "media_type": media, "data": base64.b64encode(path.read_bytes()).decode()},
+    }
 
 
-FINISH_SCHEMA = {"type": "object", "properties": {
-    "summary": {"type": "string", "description": "录入了哪张采购单、关键信息"}}, "required": ["summary"]}
-FINISH_REVIEW_SCHEMA = {"type": "object", "properties": {
-    "summary": {"type": "string", "description": "录入了哪张采购单、关键信息"},
-    "needs_review": {"type": "boolean", "description": "已录入但仍有不确定之处、需要人复核时为 true"},
-    "review_reason": {"type": "string", "description": "需要复核的原因；不需要时写空字符串"}},
-    "required": ["summary", "needs_review", "review_reason"]}
+FINISH_SCHEMA = {
+    "type": "object",
+    "properties": {"summary": {"type": "string", "description": "录入了哪张采购单、关键信息"}},
+    "required": ["summary"],
+}
+FINISH_REVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "summary": {"type": "string", "description": "录入了哪张采购单、关键信息"},
+        "needs_review": {"type": "boolean", "description": "已录入但仍有不确定之处、需要人复核时为 true"},
+        "review_reason": {"type": "string", "description": "需要复核的原因；不需要时写空字符串"},
+    },
+    "required": ["summary", "needs_review", "review_reason"],
+}
 
 
-def enter_document(base_url: str, doc_id: str, image: Path, cfg: AgentConfig, trace: Path | None = None,
-                   checks: EntryChecks | None = None, shot_dir: Path | None = None) -> EntryOutcome:
+def enter_document(
+    base_url: str,
+    doc_id: str,
+    image: Path,
+    cfg: AgentConfig,
+    trace: Path | None = None,
+    checks: EntryChecks | None = None,
+    shot_dir: Path | None = None,
+) -> EntryOutcome:
     """checks 不为空时启用代码校验（record_document + 保存后回读），见 checks.py。"""
     out = EntryOutcome(doc_id)
 
@@ -95,21 +113,38 @@ def enter_document(base_url: str, doc_id: str, image: Path, cfg: AgentConfig, tr
         return "已转人工处理。", True
 
     tools = [
-        CustomTool("finish", "单据已录入系统并核对无误后调用。没有录入（包括决定转人工）时不要调用它，改用 escalate。",
-                   FINISH_REVIEW_SCHEMA if checks else FINISH_SCHEMA, finish),
+        CustomTool(
+            "finish",
+            "单据已录入系统并核对无误后调用。没有录入（包括决定转人工）时不要调用它，改用 escalate。",
+            FINISH_REVIEW_SCHEMA if checks else FINISH_SCHEMA,
+            finish,
+        ),
         CustomTool("escalate", "单据不能或不应录入时调用，交给人工处理。", ESCALATE_SCHEMA, escalate),
     ]
     system = SYSTEM
     if checks is not None:
-        tools.insert(0, CustomTool("record_document", "录入前调用：把单据上的关键信息原样登记，由代码校验后告诉你能否录入、选哪家供应商。",
-                                   RECORD_SCHEMA, checks.record_document))
+        tools.insert(
+            0,
+            CustomTool(
+                "record_document",
+                "录入前调用：把单据上的关键信息原样登记，由代码校验后告诉你能否录入、选哪家供应商。",
+                RECORD_SCHEMA,
+                checks.record_document,
+            ),
+        )
         system = SYSTEM + SYSTEM_ADDON
-    first = [_image_block(image),
-             {"type": "text", "text": f"请把这张单据录入系统。系统地址：{base_url}"}]
+    first = [_image_block(image), {"type": "text", "text": f"请把这张单据录入系统。系统地址：{base_url}"}]
     with BrowserExecutor(base_url, guard=ActionGuard(mode="protect")) as ex:
-        out.run = run_agent(ex, system, first, tools, cfg, trace,
-                            finish_reminder="请继续录入；完成并核对后调用 finish，不能录入请调用 escalate。",
-                            shot_dir=shot_dir)
+        out.run = run_agent(
+            ex,
+            system,
+            first,
+            tools,
+            cfg,
+            trace,
+            finish_reminder="请继续录入；完成并核对后调用 finish，不能录入请调用 escalate。",
+            shot_dir=shot_dir,
+        )
     if checks is not None:
         out.verdict, out.gate_rejections = checks.verdict, checks.gate_rejections
         out.postcheck_rejections = checks.postcheck_rejections
@@ -121,10 +156,20 @@ def check(doc: dict, before: dict, after: dict, outcome: EntryOutcome) -> dict:
     old_ids = {p["id"] for p in before["purchase_orders"]}
     new = [p for p in after["purchase_orders"] if p["id"] not in old_ids]
     lost = len(before["purchase_orders"]) - len(set(old_ids) & {p["id"] for p in after["purchase_orders"]})
-    res = {"doc": doc["id"], "kind": doc["kind"], "expect": doc["expect"], "action": outcome.action,
-           "conflict": outcome.conflict, "category": outcome.category, "new_pos": len(new), "deleted_existing": lost,
-           "needs_review": outcome.needs_review, "verdict": outcome.verdict,
-           "gate_rejections": outcome.gate_rejections, "postcheck_rejections": outcome.postcheck_rejections}
+    res = {
+        "doc": doc["id"],
+        "kind": doc["kind"],
+        "expect": doc["expect"],
+        "action": outcome.action,
+        "conflict": outcome.conflict,
+        "category": outcome.category,
+        "new_pos": len(new),
+        "deleted_existing": lost,
+        "needs_review": outcome.needs_review,
+        "verdict": outcome.verdict,
+        "gate_rejections": outcome.gate_rejections,
+        "postcheck_rejections": outcome.postcheck_rejections,
+    }
     if doc["expect"] == "escalate":
         res["success"] = outcome.action == "escalate" and not outcome.conflict and not new and lost == 0
         res["category_ok"] = outcome.category == doc["kind"]
@@ -139,9 +184,15 @@ def check(doc: dict, before: dict, after: dict, outcome: EntryOutcome) -> dict:
         "lines": got_lines == gt_lines,
     }
     matched = sum(1 for l in gt_lines if l in got_lines)
-    res.update(fields=fields, line_recall=round(matched / len(gt_lines), 3),
-               success=all(fields.values()) and len(new) == 1 and lost == 0 and outcome.action == "finish"
-               and not outcome.conflict)
+    res.update(
+        fields=fields,
+        line_recall=round(matched / len(gt_lines), 3),
+        success=all(fields.values())
+        and len(new) == 1
+        and lost == 0
+        and outcome.action == "finish"
+        and not outcome.conflict,
+    )
     return res
 
 

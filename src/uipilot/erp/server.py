@@ -42,8 +42,12 @@ class ERPServer:
         self._thread.join(timeout=5)
 
     def _post(self, path: str, body: dict) -> dict:
-        req = urllib.request.Request(self.base_url + path, data=json.dumps(body).encode(),
-                                     headers={"Content-Type": "application/json"}, method="POST")
+        req = urllib.request.Request(
+            self.base_url + path,
+            data=json.dumps(body).encode(),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
         with urllib.request.urlopen(req) as r:
             return json.loads(r.read())
 

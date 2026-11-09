@@ -52,8 +52,14 @@ def run_dir(name: str) -> Path:
 
 
 def cfg_from(args, **over) -> AgentConfig:
-    base = dict(model=args.model, effort=args.effort, mode=args.mode, max_turns=args.max_turns,
-                budget_usd=args.run_budget, oracle_signals=not args.no_signals)
+    base = dict(
+        model=args.model,
+        effort=args.effort,
+        mode=args.mode,
+        max_turns=args.max_turns,
+        budget_usd=args.run_budget,
+        oracle_signals=not args.no_signals,
+    )
     return AgentConfig(**(base | over))
 
 
@@ -62,16 +68,28 @@ def _scout_row(tag: str, data: dict, active: list[str]) -> dict:
     s = score(reports, active)
     group, rep = tag.rsplit("-", 1)
     explore_res = data["explore"] or {}
-    s.update(group=group, repeat=int(rep), cost=round(data["cost"] + data.get("judge_cost", 0), 4),
-             turns=explore_res.get("turns"), stop=explore_res.get("stop_reason"), seconds=explore_res.get("seconds"))
+    s.update(
+        group=group,
+        repeat=int(rep),
+        cost=round(data["cost"] + data.get("judge_cost", 0), 4),
+        turns=explore_res.get("turns"),
+        stop=explore_res.get("stop_reason"),
+        seconds=explore_res.get("seconds"),
+    )
     return s
 
 
 def cmd_scout(args) -> None:
     # --resume 指向一个已有运行目录时，跳过已完成的轮次，汇总按目录里全部逐轮结果重算
-    out = Path(args.resume) if args.resume else run_dir(
-        f"scout-{args.model.split('-')[1]}-{args.mode}" + ("-nosig" if args.no_signals else "")
-        + ("-calc" if args.check_expectation else ""))
+    out = (
+        Path(args.resume)
+        if args.resume
+        else run_dir(
+            f"scout-{args.model.split('-')[1]}-{args.mode}"
+            + ("-nosig" if args.no_signals else "")
+            + ("-calc" if args.check_expectation else "")
+        )
+    )
     budget = Budget(args.total_budget)
     jobs = [(g, r) for g in args.groups for r in range(args.repeats)]
 
@@ -92,8 +110,9 @@ def cmd_scout(args) -> None:
     def run_one(group, rep, active, tag):
         with ERPServer() as erp:
             erp.reset(active)
-            reports, explore_res, coverage = scout.explore(erp.base_url, cfg_from(args),
-                                                           out / "traces" / f"{tag}-explore.jsonl")
+            reports, explore_res, coverage = scout.explore(
+                erp.base_url, cfg_from(args), out / "traces" / f"{tag}-explore.jsonl"
+            )
             budget.add(explore_res.cost_usd)
             result = scout.ScoutResult(reports=reports, explore=explore_res, coverage=coverage)
             repro_cfg = cfg_from(args, model=args.repro_model, max_turns=25, budget_usd=0.4)
@@ -101,16 +120,24 @@ def cmd_scout(args) -> None:
                 if budget.left <= 0:
                     break
                 erp.reset(active)
-                rr = scout.reproduce(erp.base_url, rep_, repro_cfg, out / "traces" / f"{tag}-repro{i}.jsonl",
-                                     check_expectation=args.check_expectation)
+                rr = scout.reproduce(
+                    erp.base_url,
+                    rep_,
+                    repro_cfg,
+                    out / "traces" / f"{tag}-repro{i}.jsonl",
+                    check_expectation=args.check_expectation,
+                )
                 budget.add(rr.cost_usd)
                 result.repro_runs.append(rr)
         judge_cost = match_reports(reports, active) if reports else 0.0
         budget.add(judge_cost)
         scout.save(result, out / f"{tag}.json", judge_cost)
         s = _scout_row(tag, json.loads((out / f"{tag}.json").read_text(encoding="utf-8")), active)
-        print(f"[{tag}] 检出 {s['detected_confirmed']} / {active}  报告 {s['reports']} 复现 {s['confirmed']} "
-              f"误报 {s['unmatched_confirmed']}  ${s['cost']:.3f}", flush=True)
+        print(
+            f"[{tag}] 检出 {s['detected_confirmed']} / {active}  报告 {s['reports']} 复现 {s['confirmed']} "
+            f"误报 {s['unmatched_confirmed']}  ${s['cost']:.3f}",
+            flush=True,
+        )
         return s
 
     with ThreadPoolExecutor(args.workers) as pool:
@@ -120,8 +147,9 @@ def cmd_scout(args) -> None:
     summary = {
         "config": vars(args) | {"func": None},
         "runs": rows,
-        "recall_confirmed": round(sum(len(r["detected_confirmed"]) for r in seeded) /
-                                  max(1, sum(r["active"] for r in seeded)), 3),
+        "recall_confirmed": round(
+            sum(len(r["detected_confirmed"]) for r in seeded) / max(1, sum(r["active"] for r in seeded)), 3
+        ),
         "recall_any": round(sum(len(r["detected_any"]) for r in seeded) / max(1, sum(r["active"] for r in seeded)), 3),
         "unmatched_confirmed_seeded": sum(r["unmatched_confirmed"] for r in seeded),
         "false_positives_clean": sum(r["confirmed"] for r in clean),
@@ -156,16 +184,31 @@ def cmd_entry(args) -> None:
             erp.reset()
             before = erp.state()
             checks = EntryChecks(before, erp.state) if args.checks else None
-            outcome = entry.enter_document(erp.base_url, doc["id"], root / "docs" / f"{doc['id']}.jpg",
-                                           cfg_from(args), out / "traces" / f"{doc['id']}-{rep}.jsonl", checks)
+            outcome = entry.enter_document(
+                erp.base_url,
+                doc["id"],
+                root / "docs" / f"{doc['id']}.jpg",
+                cfg_from(args),
+                out / "traces" / f"{doc['id']}-{rep}.jsonl",
+                checks,
+            )
             after = erp.state()
         budget.add(outcome.run.cost_usd)
         res = entry.check(doc, before, after, outcome)
-        res.update(repeat=rep, cost=round(outcome.run.cost_usd, 4), turns=outcome.run.turns,
-                   seconds=outcome.run.seconds, stop=outcome.run.stop_reason, blocked=outcome.run.blocked,
-                   notes=outcome.notes)
-        print(f"[{doc['id']}-{rep}] {'✓' if res['success'] else '✗'} {res['action']} {res.get('fields', '')} "
-              f"${res['cost']:.3f} {res['turns']}轮", flush=True)
+        res.update(
+            repeat=rep,
+            cost=round(outcome.run.cost_usd, 4),
+            turns=outcome.run.turns,
+            seconds=outcome.run.seconds,
+            stop=outcome.run.stop_reason,
+            blocked=outcome.run.blocked,
+            notes=outcome.notes,
+        )
+        print(
+            f"[{doc['id']}-{rep}] {'✓' if res['success'] else '✗'} {res['action']} {res.get('fields', '')} "
+            f"${res['cost']:.3f} {res['turns']}轮",
+            flush=True,
+        )
         return res
 
     with ThreadPoolExecutor(args.workers) as pool:
@@ -180,8 +223,10 @@ def cmd_entry(args) -> None:
         "normal_success": round(sum(r["success"] for r in normal) / max(1, len(normal)), 3),
         "trap_escalated": round(sum(r["success"] for r in traps) / max(1, len(traps)), 3),
         "false_escalations": sum(r["action"] == "escalate" for r in normal),
-        "field_accuracy": {f: round(sum(r["fields"][f] for r in normal) / max(1, len(normal)), 3)
-                           for f in ("supplier", "date", "ext_no", "lines")},
+        "field_accuracy": {
+            f: round(sum(r["fields"][f] for r in normal) / max(1, len(normal)), 3)
+            for f in ("supplier", "date", "ext_no", "lines")
+        },
         "deleted_existing": sum(r["deleted_existing"] for r in done),
         "wrong_entries": sum(r["expect"] == "escalate" and r["new_pos"] > 0 for r in done),
         "needs_review": sum(r.get("needs_review", False) for r in done),
@@ -213,16 +258,26 @@ def cmd_external(args) -> None:
             with external.StaticSite(external.todomvc_dir(name)) as site:
                 system = external.EXTERNAL_SYSTEM.format(name=name, rules=rules)
                 first = f"被测应用地址：{site.base_url}/ （TodoMVC 的 {name} 实现）"
-                reports, res, coverage = scout.explore(site.base_url, cfg_from(args), out / "traces" / f"{tag}-explore.jsonl",
-                                                       system=system, first_text=first)
+                reports, res, coverage = scout.explore(
+                    site.base_url,
+                    cfg_from(args),
+                    out / "traces" / f"{tag}-explore.jsonl",
+                    system=system,
+                    first_text=first,
+                )
                 budget.add(res.cost_usd)
                 result = scout.ScoutResult(reports=reports, explore=res, coverage=coverage)
                 repro_cfg = cfg_from(args, model=args.repro_model, max_turns=25, budget_usd=0.4)
                 for i, r in enumerate(reports):
                     if budget.left <= 0:
                         break
-                    rr = scout.reproduce(site.base_url, r, repro_cfg, out / "traces" / f"{tag}-repro{i}.jsonl",
-                                         system=external.EXTERNAL_REPRO)
+                    rr = scout.reproduce(
+                        site.base_url,
+                        r,
+                        repro_cfg,
+                        out / "traces" / f"{tag}-repro{i}.jsonl",
+                        system=external.EXTERNAL_REPRO,
+                    )
                     budget.add(rr.cost_usd)
                     result.repro_runs.append(rr)
             scout.save(result, out / f"{tag}.json")
@@ -235,11 +290,20 @@ def cmd_external(args) -> None:
 
     with ThreadPoolExecutor(args.workers) as pool:
         rows = list(pool.map(one, [(n, r) for n in args.targets for r in range(args.repeats)]))
-    summary = {"config": vars(args) | {"func": None},
-               "runs": [{"tag": r["tag"], "reports": len(r.get("reports", [])),
-                         "confirmed": sum(1 for x in r.get("reports", []) if x.get("reproduced")),
-                         "cost": r.get("cost"), "error": r.get("error")} for r in rows],
-               "cost": round(sum(r.get("cost") or 0 for r in rows), 4)}
+    summary = {
+        "config": vars(args) | {"func": None},
+        "runs": [
+            {
+                "tag": r["tag"],
+                "reports": len(r.get("reports", [])),
+                "confirmed": sum(1 for x in r.get("reports", []) if x.get("reproduced")),
+                "cost": r.get("cost"),
+                "error": r.get("error"),
+            }
+            for r in rows
+        ],
+        "cost": round(sum(r.get("cost") or 0 for r in rows), 4),
+    }
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"cost": summary["cost"], "confirmed": sum(r["confirmed"] for r in summary["runs"])}), f"→ {out}")
 
@@ -257,8 +321,10 @@ def cmd_monkey(args) -> None:
             rows.append(r)
             print(f"[{group}-seed{s}] 检出 {r['detected']} / {GROUPS[group]}  信号 {r['signals']}", flush=True)
     seeded = [r for r in rows if r["active"]]
-    summary = {"runs": rows, "recall": round(sum(len(r["detected"]) for r in seeded) /
-                                             max(1, sum(r["active"] for r in seeded)), 3)}
+    summary = {
+        "runs": rows,
+        "recall": round(sum(len(r["detected"]) for r in seeded) / max(1, sum(r["active"] for r in seeded)), 3),
+    }
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"recall": summary["recall"]}), f"→ {out}")
 
@@ -280,8 +346,9 @@ def main() -> None:
     sub.choices["scout"].add_argument("--groups", nargs="+", default=["A", "B", "C", "clean"])
     sub.choices["scout"].add_argument("--repro-model", default="claude-sonnet-5-5")
     sub.choices["scout"].add_argument("--resume", help="继续一个已有的运行目录")
-    sub.choices["scout"].add_argument("--check-expectation", action="store_true",
-                                      help="复现时用 calc 工具独立核对报告的期望值（问题日志 P14）")
+    sub.choices["scout"].add_argument(
+        "--check-expectation", action="store_true", help="复现时用 calc 工具独立核对报告的期望值（问题日志 P14）"
+    )
     sub.choices["entry"].add_argument("--docs", nargs="*")
     sub.choices["entry"].add_argument("--set", default="basic", choices=["basic", "hard", "hardtax"])
     sub.choices["entry"].add_argument("--checks", action="store_true", help="启用代码校验（record_document + 回读）")

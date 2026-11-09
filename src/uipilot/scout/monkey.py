@@ -7,8 +7,22 @@ import random
 
 from ..browser import ActionError, ActionGuard, BrowserExecutor
 
-VALUES = ["1", "0", "-5", "3.75", "100", "99999", "2026-03-04", "2026-11-30", "abc", "电子", "长" * 60,
-          "", "SO-TEST-1", "91440300MA5FHQ2X1K"]
+VALUES = [
+    "1",
+    "0",
+    "-5",
+    "3.75",
+    "100",
+    "99999",
+    "2026-03-04",
+    "2026-11-30",
+    "abc",
+    "电子",
+    "长" * 60,
+    "",
+    "SO-TEST-1",
+    "91440300MA5FHQ2X1K",
+]
 
 # 信号到植入缺陷的对应关系：随机测试看不懂业务，只能认出会报错的缺陷
 SIGNAL_BUGS = {("page_error", "/po/"): "B11", ("http_5xx", "/po/"): "B05"}
@@ -22,8 +36,11 @@ def run_monkey(base_url: str, steps: int, seed: int) -> dict:
             page = ex.page
             if not page.url.startswith(base_url):
                 ex.execute("navigate", {"url": "/po"})
-            cands = [c for c in ex._snapshot(ex.active, page, "candidates")["candidates"]
-                     if c["role"] in ("link", "button", "textbox", "combobox", "checkbox")]
+            cands = [
+                c
+                for c in ex._snapshot(ex.active, page, "candidates")["candidates"]
+                if c["role"] in ("link", "button", "textbox", "combobox", "checkbox")
+            ]
             if not cands:
                 ex.execute("navigate", {"url": "/po"})
                 continue

@@ -69,28 +69,48 @@ class ERP:
                 [(s, n, u, cents(p)) for s, n, u, p in seed.PRODUCTS],
             )
             for o in seed.seed_orders(random.Random(7)):
-                po_id = self._insert_po(conn, o["supplier_id"], o["order_date"], o["ext_no"], o["remark"],
-                                        [(pid, qty, cents(p)) for pid, qty, p in o["lines"]])
+                po_id = self._insert_po(
+                    conn,
+                    o["supplier_id"],
+                    o["order_date"],
+                    o["ext_no"],
+                    o["remark"],
+                    [(pid, qty, cents(p)) for pid, qty, p in o["lines"]],
+                )
                 if po_id % 5 == 0:  # 一部分历史单据已开票
                     amount = self.po_total(conn, po_id, honest=True)
                     tax = round(amount * 0.13)
                     conn.execute(
                         "INSERT INTO invoices (invoice_no, supplier_id, po_id, invoice_date, amount_cents, tax_rate,"
                         " tax_cents, total_cents) VALUES (?,?,?,?,?,?,?,?)",
-                        (f"4403{26000000 + po_id * 7919:08d}", o["supplier_id"], po_id, o["order_date"],
-                         amount, "13%", tax, amount + tax))
+                        (
+                            f"4403{26000000 + po_id * 7919:08d}",
+                            o["supplier_id"],
+                            po_id,
+                            o["order_date"],
+                            amount,
+                            "13%",
+                            tax,
+                            amount + tax,
+                        ),
+                    )
                     conn.execute("UPDATE purchase_orders SET status='已开票' WHERE id=?", (po_id,))
 
     def _insert_po(self, conn, supplier_id, order_date, ext_no, remark, lines) -> int:
         seq = conn.execute("SELECT COALESCE(MAX(created_seq), 0) + 1 FROM purchase_orders").fetchone()[0]
         cur = conn.execute(
             "INSERT INTO purchase_orders (po_no, ext_no, supplier_id, order_date, remark, status, created_seq)"
-            " VALUES ('', ?, ?, ?, ?, '待开票', ?)", (ext_no, supplier_id, order_date, remark, seq))
+            " VALUES ('', ?, ?, ?, ?, '待开票', ?)",
+            (ext_no, supplier_id, order_date, remark, seq),
+        )
         po_id = cur.lastrowid
-        conn.execute("UPDATE purchase_orders SET po_no=? WHERE id=?",
-                     (f"PO-{order_date.replace('-', '')}-{po_id:03d}", po_id))
-        conn.executemany("INSERT INTO po_lines (po_id, product_id, qty, price_cents) VALUES (?,?,?,?)",
-                         [(po_id, pid, qty, pc) for pid, qty, pc in lines])
+        conn.execute(
+            "UPDATE purchase_orders SET po_no=? WHERE id=?", (f"PO-{order_date.replace('-', '')}-{po_id:03d}", po_id)
+        )
+        conn.executemany(
+            "INSERT INTO po_lines (po_id, product_id, qty, price_cents) VALUES (?,?,?,?)",
+            [(po_id, pid, qty, pc) for pid, qty, pc in lines],
+        )
         return po_id
 
     def po_total(self, conn, po_id: int, honest: bool = False) -> int:
@@ -105,10 +125,13 @@ class ERP:
             for po in conn.execute("SELECT * FROM purchase_orders ORDER BY id"):
                 lines = conn.execute(
                     "SELECT p.sku, l.qty, l.price_cents FROM po_lines l JOIN products p ON p.id=l.product_id"
-                    " WHERE l.po_id=? ORDER BY l.id", (po["id"],)).fetchall()
+                    " WHERE l.po_id=? ORDER BY l.id",
+                    (po["id"],),
+                ).fetchall()
                 supplier = conn.execute("SELECT name FROM suppliers WHERE id=?", (po["supplier_id"],)).fetchone()
-                pos.append({**dict(po), "supplier": supplier["name"] if supplier else None,
-                            "lines": [dict(r) for r in lines]})
+                pos.append(
+                    {**dict(po), "supplier": supplier["name"] if supplier else None, "lines": [dict(r) for r in lines]}
+                )
             return {
                 "suppliers": [dict(r) for r in conn.execute("SELECT * FROM suppliers ORDER BY id")],
                 "purchase_orders": pos,
@@ -181,8 +204,10 @@ def create_app(db_path: str) -> FastAPI:
                 errors.append("该税号已存在，同一税号只能登记一个供应商")
             if errors:
                 return render(request, "supplier_form.html", errors=errors, form=form)
-            conn.execute("INSERT INTO suppliers (name, tax_id, contact, phone) VALUES (?,?,?,?)",
-                         (name, tax_id, form.get("contact", ""), form.get("phone", "")))
+            conn.execute(
+                "INSERT INTO suppliers (name, tax_id, contact, phone) VALUES (?,?,?,?)",
+                (name, tax_id, form.get("contact", ""), form.get("phone", "")),
+            )
         return RedirectResponse("/suppliers?saved=1", status_code=303)
 
     @app.get("/products", response_class=HTMLResponse)
@@ -195,7 +220,8 @@ def create_app(db_path: str) -> FastAPI:
         with closing(erp.db()) as conn:
             rows = conn.execute(
                 "SELECT po.*, s.name AS supplier FROM purchase_orders po"
-                " LEFT JOIN suppliers s ON s.id=po.supplier_id ORDER BY created_seq DESC").fetchall()
+                " LEFT JOIN suppliers s ON s.id=po.supplier_id ORDER BY created_seq DESC"
+            ).fetchall()
             items = [{**dict(r), "total": erp.po_total(conn, r["id"])} for r in rows]
         if q:
             # 曾区分大小写（搜 anker 查不到 ANKER），测试 Agent 在多组评测中独立报出，见问题日志 P11
@@ -209,13 +235,27 @@ def create_app(db_path: str) -> FastAPI:
         start = (page - 1) * PAGE_SIZE
         if erp.bug("B02") and page > 1:
             start -= 1
-        return render(request, "po_list.html", items=items[start:start + PAGE_SIZE], page=page, pages=pages,
-                      sort=sort, q=q, msg=msg, total_count=len(items))
+        return render(
+            request,
+            "po_list.html",
+            items=items[start : start + PAGE_SIZE],
+            page=page,
+            pages=pages,
+            sort=sort,
+            q=q,
+            msg=msg,
+            total_count=len(items),
+        )
 
     def parse_po_form(form) -> tuple[dict, list[str]]:
         errors = []
-        data = {"supplier_id": form.get("supplier_id", ""), "order_date": form.get("order_date", "").strip(),
-                "ext_no": form.get("ext_no", "").strip(), "remark": form.get("remark", ""), "lines": []}
+        data = {
+            "supplier_id": form.get("supplier_id", ""),
+            "order_date": form.get("order_date", "").strip(),
+            "ext_no": form.get("ext_no", "").strip(),
+            "remark": form.get("remark", ""),
+            "lines": [],
+        }
         if not data["supplier_id"]:
             errors.append("请选择供应商")
         try:
@@ -260,38 +300,64 @@ def create_app(db_path: str) -> FastAPI:
         return data, errors
 
     def po_form_lines(form) -> list[dict]:
-        return [{"product_id": p, "qty": q, "price": pr}
-                for p, q, pr in zip(form.getlist("product_id"), form.getlist("qty"), form.getlist("price"), strict=False)]
+        return [
+            {"product_id": p, "qty": q, "price": pr}
+            for p, q, pr in zip(form.getlist("product_id"), form.getlist("qty"), form.getlist("price"), strict=False)
+        ]
 
     @app.get("/po/new", response_class=HTMLResponse)
     def po_new(request: Request):
         with closing(erp.db()) as conn:
-            return render(request, "po_form.html", suppliers=suppliers(conn), products=products(conn), errors=[],
-                          form={"order_date": "", "lines": [{}]}, action="/po/new", title="新建采购单")
+            return render(
+                request,
+                "po_form.html",
+                suppliers=suppliers(conn),
+                products=products(conn),
+                errors=[],
+                form={"order_date": "", "lines": [{}]},
+                action="/po/new",
+                title="新建采购单",
+            )
 
     @app.post("/po/new")
     async def po_create(request: Request):
         form = await request.form()
         data, errors = parse_po_form(form)
         with closing(erp.db()) as conn, conn:
-            if data["ext_no"] and conn.execute("SELECT 1 FROM purchase_orders WHERE ext_no=?",
-                                               (data["ext_no"],)).fetchone():
+            if (
+                data["ext_no"]
+                and conn.execute("SELECT 1 FROM purchase_orders WHERE ext_no=?", (data["ext_no"],)).fetchone()
+            ):
                 errors.append(f"对方单号 {data['ext_no']} 已录入过，请勿重复录入")
             if errors:
-                return render(request, "po_form.html", suppliers=suppliers(conn), products=products(conn),
-                              errors=errors, form={**dict(form), "lines": po_form_lines(form)},
-                              action="/po/new", title="新建采购单")
+                return render(
+                    request,
+                    "po_form.html",
+                    suppliers=suppliers(conn),
+                    products=products(conn),
+                    errors=errors,
+                    form={**dict(form), "lines": po_form_lines(form)},
+                    action="/po/new",
+                    title="新建采购单",
+                )
             if erp.bug("B05") and len(data["remark"]) > 50:
                 raise RuntimeError("value too long for column remark")
-            po_id = erp._insert_po(conn, int(data["supplier_id"]), data["order_date"], data["ext_no"],
-                                   data["remark"], data["lines"])
+            po_id = erp._insert_po(
+                conn, int(data["supplier_id"]), data["order_date"], data["ext_no"], data["remark"], data["lines"]
+            )
         return RedirectResponse(f"/po/{po_id}?saved=1", status_code=303)
 
     def load_po(conn, po_id: int):
-        po = conn.execute("SELECT po.*, s.name AS supplier FROM purchase_orders po"
-                          " LEFT JOIN suppliers s ON s.id=po.supplier_id WHERE po.id=?", (po_id,)).fetchone()
-        lines = conn.execute("SELECT l.*, p.sku, p.name, p.unit FROM po_lines l JOIN products p ON p.id=l.product_id"
-                             " WHERE l.po_id=? ORDER BY l.id", (po_id,)).fetchall()
+        po = conn.execute(
+            "SELECT po.*, s.name AS supplier FROM purchase_orders po"
+            " LEFT JOIN suppliers s ON s.id=po.supplier_id WHERE po.id=?",
+            (po_id,),
+        ).fetchone()
+        lines = conn.execute(
+            "SELECT l.*, p.sku, p.name, p.unit FROM po_lines l JOIN products p ON p.id=l.product_id"
+            " WHERE l.po_id=? ORDER BY l.id",
+            (po_id,),
+        ).fetchall()
         return po, lines
 
     @app.get("/po/{po_id}", response_class=HTMLResponse)
@@ -301,17 +367,37 @@ def create_app(db_path: str) -> FastAPI:
             if not po:
                 return HTMLResponse("<h3>单据不存在</h3><a href='/po'>返回列表</a>", status_code=404)
             invoice = conn.execute("SELECT * FROM invoices WHERE po_id=?", (po_id,)).fetchone()
-            return render(request, "po_detail.html", po=po, lines=lines, total=erp.po_total(conn, po_id),
-                          invoice=invoice, saved=saved)
+            return render(
+                request,
+                "po_detail.html",
+                po=po,
+                lines=lines,
+                total=erp.po_total(conn, po_id),
+                invoice=invoice,
+                saved=saved,
+            )
 
     @app.get("/po/{po_id}/edit", response_class=HTMLResponse)
     def po_edit(request: Request, po_id: int):
         with closing(erp.db()) as conn:
             po, lines = load_po(conn, po_id)
-            form = {**dict(po), "lines": [{"product_id": str(l["product_id"]), "qty": str(l["qty"]),
-                                           "price": f"{l['price_cents'] / 100:.2f}"} for l in lines]}
-            return render(request, "po_form.html", suppliers=suppliers(conn), products=products(conn), errors=[],
-                          form=form, action=f"/po/{po_id}/edit", title=f"编辑采购单 {po['po_no']}")
+            form = {
+                **dict(po),
+                "lines": [
+                    {"product_id": str(l["product_id"]), "qty": str(l["qty"]), "price": f"{l['price_cents'] / 100:.2f}"}
+                    for l in lines
+                ],
+            }
+            return render(
+                request,
+                "po_form.html",
+                suppliers=suppliers(conn),
+                products=products(conn),
+                errors=[],
+                form=form,
+                action=f"/po/{po_id}/edit",
+                title=f"编辑采购单 {po['po_no']}",
+            )
 
     @app.post("/po/{po_id}/edit")
     async def po_update(request: Request, po_id: int):
@@ -319,15 +405,26 @@ def create_app(db_path: str) -> FastAPI:
         data, errors = parse_po_form(form)
         with closing(erp.db()) as conn, conn:
             if errors:
-                return render(request, "po_form.html", suppliers=suppliers(conn), products=products(conn),
-                              errors=errors, form={**dict(form), "lines": po_form_lines(form)},
-                              action=f"/po/{po_id}/edit", title="编辑采购单")
+                return render(
+                    request,
+                    "po_form.html",
+                    suppliers=suppliers(conn),
+                    products=products(conn),
+                    errors=errors,
+                    form={**dict(form), "lines": po_form_lines(form)},
+                    action=f"/po/{po_id}/edit",
+                    title="编辑采购单",
+                )
             lines = data["lines"][:-1] if erp.bug("B09") and len(data["lines"]) > 1 else data["lines"]
-            conn.execute("UPDATE purchase_orders SET supplier_id=?, order_date=?, ext_no=?, remark=? WHERE id=?",
-                         (int(data["supplier_id"]), data["order_date"], data["ext_no"], data["remark"], po_id))
+            conn.execute(
+                "UPDATE purchase_orders SET supplier_id=?, order_date=?, ext_no=?, remark=? WHERE id=?",
+                (int(data["supplier_id"]), data["order_date"], data["ext_no"], data["remark"], po_id),
+            )
             conn.execute("DELETE FROM po_lines WHERE po_id=?", (po_id,))
-            conn.executemany("INSERT INTO po_lines (po_id, product_id, qty, price_cents) VALUES (?,?,?,?)",
-                             [(po_id, pid, q, pc) for pid, q, pc in lines])
+            conn.executemany(
+                "INSERT INTO po_lines (po_id, product_id, qty, price_cents) VALUES (?,?,?,?)",
+                [(po_id, pid, q, pc) for pid, q, pc in lines],
+            )
         return RedirectResponse(f"/po/{po_id}?saved=1", status_code=303)
 
     @app.get("/po/{po_id}/delete", response_class=HTMLResponse)
@@ -353,21 +450,32 @@ def create_app(db_path: str) -> FastAPI:
     @app.get("/invoices", response_class=HTMLResponse)
     def invoice_list(request: Request):
         with closing(erp.db()) as conn:
-            rows = conn.execute("SELECT i.*, s.name AS supplier, po.po_no FROM invoices i"
-                                " LEFT JOIN suppliers s ON s.id=i.supplier_id"
-                                " LEFT JOIN purchase_orders po ON po.id=i.po_id ORDER BY i.id DESC").fetchall()
+            rows = conn.execute(
+                "SELECT i.*, s.name AS supplier, po.po_no FROM invoices i"
+                " LEFT JOIN suppliers s ON s.id=i.supplier_id"
+                " LEFT JOIN purchase_orders po ON po.id=i.po_id ORDER BY i.id DESC"
+            ).fetchall()
             return render(request, "invoices.html", rows=rows)
 
     def open_pos(conn):
-        return conn.execute("SELECT po.id, po.po_no, s.name AS supplier FROM purchase_orders po"
-                            " LEFT JOIN suppliers s ON s.id=po.supplier_id WHERE po.status='待开票'"
-                            " ORDER BY po.id DESC").fetchall()
+        return conn.execute(
+            "SELECT po.id, po.po_no, s.name AS supplier FROM purchase_orders po"
+            " LEFT JOIN suppliers s ON s.id=po.supplier_id WHERE po.status='待开票'"
+            " ORDER BY po.id DESC"
+        ).fetchall()
 
     @app.get("/invoices/new", response_class=HTMLResponse)
     def invoice_new(request: Request):
         with closing(erp.db()) as conn:
-            return render(request, "invoice_form.html", suppliers=suppliers(conn), pos=open_pos(conn),
-                          rates=TAX_RATES, errors=[], form={})
+            return render(
+                request,
+                "invoice_form.html",
+                suppliers=suppliers(conn),
+                pos=open_pos(conn),
+                rates=TAX_RATES,
+                errors=[],
+                form={},
+            )
 
     @app.post("/invoices/new")
     async def invoice_create(request: Request):
@@ -395,14 +503,31 @@ def create_app(db_path: str) -> FastAPI:
                 inv_date = None
                 errors.append("开票日期格式必须是 YYYY-MM-DD")
             if errors:
-                return render(request, "invoice_form.html", suppliers=suppliers(conn), pos=open_pos(conn),
-                              rates=TAX_RATES, errors=errors, form=form)
+                return render(
+                    request,
+                    "invoice_form.html",
+                    suppliers=suppliers(conn),
+                    pos=open_pos(conn),
+                    rates=TAX_RATES,
+                    errors=errors,
+                    form=form,
+                )
             pct = Decimal("6") if erp.bug("B08") else Decimal(rate.rstrip("%"))
             tax = int((Decimal(amount) * pct / 100).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
-            conn.execute("INSERT INTO invoices (invoice_no, supplier_id, po_id, invoice_date, amount_cents, tax_rate,"
-                         " tax_cents, total_cents) VALUES (?,?,?,?,?,?,?,?)",
-                         (form["invoice_no"].strip(), int(form["supplier_id"]) if form.get("supplier_id") else None,
-                          po_id, inv_date, amount, rate, tax, amount + tax))
+            conn.execute(
+                "INSERT INTO invoices (invoice_no, supplier_id, po_id, invoice_date, amount_cents, tax_rate,"
+                " tax_cents, total_cents) VALUES (?,?,?,?,?,?,?,?)",
+                (
+                    form["invoice_no"].strip(),
+                    int(form["supplier_id"]) if form.get("supplier_id") else None,
+                    po_id,
+                    inv_date,
+                    amount,
+                    rate,
+                    tax,
+                    amount + tax,
+                ),
+            )
             if po_id and not erp.bug("B13"):
                 conn.execute("UPDATE purchase_orders SET status='已开票' WHERE id=?", (po_id,))
         return RedirectResponse("/invoices?saved=1", status_code=303)

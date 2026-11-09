@@ -103,7 +103,9 @@ def toggle_all_basic(p):
     add(p, "b")
     p.locator(".toggle-all, #toggle-all").first.click(force=True)
     p.wait_for_timeout(150)
-    return {"states": [p.locator(LI).nth(i).locator(".toggle").first.is_checked() for i in range(p.locator(LI).count())]}
+    return {
+        "states": [p.locator(LI).nth(i).locator(".toggle").first.is_checked() for i in range(p.locator(LI).count())]
+    }
 
 
 def route_active(p):
@@ -116,9 +118,16 @@ def route_active(p):
     return {"url": p.url.split("/")[-1], "labels": labels(p)}
 
 
-CHECKS = {"esc": esc_leaves_edit, "append": append_order, "edit-empty": edit_empty, "edit-cleared": edit_cleared,
-          "toggle-all-after-clear": toggle_all_after_clear, "blank": blank_creates,
-          "toggle-all": toggle_all_basic, "route-active": route_active}
+CHECKS = {
+    "esc": esc_leaves_edit,
+    "append": append_order,
+    "edit-empty": edit_empty,
+    "edit-cleared": edit_cleared,
+    "toggle-all-after-clear": toggle_all_after_clear,
+    "blank": blank_creates,
+    "toggle-all": toggle_all_basic,
+    "route-active": route_active,
+}
 
 if __name__ == "__main__":
     check, *names = sys.argv[1:]

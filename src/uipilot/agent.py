@@ -36,8 +36,12 @@ def request_cost(model: str, usage) -> float:
     prompt = usage.input_tokens + cache_write + cache_read
     if model == "claude-haiku-5-5" and prompt > 100_000:
         p = HAIKU_LONG
-    return (usage.input_tokens * p["in"] + cache_write * p["in"] * 1.25 + cache_read * p["cache_read"]
-            + usage.output_tokens * p["out"]) / 1e6
+    return (
+        usage.input_tokens * p["in"]
+        + cache_write * p["in"] * 1.25
+        + cache_read * p["cache_read"]
+        + usage.output_tokens * p["out"]
+    ) / 1e6
 
 
 def toolset(mode: str) -> dict:
@@ -66,8 +70,12 @@ class CustomTool:
     handler: Callable[[dict], tuple[str, bool]]  # 返回 (给模型的结果, 是否结束)
 
     def definition(self) -> dict:
-        return {"name": self.name, "description": self.description, "strict": True,
-                "input_schema": {**self.schema, "additionalProperties": False}}
+        return {
+            "name": self.name,
+            "description": self.description,
+            "strict": True,
+            "input_schema": {**self.schema, "additionalProperties": False},
+        }
 
 
 @dataclass
@@ -94,10 +102,17 @@ def _signal_note(signals) -> str:
     return "[运行监测] 本轮动作期间捕获到以下信号：\n" + "\n".join(lines)
 
 
-def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict], tools: list[CustomTool],
-              cfg: AgentConfig, trace_path: Path | None = None, client: anthropic.Anthropic | None = None,
-              finish_reminder: str = "请继续完成任务；如果已经完成，请调用 finish 工具结束。",
-              shot_dir: Path | None = None) -> RunResult:
+def run_agent(
+    executor: BrowserExecutor,
+    system: str,
+    first_message: list[dict],
+    tools: list[CustomTool],
+    cfg: AgentConfig,
+    trace_path: Path | None = None,
+    client: anthropic.Anthropic | None = None,
+    finish_reminder: str = "请继续完成任务；如果已经完成，请调用 finish 工具结束。",
+    shot_dir: Path | None = None,
+) -> RunResult:
     """shot_dir 不为空时，每个浏览器动作执行后存一张截图，轨迹里记下文件名（给回放页用）。"""
     client = client or anthropic.Anthropic(max_retries=4)
     by_name = {t.name: t for t in tools}
@@ -120,8 +135,15 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
             if result.cost_usd >= cfg.budget_usd:
                 result.stop_reason = "budget"
                 break
-            kwargs = dict(model=cfg.model, max_tokens=16000, system=system, tools=tool_defs, messages=messages,
-                          output_config={"effort": cfg.effort}, cache_control={"type": "ephemeral"})
+            kwargs = dict(
+                model=cfg.model,
+                max_tokens=16000,
+                system=system,
+                tools=tool_defs,
+                messages=messages,
+                output_config={"effort": cfg.effort},
+                cache_control={"type": "ephemeral"},
+            )
             try:
                 if cfg.fallbacks and cfg.model in ("claude-opus-5-5", "claude-sonnet-5-5"):
                     betas = ["server-side-fallback-2026-07-01"]
@@ -149,8 +171,16 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
             messages.append({"role": "assistant", "content": resp.content})
             texts = [b.text for b in resp.content if b.type == "text"]
             texts += [b.thinking for b in resp.content if b.type == "thinking" and getattr(b, "thinking", "")]
-            log({"turn": turn, "stop": resp.stop_reason, "cost": round(cost, 5), "model": resp.model,
-                 "text": texts, "usage": resp.usage.model_dump()})
+            log(
+                {
+                    "turn": turn,
+                    "stop": resp.stop_reason,
+                    "cost": round(cost, 5),
+                    "model": resp.model,
+                    "text": texts,
+                    "usage": resp.usage.model_dump(),
+                }
+            )
 
             if resp.stop_reason == "refusal":
                 result.stop_reason = "refusal"
@@ -170,8 +200,7 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                 toolset_name = getattr(b, "toolset_name", None)
                 # 模型偶尔把自定义工具（如 escalate）标成 browser 工具集成员来调用。执行器没有这个成员、
                 # 而自定义工具里有同名工具时，按自定义工具执行（结果仍回显 toolset_name），并计数
-                misrouted = toolset_name == "browser" and b.name in by_name \
-                    and not hasattr(executor, f"_do_{b.name}")
+                misrouted = toolset_name == "browser" and b.name in by_name and not hasattr(executor, f"_do_{b.name}")
                 if misrouted:
                     result.misrouted += 1
                 if toolset_name == "browser" and not misrouted:
@@ -187,23 +216,37 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                         try:
                             entry["content"] = executor.execute(b.name, inp)
                         except ActionError as e:
-                            entry.update(content=f"Error: {e}" if not str(e).startswith("Error") else str(e),
-                                         is_error=True)
+                            entry.update(
+                                content=f"Error: {e}" if not str(e).startswith("Error") else str(e), is_error=True
+                            )
                             failed = True
                             result.errors += 1
                     shot = None
                     if shot_dir is not None and executor.tabs:
                         shot = f"{executor.action_count:03d}.jpg"
                         executor.page.screenshot(path=str(shot_dir / shot), type="jpeg", quality=72)
-                    log({"turn": turn, "action": b.name, "input": inp, "error": entry.get("is_error", False),
-                         "result": entry["content"] if isinstance(entry["content"], str) else "[blocks]",
-                         "url": executor.page.url if executor.tabs else "", "shot": shot})
+                    log(
+                        {
+                            "turn": turn,
+                            "action": b.name,
+                            "input": inp,
+                            "error": entry.get("is_error", False),
+                            "result": entry["content"] if isinstance(entry["content"], str) else "[blocks]",
+                            "url": executor.page.url if executor.tabs else "",
+                            "shot": shot,
+                        }
+                    )
                     results.append(entry)
                     last_browser = entry
                 else:
                     tool = by_name.get(b.name)
-                    inp = b.input if isinstance(b.input, dict) else b.input.model_dump(exclude_none=True) \
-                        if hasattr(b.input, "model_dump") else dict(b.input)
+                    inp = (
+                        b.input
+                        if isinstance(b.input, dict)
+                        else b.input.model_dump(exclude_none=True)
+                        if hasattr(b.input, "model_dump")
+                        else dict(b.input)
+                    )
                     if tool is None:
                         out, done, err = f"Unknown tool {b.name}", False, True
                     else:
@@ -224,8 +267,7 @@ def run_agent(executor: BrowserExecutor, system: str, first_message: list[dict],
                 log({"turn": turn, "signals": [s.__dict__ for s in signals]})
                 content = last_browser["content"] if last_browser else None
                 only_state = isinstance(content, list) and all(c.get("type") == "browser_state" for c in content)
-                if cfg.oracle_signals and content is not None and not last_browser.get("is_error") \
-                        and not only_state:
+                if cfg.oracle_signals and content is not None and not last_browser.get("is_error") and not only_state:
                     blocks = [{"type": "text", "text": content}] if isinstance(content, str) else list(content)
                     last_browser["content"] = blocks + [{"type": "text", "text": _signal_note(signals)}]
             messages.append({"role": "user", "content": results})

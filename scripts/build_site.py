@@ -46,8 +46,12 @@ def detected(run: str, tag: str, data: dict) -> set[str]:
     for r in data["reports"]:
         bug = r["matched"]
         for c in CORRECTIONS:
-            if c["run"] == run and c["tag"] == tag and r["title"].startswith(c["title_prefix"]) \
-                    and c.get("verdict") == "seeded":
+            if (
+                c["run"] == run
+                and c["tag"] == tag
+                and r["title"].startswith(c["title_prefix"])
+                and c.get("verdict") == "seeded"
+            ):
                 bug = c["bug"]
         if r["reproduced"] and bug:
             found.add(bug)
@@ -80,13 +84,24 @@ def scout() -> list[dict]:
             total += len(GROUPS[group])
         model, mode, *rest = key.split("-")
         done = [r for r in s["runs"] if "detected_confirmed" in r]
-        rows.append({"key": key, "model": MODEL[model], "mode": MODE[mode], "signals": "nosig" not in rest,
-                     "calc": "calc" in rest,
-                     "repeats": repeats, "recall": round(found / max(1, total), 3),
-                     "recall_judge": s["recall_confirmed"], "found": found, "total": total,
-                     "false_positives": false_positives(d.name),
-                     "cost_per_round": round(s["cost"] / max(1, len(done) or rounds), 3),
-                     "hits": {b: v for b, v in hits.items() if v[1]}, "run": d.name})
+        rows.append(
+            {
+                "key": key,
+                "model": MODEL[model],
+                "mode": MODE[mode],
+                "signals": "nosig" not in rest,
+                "calc": "calc" in rest,
+                "repeats": repeats,
+                "recall": round(found / max(1, total), 3),
+                "recall_judge": s["recall_confirmed"],
+                "found": found,
+                "total": total,
+                "false_positives": false_positives(d.name),
+                "cost_per_round": round(s["cost"] / max(1, len(done) or rounds), 3),
+                "hits": {b: v for b, v in hits.items() if v[1]},
+                "run": d.name,
+            }
+        )
     return rows
 
 
@@ -97,13 +112,25 @@ def entry() -> list[dict]:
             s = json.loads((d / "summary.json").read_text())
             model, mode, *rest = key.split("-")
             done = [r for r in s["runs"] if "success" in r]
-            rows.append({"set": label, "model": MODEL[model], "mode": MODE[mode], "checks": "checks" in rest,
-                         "n": len(done), "success": s["success"], "normal": s["normal_success"],
-                         "traps": s["trap_escalated"], "false_escalations": s["false_escalations"],
-                         "wrong_entries": s.get("wrong_entries", sum(r["expect"] == "escalate" and r["new_pos"] > 0
-                                                                      for r in done)),
-                         "needs_review": s.get("needs_review", 0), "cost_per_doc": s["cost_per_doc"],
-                         "run": d.name})
+            rows.append(
+                {
+                    "set": label,
+                    "model": MODEL[model],
+                    "mode": MODE[mode],
+                    "checks": "checks" in rest,
+                    "n": len(done),
+                    "success": s["success"],
+                    "normal": s["normal_success"],
+                    "traps": s["trap_escalated"],
+                    "false_escalations": s["false_escalations"],
+                    "wrong_entries": s.get(
+                        "wrong_entries", sum(r["expect"] == "escalate" and r["new_pos"] > 0 for r in done)
+                    ),
+                    "needs_review": s.get("needs_review", 0),
+                    "cost_per_doc": s["cost_per_doc"],
+                    "run": d.name,
+                }
+            )
     return rows
 
 
@@ -120,11 +147,17 @@ def replays() -> list[dict]:
 
 def main() -> None:
     findings = ROOT / "evals" / "external_findings.json"
-    audited = sum(len(json.loads(f.read_text(encoding="utf-8"))["reports"])
-                  for d in latest("scout").values() for f in d.glob("*-*.json") if f.name != "summary.json")
+    audited = sum(
+        len(json.loads(f.read_text(encoding="utf-8"))["reports"])
+        for d in latest("scout").values()
+        for f in d.glob("*-*.json")
+        if f.name != "summary.json"
+    )
     data = {
         "audit": {"reports": audited, "judge_fixes": sum(1 for c in CORRECTIONS if c.get("verdict") == "seeded")},
-        "scout": scout(), "entry": entry(), "replays": replays(),
+        "scout": scout(),
+        "entry": entry(),
+        "replays": replays(),
         "bugs": [{"id": b.id, "title": b.title, "oracle": b.oracle} for b in CATALOG.values()],
         "monkey": {"runs": 9, "steps": 300, "recall": 0.0},
         "external": json.loads(findings.read_text()) if findings.exists() else None,
@@ -139,7 +172,9 @@ def main() -> None:
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
         "<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}"
         "body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n"
-        f"{head.strip()}\n</head>\n<body>\n{page}\n</body>\n</html>\n", encoding="utf-8")
+        f"{head.strip()}\n</head>\n<body>\n{page}\n</body>\n</html>\n",
+        encoding="utf-8",
+    )
     print(f"site/data.json：测试配置 {len(data['scout'])}，录单配置 {len(data['entry'])}，回放 {len(data['replays'])}")
 
 

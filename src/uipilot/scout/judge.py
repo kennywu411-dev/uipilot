@@ -15,11 +15,19 @@ JUDGE_MODEL = "claude-sonnet-5-5"
 
 SCHEMA = {
     "type": "object",
-    "properties": {"matches": {"type": "array", "items": {
-        "type": "object",
-        "properties": {"report": {"type": "integer"}, "bug": {"type": "string"}, "reason": {"type": "string"}},
-        "required": ["report", "bug", "reason"], "additionalProperties": False}}},
-    "required": ["matches"], "additionalProperties": False,
+    "properties": {
+        "matches": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {"report": {"type": "integer"}, "bug": {"type": "string"}, "reason": {"type": "string"}},
+                "required": ["report", "bug", "reason"],
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["matches"],
+    "additionalProperties": False,
 }
 
 
@@ -28,15 +36,22 @@ def match_reports(reports: list[BugReport], active: list[str], client: anthropic
     if not reports:
         return 0.0
     client = client or anthropic.Anthropic(max_retries=4)
-    catalog = "\n".join(f"{b.id}: {b.title}（规则 {b.rule}；触发方式：{b.how}）" for b in CATALOG.values()
-                        if b.id in active) or "（本轮没有植入任何缺陷）"
+    catalog = (
+        "\n".join(f"{b.id}: {b.title}（规则 {b.rule}；触发方式：{b.how}）" for b in CATALOG.values() if b.id in active)
+        or "（本轮没有植入任何缺陷）"
+    )
     items = "\n\n".join(f"[报告 {i}]\n{r.as_text()}" for i, r in enumerate(reports))
-    prompt = (f"下面是本轮在被测系统里植入的缺陷清单：\n{catalog}\n\n下面是测试 Agent 提交的缺陷报告：\n{items}\n\n"
-              "请判断每条报告描述的是不是清单里的某个缺陷。只有当报告的现象确实由该缺陷引起时才算匹配；"
-              "现象相近但原因或规则不同不算。不属于清单的写 none。每条报告给出一条结果。")
-    resp = client.messages.create(model=JUDGE_MODEL, max_tokens=8000, output_config={
-        "effort": "low", "format": {"type": "json_schema", "schema": SCHEMA}},
-        messages=[{"role": "user", "content": prompt}])
+    prompt = (
+        f"下面是本轮在被测系统里植入的缺陷清单：\n{catalog}\n\n下面是测试 Agent 提交的缺陷报告：\n{items}\n\n"
+        "请判断每条报告描述的是不是清单里的某个缺陷。只有当报告的现象确实由该缺陷引起时才算匹配；"
+        "现象相近但原因或规则不同不算。不属于清单的写 none。每条报告给出一条结果。"
+    )
+    resp = client.messages.create(
+        model=JUDGE_MODEL,
+        max_tokens=8000,
+        output_config={"effort": "low", "format": {"type": "json_schema", "schema": SCHEMA}},
+        messages=[{"role": "user", "content": prompt}],
+    )
     data = json.loads(next(b.text for b in resp.content if b.type == "text"))
     for m in data["matches"]:
         if 0 <= m["report"] < len(reports):

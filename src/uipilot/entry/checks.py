@@ -22,7 +22,7 @@ LINE_SCHEMA = {
     "properties": {
         "label": {"type": "string", "description": "单据上的品名，原样抄写"},
         "qty": {"type": "integer"},
-        "unit_price": {"type": "string", "description": "单价，按单据原样写数字，如 \"13.20\""},
+        "unit_price": {"type": "string", "description": '单价，按单据原样写数字，如 "13.20"'},
     },
     "required": ["label", "qty", "unit_price"],
     "additionalProperties": False,
@@ -32,10 +32,13 @@ RECORD_SCHEMA = {
     "type": "object",
     "properties": {
         "supplier_name": {"type": "string", "description": "单据上的供应商名称，原样抄写"},
-        "supplier_tax_id": {"type": "string", "description": "单据上的供应商税号（统一社会信用代码），原样抄写；单据上没有就写空字符串"},
+        "supplier_tax_id": {
+            "type": "string",
+            "description": "单据上的供应商税号（统一社会信用代码），原样抄写；单据上没有就写空字符串",
+        },
         "ext_no": {"type": "string", "description": "单据上的单号"},
         "date": {"type": "string", "description": "单据日期，换算成 YYYY-MM-DD"},
-        "printed_total": {"type": "string", "description": "单据上印的合计金额，只写数字，如 \"141069.60\""},
+        "printed_total": {"type": "string", "description": '单据上印的合计金额，只写数字，如 "141069.60"'},
         "lines": {"type": "array", "items": LINE_SCHEMA},
     },
     "required": ["supplier_name", "supplier_tax_id", "ext_no", "date", "printed_total", "lines"],
@@ -81,14 +84,18 @@ class EntryChecks:
         if not tax:
             self.problems.append("unknown_supplier：单据上没有登记税号，无法确认是系统里的哪一家供应商")
         elif not self.supplier:
-            self.problems.append(f"unknown_supplier：系统中没有税号为 {tax} 的供应商（单据抬头“{inp['supplier_name']}”）"
-                                 "，即使名称相近也不是同一家")
+            self.problems.append(
+                f"unknown_supplier：系统中没有税号为 {tax} 的供应商（单据抬头“{inp['supplier_name']}”）"
+                "，即使名称相近也不是同一家"
+            )
         try:
             total = sum(int(line["qty"]) * _cents(line["unit_price"]) for line in inp["lines"])
             printed = _cents(inp["printed_total"])
             if total != printed:
-                self.problems.append(f"total_mismatch：各行金额之和 {total / 100:,.2f} ≠ 印刷合计 {printed / 100:,.2f}"
-                                     "（也可能是某个数字读错了，请先对照单据确认登记无误；确认后仍不一致就转人工）")
+                self.problems.append(
+                    f"total_mismatch：各行金额之和 {total / 100:,.2f} ≠ 印刷合计 {printed / 100:,.2f}"
+                    "（也可能是某个数字读错了，请先对照单据确认登记无误；确认后仍不一致就转人工）"
+                )
         except (InvalidOperation, ValueError, KeyError):
             self.problems.append("登记的数量、单价或合计不是合法数字，请修正后重新调用 record_document")
             self.verdict = "none"
@@ -98,11 +105,15 @@ class EntryChecks:
             self.problems.append(f"duplicate：对方单号 {ext} 已经录入过")
         if self.problems:
             self.verdict = "escalate"
-            return ("校验未通过，必须转人工（调用 escalate，category 用下面第一条开头的类别）：\n- "
-                    + "\n- ".join(self.problems)), False
+            return (
+                "校验未通过，必须转人工（调用 escalate，category 用下面第一条开头的类别）：\n- "
+                + "\n- ".join(self.problems)
+            ), False
         self.verdict = "pass"
-        return (f"校验通过：税号对应系统供应商“{self.supplier}”，请在下拉框里选这一家；"
-                f"{len(inp['lines'])} 行合计与单据一致；单号未录过。请开始录入。"), False
+        return (
+            f"校验通过：税号对应系统供应商“{self.supplier}”，请在下拉框里选这一家；"
+            f"{len(inp['lines'])} 行合计与单据一致；单号未录过。请开始录入。"
+        ), False
 
     def gate_finish(self) -> str | None:
         """finish 前的检查。返回 None 表示放行，否则返回退回给模型的原因。"""
@@ -128,8 +139,10 @@ class EntryChecks:
             want = sorted((int(line["qty"]), _cents(line["unit_price"])) for line in rec["lines"])
             got = sorted((line["qty"], line["price_cents"]) for line in po["lines"])
             if want != got:
-                diffs.append(f"明细（数量 × 单价）对不上：系统里是 {[(q, p / 100) for q, p in got]}，"
-                             f"单据是 {[(q, p / 100) for q, p in want]}")
+                diffs.append(
+                    f"明细（数量 × 单价）对不上：系统里是 {[(q, p / 100) for q, p in got]}，"
+                    f"单据是 {[(q, p / 100) for q, p in want]}"
+                )
         if diffs:
             self.postcheck_rejections += 1
             return "回读校验发现保存的采购单和单据不一致，请到编辑页修正后再调用 finish：\n- " + "\n- ".join(diffs)

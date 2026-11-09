@@ -23,8 +23,15 @@ def set_bugs(client, *bugs):
 
 
 def new_po(client, lines, date="2026-11-05", remark="", ext_no=""):
-    data = {"supplier_id": "1", "order_date": date, "remark": remark, "ext_no": ext_no,
-            "product_id": [l[0] for l in lines], "qty": [l[1] for l in lines], "price": [l[2] for l in lines]}
+    data = {
+        "supplier_id": "1",
+        "order_date": date,
+        "remark": remark,
+        "ext_no": ext_no,
+        "product_id": [l[0] for l in lines],
+        "qty": [l[1] for l in lines],
+        "price": [l[2] for l in lines],
+    }
     return client.post("/po/new", data=data, follow_redirects=False)
 
 
@@ -81,14 +88,22 @@ def test_remark_b05(client):
     assert new_po(client, [("1", "1", "1")], remark=long).status_code == 303
     set_bugs(client, "B05")
     c = TestClient(client.app, raise_server_exceptions=False)
-    data = {"supplier_id": "1", "order_date": "2026-11-05", "remark": long, "ext_no": "",
-            "product_id": ["1"], "qty": ["1"], "price": ["1"]}
+    data = {
+        "supplier_id": "1",
+        "order_date": "2026-11-05",
+        "remark": long,
+        "ext_no": "",
+        "product_id": ["1"],
+        "qty": ["1"],
+        "price": ["1"],
+    }
     assert c.post("/po/new", data=data, follow_redirects=False).status_code == 500
 
 
 def test_pagination_b02(client):
     def ids(page):
         return re.findall(r'href="/po/(\d+)"', client.get(f"/po?page={page}").text)
+
     assert not set(ids(1)) & set(ids(2))
     set_bugs(client, "B02")
     assert set(ids(1)) & set(ids(2))
@@ -117,8 +132,17 @@ def test_delete_b04_and_b14(client):
 
 def test_invoice_tax_and_status(client):
     pid = po_id_from(new_po(client, [("1", "100", "8.65")]))
-    client.post("/invoices/new", data={"invoice_no": "44030001", "supplier_id": "1", "po_id": str(pid),
-                                       "invoice_date": "2026-11-05", "amount": "865.00", "tax_rate": "13%"})
+    client.post(
+        "/invoices/new",
+        data={
+            "invoice_no": "44030001",
+            "supplier_id": "1",
+            "po_id": str(pid),
+            "invoice_date": "2026-11-05",
+            "amount": "865.00",
+            "tax_rate": "13%",
+        },
+    )
     s = client.get("/__admin/state").json()
     inv = s["invoices"][-1]
     assert inv["tax_cents"] == 11245 and inv["total_cents"] == 97745
@@ -127,8 +151,17 @@ def test_invoice_tax_and_status(client):
 
 def test_invoice_amount_mismatch_rejected(client):
     pid = po_id_from(new_po(client, [("1", "100", "8.65")]))
-    r = client.post("/invoices/new", data={"invoice_no": "44030002", "supplier_id": "1", "po_id": str(pid),
-                                           "invoice_date": "2026-11-05", "amount": "800", "tax_rate": "13%"})
+    r = client.post(
+        "/invoices/new",
+        data={
+            "invoice_no": "44030002",
+            "supplier_id": "1",
+            "po_id": str(pid),
+            "invoice_date": "2026-11-05",
+            "amount": "800",
+            "tax_rate": "13%",
+        },
+    )
     assert "不一致" in r.text
 
 
@@ -139,8 +172,15 @@ def test_duplicate_ext_no_rejected(client):
 
 def test_edit_b09(client):
     pid = po_id_from(new_po(client, [("1", "1", "1"), ("2", "2", "2")]))
-    data = {"supplier_id": "1", "order_date": "2026-11-05", "remark": "", "ext_no": "",
-            "product_id": ["1", "2"], "qty": ["1", "2"], "price": ["1", "2"]}
+    data = {
+        "supplier_id": "1",
+        "order_date": "2026-11-05",
+        "remark": "",
+        "ext_no": "",
+        "product_id": ["1", "2"],
+        "qty": ["1", "2"],
+        "price": ["1", "2"],
+    }
     client.post(f"/po/{pid}/edit", data=data)
     po = next(p for p in client.get("/__admin/state").json()["purchase_orders"] if p["id"] == pid)
     assert len(po["lines"]) == 2

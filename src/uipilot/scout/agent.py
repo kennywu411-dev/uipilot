@@ -79,8 +79,13 @@ class ScoutResult:
         return (self.explore.cost_usd if self.explore else 0) + sum(r.cost_usd for r in self.repro_runs)
 
 
-def explore(base_url: str, cfg: AgentConfig, trace: Path | None = None, system: str = EXPLORE_SYSTEM,
-            first_text: str | None = None) -> tuple[list[BugReport], RunResult, str]:
+def explore(
+    base_url: str,
+    cfg: AgentConfig,
+    trace: Path | None = None,
+    system: str = EXPLORE_SYSTEM,
+    first_text: str | None = None,
+) -> tuple[list[BugReport], RunResult, str]:
     """system / first_text 默认是靶子 ERP 的；测外部应用时由 external.py 传入该应用的规格。"""
     reports: list[BugReport] = []
     summary = {"coverage": ""}
@@ -95,14 +100,22 @@ def explore(base_url: str, cfg: AgentConfig, trace: Path | None = None, system: 
 
     tools = [
         CustomTool("report_bug", "确认一个缺陷后立即调用，附最短复现步骤。", BUG_SCHEMA, report),
-        CustomTool("finish", "测试结束时调用。",
-                   {"type": "object", "properties": {"coverage": {"type": "string", "description": "覆盖了哪些规则、做了哪些验证"}},
-                    "required": ["coverage"]}, finish),
+        CustomTool(
+            "finish",
+            "测试结束时调用。",
+            {
+                "type": "object",
+                "properties": {"coverage": {"type": "string", "description": "覆盖了哪些规则、做了哪些验证"}},
+                "required": ["coverage"],
+            },
+            finish,
+        ),
     ]
     first = [{"type": "text", "text": first_text or f"被测系统地址：{base_url}\n请从 {base_url}/help 开始。"}]
     with BrowserExecutor(base_url, guard=ActionGuard(mode="sandbox")) as ex:
-        res = run_agent(ex, system, first, tools, cfg, trace,
-                        finish_reminder="请继续按规则测试；如果已经测完，请调用 finish。")
+        res = run_agent(
+            ex, system, first, tools, cfg, trace, finish_reminder="请继续按规则测试；如果已经测完，请调用 finish。"
+        )
     return reports, res, summary["coverage"]
 
 
@@ -114,9 +127,17 @@ EXPECTATION_ADDON = """
 - expectation_ok：报告的“期望结果”是否符合业务规则。期望本身错了，就算现象出现，这也不是缺陷。"""
 
 
-def reproduce(base_url: str, report: BugReport, cfg: AgentConfig, trace: Path | None = None,
-              system: str = REPRO_SYSTEM, shot_dir: Path | None = None, check_expectation: bool = False) -> RunResult:
+def reproduce(
+    base_url: str,
+    report: BugReport,
+    cfg: AgentConfig,
+    trace: Path | None = None,
+    system: str = REPRO_SYSTEM,
+    shot_dir: Path | None = None,
+    check_expectation: bool = False,
+) -> RunResult:
     """check_expectation=True 时复现 Agent 还要独立核对报告的期望值（问题日志 P14），两者都成立才算确认。"""
+
     def verdict(inp: dict):
         ok = bool(inp["reproduced"]) and (bool(inp["expectation_ok"]) if check_expectation else True)
         report.reproduced, report.repro_notes = ok, inp["notes"]
@@ -126,23 +147,40 @@ def reproduce(base_url: str, report: BugReport, cfg: AgentConfig, trace: Path | 
     if check_expectation:
         props["expectation_ok"] = {"type": "boolean"}
         system = system + EXPECTATION_ADDON
-    tools = [CustomTool("verdict", "复核结束时调用。", {"type": "object", "properties": props,
-                                                     "required": list(props)}, verdict)]
+    tools = [
+        CustomTool(
+            "verdict", "复核结束时调用。", {"type": "object", "properties": props, "required": list(props)}, verdict
+        )
+    ]
     if check_expectation:
-        tools.append(CustomTool("calc", "精确计算四则运算表达式（支持 + - * / 括号和 %），返回精确结果和四舍五入到分的结果。",
-                                {"type": "object", "properties": {"expression": {"type": "string"}},
-                                 "required": ["expression"]},
-                                lambda inp: (calculate(inp["expression"]), False)))
+        tools.append(
+            CustomTool(
+                "calc",
+                "精确计算四则运算表达式（支持 + - * / 括号和 %），返回精确结果和四舍五入到分的结果。",
+                {"type": "object", "properties": {"expression": {"type": "string"}}, "required": ["expression"]},
+                lambda inp: (calculate(inp["expression"]), False),
+            )
+        )
     first = [{"type": "text", "text": f"被测系统地址：{base_url}\n\n缺陷报告：\n{report.as_text()}"}]
     with BrowserExecutor(base_url, guard=ActionGuard(mode="sandbox")) as ex:
-        return run_agent(ex, system, first, tools, cfg, trace,
-                         finish_reminder="请按步骤复核，然后调用 verdict。", shot_dir=shot_dir)
+        return run_agent(
+            ex, system, first, tools, cfg, trace, finish_reminder="请按步骤复核，然后调用 verdict。", shot_dir=shot_dir
+        )
 
 
 def save(result: ScoutResult, path: Path, judge_cost: float = 0.0) -> None:
-    path.write_text(json.dumps({
-        "coverage": result.coverage, "cost": round(result.cost, 4), "judge_cost": round(judge_cost, 4),
-        "explore": result.explore.to_dict() if result.explore else None,
-        "repro_runs": [r.to_dict() for r in result.repro_runs],
-        "reports": [r.__dict__ for r in result.reports],
-    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(
+        json.dumps(
+            {
+                "coverage": result.coverage,
+                "cost": round(result.cost, 4),
+                "judge_cost": round(judge_cost, 4),
+                "explore": result.explore.to_dict() if result.explore else None,
+                "repro_runs": [r.to_dict() for r in result.repro_runs],
+                "reports": [r.__dict__ for r in result.reports],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )

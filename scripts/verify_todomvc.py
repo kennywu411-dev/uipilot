@@ -59,7 +59,10 @@ def checks(app: App) -> dict:
     out, page = {}, app.page
     app.open()
     out["empty hides main/footer"] = (not app.visible(".main, #main") and not app.visible(".footer, #footer"), "")
-    out["autofocus new input"] = (page.evaluate("document.activeElement && document.activeElement.matches('.new-todo, #new-todo')"), "")
+    out["autofocus new input"] = (
+        page.evaluate("document.activeElement && document.activeElement.matches('.new-todo, #new-todo')"),
+        "",
+    )
     app.add("  first  ")
     app.add("   ")
     app.add("second")
@@ -90,13 +93,19 @@ def checks(app: App) -> dict:
     e.fill("  alpha2  ")
     e.press("Enter")
     page.wait_for_timeout(120)
-    out["edit enter saves trimmed"] = (app.labels()[:1] == ["alpha2"] and page.locator("li.editing").count() == 0, app.labels())
+    out["edit enter saves trimmed"] = (
+        app.labels()[:1] == ["alpha2"] and page.locator("li.editing").count() == 0,
+        app.labels(),
+    )
     e = app.edit(0)
     e.fill("changed")
     e.press("Escape")
     page.wait_for_timeout(150)
     editing = page.locator("li.editing").count()
-    out["escape discards + leaves edit"] = (app.labels()[:1] == ["alpha2"] and editing == 0, (app.labels(), f"editing={editing}"))
+    out["escape discards + leaves edit"] = (
+        app.labels()[:1] == ["alpha2"] and editing == 0,
+        (app.labels(), f"editing={editing}"),
+    )
     if editing:
         page.mouse.click(5, 5)
         page.wait_for_timeout(150)

@@ -9,8 +9,12 @@ import ast
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation, getcontext
 
 getcontext().prec = 40
-_OPS = {ast.Add: lambda a, b: a + b, ast.Sub: lambda a, b: a - b,
-        ast.Mult: lambda a, b: a * b, ast.Div: lambda a, b: a / b}
+_OPS = {
+    ast.Add: lambda a, b: a + b,
+    ast.Sub: lambda a, b: a - b,
+    ast.Mult: lambda a, b: a * b,
+    ast.Div: lambda a, b: a / b,
+}
 
 
 def _eval(node) -> Decimal:

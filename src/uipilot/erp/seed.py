@@ -58,11 +58,13 @@ def seed_orders(rng: random.Random) -> list[dict]:
         for pid in rng.sample(range(1, len(PRODUCTS) + 1), n_lines):
             qty = rng.choice([5, 10, 20, 50, 100, 200, 500, 1000])
             lines.append((pid, qty, PRODUCTS[pid - 1][3]))
-        orders.append({
-            "supplier_id": supplier_id,
-            "order_date": f"2026-{month:02d}-{day:02d}",
-            "ext_no": f"SO{2026060 + i * 13:07d}",
-            "remark": "" if i % 3 else "常规补货",
-            "lines": lines,
-        })
+        orders.append(
+            {
+                "supplier_id": supplier_id,
+                "order_date": f"2026-{month:02d}-{day:02d}",
+                "ext_no": f"SO{2026060 + i * 13:07d}",
+                "remark": "" if i % 3 else "常规补货",
+                "lines": lines,
+            }
+        )
     return orders
