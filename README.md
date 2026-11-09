@@ -1,11 +1,15 @@
 # UIPilot：让 Agent 在没有 API 的网页系统里干活
 
+[![CI](https://github.com/kennywu411-dev/uipilot/actions/workflows/ci.yml/badge.svg)](https://github.com/kennywu411-dev/uipilot/actions/workflows/ci.yml) ![Python 3.12](https://img.shields.io/badge/python-3.12-blue) ![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)
+
 很多企业系统没有 API，只能靠人在网页上点：老 ERP、供应商门户、内部 OA。UIPilot 用 Claude 的浏览器工具集（`browser_toolset_20260801`）搭了一个**共用底座**，在上面做了两个应用：
 
 - **探索式测试 Agent**：读业务规则，在页面上操作，找出“结果不对”的缺陷；每条报告在重置后的环境里由另一个 Agent 复现。
 - **单据录入 Agent**：看供应商单据的扫描件，在老 ERP 里录采购单；拿不准的（供应商或商品不存在、金额自相矛盾、单号已录过）转人工；不允许删除任何数据。
 
-展示页（评测结果 + 可逐步播放的操作回放）在 [`site/`](site/)，本地预览：`python3 -m http.server -d site`。
+**[在线看评测结果和操作回放](https://kennywu411-dev.github.io/uipilot/)**，每一步都能翻看。下图是其中一段：测试 Agent 在 TodoMVC React 上发现按 Esc 没有退出编辑状态。
+
+![操作回放](docs/images/demo.gif)
 
 ## 结果（详见 [docs/numbers.md](docs/numbers.md)）
 
