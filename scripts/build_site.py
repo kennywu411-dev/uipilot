@@ -163,7 +163,7 @@ def main() -> None:
         "external": json.loads(findings.read_text()) if findings.exists() else None,
     }
     (SITE / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
-    # page.html 是页面片段（发布成 Artifact 时由平台套外壳）；GitHub Pages 需要完整文档，这里套同样的外壳
+    # page.html 只有页面内容，这里套上完整的文档外壳，GitHub Pages 才能直接打开
     page = (SITE / "page.html").read_text(encoding="utf-8")
     head, page = page.split("<style>", 1)  # title / meta / 字体链接放进 <head>
     page = "<style>" + page
