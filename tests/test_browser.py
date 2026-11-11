@@ -4,8 +4,8 @@ import re
 
 import pytest
 
-from uipilot.browser import ActionError, ActionGuard, BrowserExecutor
-from uipilot.erp.server import ERPServer
+from webhands.browser import ActionError, ActionGuard, BrowserExecutor
+from webhands.erp.server import ERPServer
 
 
 @pytest.fixture(scope="module")

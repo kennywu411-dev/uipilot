@@ -4,7 +4,7 @@
 单据上的供应商常写简称，商品名和系统里的叫法不一样，价格是谈过的成交价而不是参考价——
 这些都是真实录单员每天要处理的差异。另外混入几张“不该录”的单据，考 Agent 会不会停下来交给人。
 
-运行：uv run python -m uipilot.entry.docgen
+运行：uv run python -m webhands.entry.docgen
 """
 
 import io

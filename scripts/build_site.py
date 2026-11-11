@@ -9,8 +9,8 @@ import json
 import re
 from pathlib import Path
 
-from uipilot.erp.bugs import CATALOG
-from uipilot.evaluate import GROUPS
+from webhands.erp.bugs import CATALOG
+from webhands.evaluate import GROUPS
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = ROOT / "runs"

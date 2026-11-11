@@ -963,7 +963,7 @@ wheels = [
 ]
 
 [[package]]
-name = "uipilot"
+name = "webhands"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

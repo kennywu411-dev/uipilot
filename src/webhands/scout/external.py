@@ -4,7 +4,7 @@
 每个实现的 dist 目录单独起一个本地静态服务（独立的源，Agent 跑不到别的实现里去）；
 每次探索和复现都用全新的浏览器上下文，localStorage 为空，相当于重置。
 
-  uv run python -m uipilot.evaluate external --targets react vue --model claude-sonnet-5-5
+  uv run python -m webhands.evaluate external --targets react vue --model claude-sonnet-5-5
 """
 
 import functools

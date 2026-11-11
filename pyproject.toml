@@ -1,5 +1,5 @@
 [project]
-name = "uipilot"
+name = "webhands"
 version = "0.1.0"
 description = "浏览器 Agent 底座 + 探索式测试 Agent + 单据录入 Agent"
 readme = "README.md"

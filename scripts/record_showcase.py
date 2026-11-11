@@ -10,12 +10,12 @@ import shutil
 import sys
 from pathlib import Path
 
-from uipilot.agent import AgentConfig
-from uipilot.entry import agent as entry
-from uipilot.entry.checks import EntryChecks
-from uipilot.erp.server import ERPServer
-from uipilot.scout import agent as scout
-from uipilot.scout import external
+from webhands.agent import AgentConfig
+from webhands.entry import agent as entry
+from webhands.entry.checks import EntryChecks
+from webhands.erp.server import ERPServer
+from webhands.scout import agent as scout
+from webhands.scout import external
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "site" / "replays"

@@ -1,4 +1,4 @@
-"""UIPilot：浏览器 Agent 底座 + 两个落地应用（探索式测试、单据录入）。"""
+"""WebHands：浏览器 Agent 底座 + 两个落地应用（探索式测试、单据录入）。"""
 
 import os
 from pathlib import Path

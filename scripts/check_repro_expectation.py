@@ -8,10 +8,10 @@ import json
 import uuid
 from pathlib import Path
 
-from uipilot.agent import AgentConfig
-from uipilot.erp.server import ERPServer
-from uipilot.evaluate import GROUPS
-from uipilot.scout.agent import BugReport, reproduce
+from webhands.agent import AgentConfig
+from webhands.erp.server import ERPServer
+from webhands.evaluate import GROUPS
+from webhands.scout.agent import BugReport, reproduce
 
 ROOT = Path(__file__).resolve().parents[1]
 CFG = AgentConfig(model="claude-sonnet-5-5", max_turns=25, budget_usd=0.4)

@@ -4,7 +4,7 @@ import sys
 
 from playwright.sync_api import sync_playwright
 
-from uipilot.scout.external import StaticSite, todomvc_dir
+from webhands.scout.external import StaticSite, todomvc_dir
 
 LI = ".todo-list > li, #todo-list > li"
 

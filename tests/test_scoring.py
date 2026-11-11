@@ -1,10 +1,10 @@
 """评分逻辑测试：录单按数据库状态打分，测试 Agent 按复现 + 匹配打分。"""
 
-from uipilot.agent import AgentConfig, request_cost, toolset
-from uipilot.entry.agent import EntryOutcome, check
-from uipilot.entry.docgen import make_docs
-from uipilot.scout.agent import BugReport
-from uipilot.scout.judge import score
+from webhands.agent import AgentConfig, request_cost, toolset
+from webhands.entry.agent import EntryOutcome, check
+from webhands.entry.docgen import make_docs
+from webhands.scout.agent import BugReport
+from webhands.scout.judge import score
 
 
 def state(pos):

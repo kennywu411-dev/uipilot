@@ -1,8 +1,8 @@
 """评测入口。每次运行写一个 runs/<名字>-<6 位编号>/ 目录：轨迹、逐条结果、summary.json。
 
-  uv run python -m uipilot.evaluate scout  --model claude-haiku-5-5 --mode hybrid --groups A B C clean
-  uv run python -m uipilot.evaluate entry  --model claude-haiku-5-5 --mode hybrid --docs D01 D02 T01
-  uv run python -m uipilot.evaluate monkey --steps 300 --seeds 1 2 3
+  uv run python -m webhands.evaluate scout  --model claude-haiku-5-5 --mode hybrid --groups A B C clean
+  uv run python -m webhands.evaluate entry  --model claude-haiku-5-5 --mode hybrid --docs D01 D02 T01
+  uv run python -m webhands.evaluate monkey --steps 300 --seeds 1 2 3
 
 所有付费运行共享一个总预算（--total-budget），花到上限就停止派发新任务。
 """

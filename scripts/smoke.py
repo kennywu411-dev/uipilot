@@ -3,9 +3,9 @@
 import sys
 from pathlib import Path
 
-from uipilot.agent import AgentConfig, CustomTool, run_agent
-from uipilot.browser import BrowserExecutor
-from uipilot.erp.server import ERPServer
+from webhands.agent import AgentConfig, CustomTool, run_agent
+from webhands.browser import BrowserExecutor
+from webhands.erp.server import ERPServer
 
 answer = {}
 finish = CustomTool(

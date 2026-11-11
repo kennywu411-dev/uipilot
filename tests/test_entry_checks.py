@@ -1,6 +1,6 @@
 """录单代码校验：税号定供应商、Decimal 重算合计、单号查重、保存后回读比对。"""
 
-from uipilot.entry.checks import EntryChecks
+from webhands.entry.checks import EntryChecks
 
 SNAP = {
     "suppliers": [{"name": "深圳市华强电子有限公司", "tax_id": "91440300MA5FHQ2X1K"}],

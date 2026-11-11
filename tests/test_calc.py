@@ -1,4 +1,4 @@
-from uipilot.calc import calculate
+from webhands.calc import calculate
 
 
 def test_large_multiplication_is_exact():

@@ -23,7 +23,7 @@ class ERPServer:
     def __init__(self, port: int | None = None, db_dir: str | None = None):
         self.port = port or _free_port()
         self.base_url = f"http://127.0.0.1:{self.port}"
-        db_dir = db_dir or tempfile.mkdtemp(prefix="uipilot-erp-")
+        db_dir = db_dir or tempfile.mkdtemp(prefix="webhands-erp-")
         self.app = create_app(str(Path(db_dir) / "erp.db"))
         config = uvicorn.Config(self.app, host="127.0.0.1", port=self.port, log_level="warning")
         self._server = uvicorn.Server(config)

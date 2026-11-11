@@ -56,7 +56,7 @@ def scout_table() -> str:
 
 def per_bug() -> str:
     """每个植入缺陷被哪些配置检出（复现确认），看哪类缺陷最难。"""
-    from uipilot.erp.bugs import CATALOG
+    from webhands.erp.bugs import CATALOG
 
     hits: dict[str, dict[str, str]] = {b: {} for b in CATALOG}
     cfgs = []
@@ -68,7 +68,7 @@ def per_bug() -> str:
         for r in s["runs"]:
             if "detected_confirmed" not in r or not r["active"]:
                 continue
-            from uipilot.evaluate import GROUPS
+            from webhands.evaluate import GROUPS
 
             for b in GROUPS[r["group"]]:
                 by_bug.setdefault(b, []).append(int(b in r["detected_confirmed"]))

@@ -8,7 +8,7 @@ import re
 import pytest
 from fastapi.testclient import TestClient
 
-from uipilot.erp.app import create_app
+from webhands.erp.app import create_app
 
 
 @pytest.fixture

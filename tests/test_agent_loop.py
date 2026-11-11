@@ -5,7 +5,7 @@ from types import SimpleNamespace as NS
 import anthropic
 import httpx2 as httpx
 
-from uipilot.agent import AgentConfig, CustomTool, run_agent
+from webhands.agent import AgentConfig, CustomTool, run_agent
 
 
 class FakeUsage(NS):
